@@ -47,16 +47,19 @@ public class RequesterMainActivity extends AppCompatActivity
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
     private ListView completedTaskListView;
+    private ListView DoneTaskListView;
 
     private ArrayAdapter<Task> requestedTaskAdapter;
     private ArrayAdapter<Task> biddedTaskAdapter;
     private ArrayAdapter<Task> assignedTaskAdapter;
     private ArrayAdapter<Task> completedTaskAdapter;
+    private ArrayAdapter<Task> DoneTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> completedTaskList = new ArrayList<>();
+    private ArrayList<Task> DoneTaskList = new ArrayList<>();
 
     private String sortType = "all";
 
@@ -101,6 +104,16 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
+    private TaskController DoneTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            DoneTaskList = (ArrayList<Task>) o;
+            DoneTaskList.clear();
+            DoneTaskAdapter.addAll(DoneTaskList);
+            DoneTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
     // assign bidded task
     private TaskController assignBiddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
@@ -109,6 +122,17 @@ public class RequesterMainActivity extends AppCompatActivity
             assignedTaskAdapter.add((Task) o);
             biddedTaskAdapter.notifyDataSetChanged();
             assignedTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    // done completed task
+    private TaskController DoneCompletedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            completedTaskList.remove((Task) o);
+            DoneTaskList.add((Task) o);
+            completedTaskAdapter.notifyDataSetChanged();
+            DoneTaskAdapter.notifyDataSetChanged();
         }
     });
 
@@ -167,6 +191,7 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
         assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
         completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
+        DoneTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, DoneTaskList);
 
         setAdapter(sortType);
 
@@ -178,6 +203,7 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskController.getRequesterBiddedTask(requester.getUserName());
         assignedTaskController.getRequesterAssignedTask(requester.getUserName());
         completedTaskController.getRequesterCompletedTask(requester.getUserName());
+        DoneTaskController.getRequesterDoneTask(requester.getUserName());
     }
 
     @Override
@@ -424,6 +450,7 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskController.getRequesterOfflineBiddedTask(requester.getUserName(), this);
         assignedTaskController.getRequesterOfflineAssignedTask(requester.getUserName(), this);
         completedTaskController.getRequesterOfflineCompletedTask(requester.getUserName(), this);
+        DoneTaskController.getRequesterOfflineDoneTask(requester.getUserName(), this);
     }
 
     /**
@@ -471,6 +498,16 @@ public class RequesterMainActivity extends AppCompatActivity
                     openCompletedTaskDialog(completedTaskList.get(position));
                 }
             });
+
+            DoneTaskListView = findViewById(R.id.listView_DoneTask_all_RequesterMainActivity);
+            DoneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open completed task info dialog
+                    openCompletedTaskDialog(DoneTaskList.get(position));
+                }
+            });
+
         }
         else if(sortType.equals("requested")){
 

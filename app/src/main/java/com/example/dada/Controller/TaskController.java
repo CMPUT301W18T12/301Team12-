@@ -247,6 +247,27 @@ public class TaskController {
     }
 
     /**
+     * Get a list of tasks of provider's done tasks
+     *
+     * @param providerUserName the provider's user name
+     */
+    public void getProviderDoneTask(String providerUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"status\": \"done\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", providerUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
      * Get a list of tasks of requester's requested tasks
      *
      * @param requesterUserName the requester's username
@@ -325,6 +346,27 @@ public class TaskController {
                         "           \"must\" : [\n " +
                         "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
                         "               { \"term\": {\"status\": \"completed\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", requesterUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of tasks of requester's Done tasks
+     *
+     * @param requesterUserName the requester's user name
+     */
+    public void getRequesterDoneTask(String requesterUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"status\": \"done\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
@@ -420,6 +462,27 @@ public class TaskController {
     }
 
     /**
+     * Get a list of provider's done tasks while offline
+     * @param providerUserName the provider's user name
+     * @param context activity context
+     */
+    public void getProviderOfflineDoneTask(String providerUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getProviderTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getProviderUserName() == null || !r.getProviderUserName().equals(providerUserName)
+                    || r.getStatus() == null || !r.getStatus().equals("done")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
      * Get a list of requester's requested tasks while offline
      * @param requesterUserName the requester's user name
      * @param context            activity context
@@ -505,6 +568,26 @@ public class TaskController {
         listener.onTaskCompleted(tasksList);
     }
 
+    /**
+     * Get a list of requester's Done tasks while offline
+     * @param requesterUserName the requester's user name
+     * @param context activity context
+     */
+    public void getRequesterOfflineDoneTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getRequesterUserName() == null || !r.getRequesterUserName().equals(requesterUserName)
+                    || r.getStatus() == null || !r.getStatus().equals("done")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
 //    /**
 //     * Send provider's bidded request to the server once the device is back online
 //     * @param providerUserName the provider's user name
