@@ -58,7 +58,7 @@ public class RequesterMainActivity extends AppCompatActivity
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> completedTaskList = new ArrayList<>();
 
-    private String sortType = "requested";
+    private String sortType = "all";
 
     // Get list of tasks
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
@@ -132,7 +132,6 @@ public class RequesterMainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intentRequesterAddTask = new Intent(getApplicationContext(), RequesterAddTaskActivity.class);
                 startActivity(intentRequesterAddTask);
-                finish();
             }
         });
 
@@ -228,7 +227,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             // intent to login activity
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
+
 
         }
 
@@ -519,4 +518,11 @@ public class RequesterMainActivity extends AppCompatActivity
     public void onConnect() {
         offlineHandler();
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        onStart();
+    }
+
 }
