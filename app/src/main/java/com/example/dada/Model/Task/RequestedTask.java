@@ -12,6 +12,8 @@
 package com.example.dada.Model.Task;
 
 
+import android.graphics.Bitmap;
+
 import com.example.dada.Exception.TaskException;
 
 /**
@@ -32,6 +34,10 @@ public class RequestedTask extends Task {
      */
     public RequestedTask(String title, String description, String requesterUserName) {
         super(title, description, requesterUserName,"requested");
+    }
+
+    public RequestedTask(String title, String description, String requesterUserName, Bitmap img) {
+        super(title, description, requesterUserName, "requested", img);
     }
 
     /**
