@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -60,6 +58,9 @@ public class RequesterMainActivity extends AppCompatActivity
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> completedTaskList = new ArrayList<>();
 
+    private String sortType = "requested";
+
+    // Get list of tasks
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -155,41 +156,8 @@ public class RequesterMainActivity extends AppCompatActivity
         email.setText(requester.getEmail());
 
         // list view
-        requestedTaskListView = findViewById(R.id.listView_requestedTask_RequesterMainActivity);
-        requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open requested task info dialog
-                openRequestedTaskDialog(requestedTaskList.get(position));
-            }
-        });
+        setListView(sortType);
 
-        biddedTaskListView = findViewById(R.id.listView_biddedTask_RequesterMainActivity);
-        biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open bidded task info dialog
-                openBiddedTaskDialog(biddedTaskList.get(position));
-            }
-        });
-
-        assignedTaskListView = findViewById(R.id.listView_assignedTask_RequesterMainActivity);
-        assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open assigned task info dialog
-                openAssignedTaskDialog(assignedTaskList.get(position));
-            }
-        });
-
-        completedTaskListView = findViewById(R.id.listView_completedTask_RequesterMainActivity);
-        completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open completed task info dialog
-                openCompletedTaskDialog(completedTaskList.get(position));
-            }
-        });
     }
 
     @Override
@@ -199,10 +167,9 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
         assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
         completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
-        requestedTaskListView.setAdapter(requestedTaskAdapter);
-//        biddedTaskListView.setAdapter(biddedTaskAdapter);
-//        assignedTaskListView.setAdapter(assignedTaskAdapter);
-//        completedTaskListView.setAdapter(completedTaskAdapter);
+
+        setAdapter(sortType);
+
         updateTaskList();
     }
 
@@ -457,6 +424,80 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskController.getRequesterOfflineBiddedTask(requester.getUserName(), this);
         assignedTaskController.getRequesterOfflineAssignedTask(requester.getUserName(), this);
         completedTaskController.getRequesterOfflineCompletedTask(requester.getUserName(), this);
+    }
+
+    /**
+     *  Set click for different sorting situation
+     * @param sortType
+     */
+    public void setListView(String sortType){
+        TextView textView = (TextView) findViewById(R.id.editText_allTask_RequesterMainActivity);
+        if (sortType.equals("all")){
+
+            textView.setText("All Tasks");
+
+            requestedTaskListView = findViewById(R.id.listView_requestedTask_all_RequesterMainActivity);
+            requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open requested task info dialog
+                    openRequestedTaskDialog(requestedTaskList.get(position));
+                }
+            });
+
+            biddedTaskListView = findViewById(R.id.listView_biddedTask_all_RequesterMainActivity);
+            biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open bidded task info dialog
+                    openBiddedTaskDialog(biddedTaskList.get(position));
+                }
+            });
+
+            assignedTaskListView = findViewById(R.id.listView_assignedTask_all_RequesterMainActivity);
+            assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open assigned task info dialog
+                    openAssignedTaskDialog(assignedTaskList.get(position));
+                }
+            });
+
+            completedTaskListView = findViewById(R.id.listView_completedTask_all_RequesterMainActivity);
+            completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open completed task info dialog
+                    openCompletedTaskDialog(completedTaskList.get(position));
+                }
+            });
+        }
+        else if(sortType.equals("requested")){
+
+            textView.setText("Requested Tasks");
+
+            requestedTaskListView = findViewById(R.id.listView_requestedTask_all_RequesterMainActivity);
+            requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open requested task info dialog
+                    openRequestedTaskDialog(requestedTaskList.get(position));
+                }
+            });
+        }
+
+    }
+
+    public void setAdapter(String sortType){
+        if (sortType.equals("all")){
+            requestedTaskListView.setAdapter(requestedTaskAdapter);
+            biddedTaskListView.setAdapter(biddedTaskAdapter);
+            assignedTaskListView.setAdapter(assignedTaskAdapter);
+            completedTaskListView.setAdapter(completedTaskAdapter);
+        }
+        else if (sortType.equals("requested")){
+            requestedTaskListView.setAdapter(requestedTaskAdapter);
+        }
     }
 
     @Override
