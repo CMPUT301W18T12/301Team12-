@@ -11,6 +11,8 @@
 
 package com.example.dada.Model.Task;
 
+import com.example.dada.Model.Locations;
+
 /**
  * Task that has been completed in the past.
  *
@@ -18,7 +20,12 @@ package com.example.dada.Model.Task;
  * @see Task
  */
 public class CompletedTask extends Task {
+
     public CompletedTask(String requesterUserName, String providerUserName, double price) {
         super(requesterUserName, providerUserName, price);
+    }
+
+    public CompletedTask(String requesterUserName, String providerUserName, double price, Locations location) {
+        super(requesterUserName, providerUserName, price, location);
     }
 }

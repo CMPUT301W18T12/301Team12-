@@ -12,11 +12,12 @@
 package com.example.dada.Model.Task;
 
 import com.example.dada.Exception.TaskException;
+import com.example.dada.Model.Locations;
 
 /**
  * Task that has been sent by the requester,
  * and accepted by one or more driver. Also,
- * it has been confirmed by the rider as well.
+ * it has been confirmed by the requester as well.
  *
  * @version 1.0
  * @see Task
@@ -25,6 +26,10 @@ public class AssignedTask extends Task{
 
     public AssignedTask(String requesterUserName, String providerUserName, double price) {
         super(requesterUserName, providerUserName, price);
+    }
+
+    public AssignedTask(String requesterUserName, String providerUserName, double price, Locations location) {
+        super(requesterUserName, providerUserName, price, location);
     }
 
     public void providerCompleteTask() throws TaskException {

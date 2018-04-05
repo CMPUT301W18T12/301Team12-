@@ -20,7 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_requester_main" />
+    <include layout="@layout/content_requester_main_all" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_requester_main"

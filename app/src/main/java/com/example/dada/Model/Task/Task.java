@@ -19,6 +19,7 @@ import android.util.Log;
 
 import com.example.dada.Constant;
 import com.example.dada.Exception.TaskException;
+import com.example.dada.Model.Locations;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Util.TaskUtil;
@@ -27,6 +28,8 @@ import com.google.gson.GsonBuilder;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
+
+import org.osmdroid.util.GeoPoint;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public abstract class Task {
     private String requesterUserName;
     private String providerUserName;
     private Bitmap img;
+    private Locations location;
 
     private ArrayList<ArrayList<String>> bidList = new ArrayList<>();
 
@@ -59,6 +63,23 @@ public abstract class Task {
      */
     public Task() {
 
+    }
+
+    /**
+     * Constructor for a requested task.
+     *
+     * @param title         title of the task
+     * @param description   description of the task
+     * @param requesterUserName
+     * @param status
+     * @param location
+     */
+    public Task(String title, String description, String requesterUserName, String status, Locations location) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.requesterUserName = requesterUserName;
+        this.location = location;
     }
 
     /**
@@ -90,11 +111,41 @@ public abstract class Task {
      * @param requesterUserName  the requester user name
      * @param providerUserName   the provider user name
      * @param price              the price
+     * @param location
+     */
+    public Task(String requesterUserName, String providerUserName, double price, Locations location) {
+        this.requesterUserName = requesterUserName;
+        this.providerUserName = providerUserName;
+        this.price = price;
+        this.location = location;
+    }
+
+    /**
+     * Constructor for AssignedTask or CompletedTask.
+     *
+     * @param requesterUserName  the requester user name
+     * @param providerUserName   the provider user name
+     * @param price              the price
      */
     public Task(String requesterUserName, String providerUserName, double price) {
         this.requesterUserName = requesterUserName;
         this.providerUserName = providerUserName;
         this.price = price;
+    }
+
+    /**
+     * Constructor for BiddedTask
+     *
+     * @param requesterUserName     the requester user name
+     * @param bid                   the list of providers username and price who bidded the task
+     * @param price                 the price
+     * @param location
+     */
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, Locations location){
+        this.requesterUserName = requesterUserName;
+        this.bidList.add(bid);
+        this.price = price;
+        this.location = location;
     }
 
     /**
@@ -526,5 +577,21 @@ public abstract class Task {
     public ArrayList<ArrayList<String>> getBidList(){ return this.bidList; }
 
     public void setBidList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
+
+    public GeoPoint get_User_location(){
+        return location.getUser_location();
+    }
+
+    public GeoPoint get_Task_location(){
+        return location.getTask_location();
+    }
+
+    public Double get_distance(){
+        return location.get_distance();
+    }
+
+    public void set_distance(double distance){
+        location.setDistance(distance);
+    }
 
 }
