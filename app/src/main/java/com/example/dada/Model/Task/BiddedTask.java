@@ -12,6 +12,7 @@
 package com.example.dada.Model.Task;
 
 import com.example.dada.Exception.TaskException;
+import com.example.dada.Model.Locations;
 
 import java.util.ArrayList;
 
@@ -25,12 +26,20 @@ import java.util.ArrayList;
  */
 public class BiddedTask extends Task {
 
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, Locations location) {
+        super(requesterUserName, providerUserName, price, location);
+    }
+
     public BiddedTask(String requesterUserName, String providerUserName, Double price) {
         super(requesterUserName, providerUserName, price);
     }
 
     public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price) {
         super(requesterUserName, providerList, price);
+    }
+
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Locations location) {
+        super(requesterUserName, providerList, price, location);
     }
 
     @Override

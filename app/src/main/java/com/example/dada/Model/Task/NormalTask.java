@@ -11,6 +11,8 @@
 
 package com.example.dada.Model.Task;
 
+import com.example.dada.Model.Locations;
+
 import java.util.ArrayList;
 
 public class NormalTask extends Task {
@@ -22,12 +24,24 @@ public class NormalTask extends Task {
         super(title, description, requesterUserName, status);
     }
 
+    public NormalTask(String title, String description, String requesterUserName, String status, Locations location) {
+        super(title, description, requesterUserName, status, location);
+    }
+
     public NormalTask(String requesterUserName, String providerUserName, double price) {
         super(requesterUserName, providerUserName, price);
     }
 
+    public NormalTask(String requesterUserName, String providerUserName, double price, Locations location) {
+        super(requesterUserName, providerUserName, price, location);
+    }
+
     public NormalTask(String requesterUserName, ArrayList<String> providerList, double price) {
         super(requesterUserName, providerList, price);
+    }
+
+    public NormalTask(String requesterUserName, ArrayList<String> providerList, double price, Locations location) {
+        super(requesterUserName, providerList, price, location);
     }
 
 }

@@ -38,6 +38,8 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import java.util.ArrayList;
 
+import im.delight.android.location.SimpleLocation;
+
 public class ProviderMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Connectable, Disconnectable, Bindable {
 
@@ -59,6 +61,9 @@ public class ProviderMainActivity extends AppCompatActivity
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> completedTaskList = new ArrayList<>();
+
+    private SimpleLocation location;
+
 
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
