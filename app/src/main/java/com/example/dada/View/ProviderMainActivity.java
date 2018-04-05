@@ -352,20 +352,20 @@ public class ProviderMainActivity extends AppCompatActivity
         ArrayList<ArrayList<String>> bidList = task.getBidList();
         String lowestPrice = task.getLowestPrice().toString();
 
-        Boolean hasOldBiddedPrice = false;
-        String oldBiddedPrice = "";
+        Boolean hasmyBiddedPrice = false;
+        String myBiddedPrice = "";
         for ( ArrayList<String> bid : bidList ){
             if ( bid.get(0).equals(provider.getUserName()) ){
-                hasOldBiddedPrice = true;
-                oldBiddedPrice = bid.get(1);
+                hasmyBiddedPrice = true;
+                myBiddedPrice = bid.get(1);
             }
         }
 
         String message;
-        if ( hasOldBiddedPrice ){
+        if ( hasmyBiddedPrice ){
             message = "Title: " + title + "\n" + "Description: " + description + "\n" +
                     "Requester: " + requesterUserName + "\n" + "Lowest Price: " + lowestPrice + "\n" +
-                    "Old Bidded Price: " + oldBiddedPrice + "\n" + "Updated Price: " + "\n";
+                    "My Bidded Price: " + myBiddedPrice + "\n" + "Updated Price: " + "\n";
         }else{
             message = "Title: " + title + "\n" + "Description: " + description + "\n" +
                     "Requester: " + requesterUserName + "\n" + "Lowest Price: " + lowestPrice +

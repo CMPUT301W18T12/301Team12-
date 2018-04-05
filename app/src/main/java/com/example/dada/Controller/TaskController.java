@@ -577,6 +577,16 @@ public class TaskController {
     }
 
     /**
+     * Requester confirm task done.
+     *
+     * @param task the task to be confirmed done
+     */
+    public void requesterDoneTask(Task task) throws TaskException {
+        task.requesterDoneTask();
+        updateTask(task);
+    }
+
+    /**
      * Requester confirm provider.
      *
      * @param task                  the task to be confirmed by the requester

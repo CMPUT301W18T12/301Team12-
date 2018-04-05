@@ -521,6 +521,15 @@ public abstract class Task {
         this.setStatus("requested");
     }
 
+
+    /**
+     * Requester confirm task is done.
+     */
+    public void requesterDoneTask() throws TaskException {
+        assert getStatus().equals("completed");
+        setStatus("done");
+    }
+
     /**
      * Getters and Setters
      */
