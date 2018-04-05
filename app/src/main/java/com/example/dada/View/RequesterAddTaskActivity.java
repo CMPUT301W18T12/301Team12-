@@ -102,17 +102,17 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         boolean validTitle = !(title.isEmpty() || title.trim().isEmpty());
         boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
 
-        location = new SimpleLocation(this);
-        // if we can't access the location yet
-        if (!location.hasLocationEnabled()) {
-            // ask the user to enable location access
-               SimpleLocation.openSettings(this);
-        }
-
-        // get current location
-        Double user_latitude = location.getLatitude();
-        Double user_longitude = location.getLongitude();
-        GeoPoint User_point = new GeoPoint(user_latitude, user_longitude);
+//        location = new SimpleLocation(this);
+//        // if we can't access the location yet
+//        if (!location.hasLocationEnabled()) {
+//            // ask the user to enable location access
+//               SimpleLocation.openSettings(this);
+//        }
+//
+//        // get current location
+//        Double user_latitude = location.getLatitude();
+//        Double user_longitude = location.getLongitude();
+//        GeoPoint User_point = new GeoPoint(user_latitude, user_longitude);
 
         if (!(validTitle && validDescription)) {
             Toast.makeText(this, "Task Title/Description is not valid.", Toast.LENGTH_SHORT).show();

@@ -558,11 +558,22 @@ public class TaskController {
     /**
      * Requester assign task.
      *
-     * @param task the task to be assigned completed
+     * @param task the task to be assigned
      * @param providerUserName the provider user name
      */
     public void requesterAssignTask(Task task, String providerUserName) throws TaskException {
         task.requesterAssignProvider(providerUserName);
+        updateTask(task);
+    }
+
+    /**
+     * Requester change assign task to bidded task.
+     *
+     * @param task the task to be assigned completed
+     * @param providerUserName the provider user name
+     */
+    public void requesterAssignToBidTask(Task task, String providerUserName) throws TaskException {
+        task.requesterMoveProviderToBidded(providerUserName);
         updateTask(task);
     }
 
