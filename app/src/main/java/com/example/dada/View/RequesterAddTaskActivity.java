@@ -88,12 +88,20 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         if (!(validTitle && validDescription)) {
             Toast.makeText(this, "Task Title/Description is not valid.", Toast.LENGTH_SHORT).show();
         } else {
-            Task task = new RequestedTask(title, description, requester.getUserName());
-            task.setID(UUID.randomUUID().toString());
-            taskController.createTask(task);
-            finish();
-            Intent intentRequesterMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
-            startActivity(intentRequesterMain);
+            if (title.length() > 30){
+                Toast.makeText(this, "Max length of task title is 30.", Toast.LENGTH_SHORT).show();
+            } else {
+                if (description.length() > 300) {
+                    Toast.makeText(this, "Max length of task description is 300.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Task task = new RequestedTask(title, description, requester.getUserName());
+                    task.setID(UUID.randomUUID().toString());
+                    taskController.createTask(task);
+                    finish();
+                    Intent intentRequesterMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
+                    startActivity(intentRequesterMain);
+                }
+            }
         }
     }
 }

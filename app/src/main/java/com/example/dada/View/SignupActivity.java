@@ -71,13 +71,18 @@ public class SignupActivity extends AppCompatActivity {
         if (!(validUsername && validEmail && validMobile)) {
             Toast.makeText(this, "Username/Email/Mobile is not valid.", Toast.LENGTH_SHORT).show();
         } else {
-            try {
-                User user = new User(username, mobile, email);
-                userController.addUser(user);
-                finish();
-            } catch (UserException e) {
-                // if the username has been taken
-                Toast.makeText(this, "Username has been taken.", Toast.LENGTH_SHORT).show();
+            if(username.length() > 8){
+                Toast.makeText(this, "max username length is 8 characters", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                try {
+                    User user = new User(username, mobile, email);
+                    userController.addUser(user);
+                    finish();
+                } catch (UserException e) {
+                    // if the username has been taken
+                    Toast.makeText(this, "Username has been taken.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
