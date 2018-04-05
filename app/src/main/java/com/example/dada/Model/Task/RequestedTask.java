@@ -12,6 +12,8 @@
 package com.example.dada.Model.Task;
 
 
+import android.graphics.Bitmap;
+
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
@@ -34,6 +36,12 @@ public class RequestedTask extends Task {
     public RequestedTask(String title, String description, String requesterUserName, Locations location) {
         super(title, description, requesterUserName, "requested", location);
     }
+
+
+    public RequestedTask(String title, String description, String requesterUserName, Bitmap img) {
+        super(title, description, requesterUserName, "requested", img);
+    }
+
 
     public RequestedTask(String title, String description, String requesterUserName) {
         super(title, description, requesterUserName, "requested");

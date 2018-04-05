@@ -11,6 +11,7 @@
 
 package com.example.dada.Model.Task;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -50,6 +51,7 @@ public abstract class Task {
     private String status;
     private String requesterUserName;
     private String providerUserName;
+    private Bitmap img;
     private Locations location;
 
     private ArrayList<ArrayList<String>> bidList = new ArrayList<>();
@@ -92,6 +94,14 @@ public abstract class Task {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.requesterUserName = requesterUserName;
+    }
+
+    public Task(String title, String description, String requesterUserName, String status, Bitmap img) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.img = img;
         this.requesterUserName = requesterUserName;
     }
 

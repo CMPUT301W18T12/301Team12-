@@ -62,9 +62,9 @@
         android:id="@+id/imageButton2"
         android:layout_width="229dp"
         android:layout_height="166dp"
+        android:onClick="addImage"
         app:layout_constraintBottom_toTopOf="@+id/newTask_done_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_requester_add_task_description"
         app:srcCompat="@drawable/ic_menu_gallery" />
@@ -76,7 +76,7 @@
         android:text="DONE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 </android.support.constraint.ConstraintLayout>
