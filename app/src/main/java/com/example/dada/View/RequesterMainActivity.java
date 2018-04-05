@@ -501,6 +501,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
     @Override
     public void onBind(NetworkStatus networkStatus) {
+        onStart();
         if (networkStatus.isAvailable()) {
             onConnect();
         } else if (!networkStatus.isAvailable()) {
@@ -522,7 +523,7 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
-        onStart();
+        updateTaskList();
     }
 
 }

@@ -98,8 +98,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
                     task.setID(UUID.randomUUID().toString());
                     taskController.createTask(task);
                     finish();
-                    Intent intentRequesterMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
-                    startActivity(intentRequesterMain);
                 }
             }
         }
