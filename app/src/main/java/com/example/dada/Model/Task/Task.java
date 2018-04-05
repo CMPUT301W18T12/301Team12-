@@ -523,26 +523,9 @@ public abstract class Task {
      * @throws TaskException    raise exception when request has not been confirmed
      */
     public void requesterMoveProviderToBidded(String providerUserName) throws TaskException {
-        if ( getStatus().equals("assigned") ){
+        if ( getStatus().equals("assigned") ) {
             setStatus("bidded");
         }
-        boolean found = false;
-        Double lowestPrice = Double.MAX_VALUE;
-        for ( ArrayList<String> bid : bidList ){
-            if ( bid.get(0).equals(providerUserName) ){
-                found = true;
-                bid.set(1, Double.toString(price));
-            }
-            lowestPrice = (lowestPrice > Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
-        }
-        if ( !found ){
-            ArrayList<String> bid = new ArrayList<>();
-            bid.add(providerUserName);
-            bid.add(Double.toString(price));
-            bidList.add(bid);
-            lowestPrice = (lowestPrice > Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
-        }
-        setLowestPrice(lowestPrice);
 
     }
 
