@@ -136,8 +136,7 @@ public class RequesterMainActivity extends AppCompatActivity
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -201,9 +200,9 @@ public class RequesterMainActivity extends AppCompatActivity
         assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
         completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
         requestedTaskListView.setAdapter(requestedTaskAdapter);
-        biddedTaskListView.setAdapter(biddedTaskAdapter);
-        assignedTaskListView.setAdapter(assignedTaskAdapter);
-        completedTaskListView.setAdapter(completedTaskAdapter);
+//        biddedTaskListView.setAdapter(biddedTaskAdapter);
+//        assignedTaskListView.setAdapter(assignedTaskAdapter);
+//        completedTaskListView.setAdapter(completedTaskAdapter);
         updateTaskList();
     }
 
