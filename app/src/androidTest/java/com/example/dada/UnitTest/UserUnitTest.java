@@ -22,9 +22,13 @@ import com.example.dada.R;
 import com.example.dada.View.LoginActivity;
 import com.robotium.solo.Solo;
 
+import org.junit.Test;
+
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertNotEquals;
 
 
 public class UserUnitTest extends ActivityInstrumentationTestCase2<LoginActivity> {
@@ -69,64 +73,6 @@ public class UserUnitTest extends ActivityInstrumentationTestCase2<LoginActivity
         assertTrue(solo.waitForText("User does not exist, please signup"));
     }
 
-    // http://stackoverflow.com/questions/7588584/android-asynctask-check-status
-
-    /**
-     * Test case for creating new user
-     * and get user profile method.
-     *
-     * Generally, the interaction with database or server should be mocked
-     * up in the unittest (waste of resource, and possbility to mess up
-     * the production environment). Also, this test is not guarantee to pass.
-     */
-    public void testCreateUser() {
-        String userName = "sfeng3_tutu";
-        String mobileNumber = "100-1000-2000";
-        String emailAddress = userName + "@cs.ualberta.ca";
-        User user = new User(userName, mobileNumber, emailAddress);
-        user.setID(UUID.randomUUID().toString());
-
-        User.CreateUserTask createUserTask = new User.CreateUserTask(mockTask);
-        createUserTask.execute(user);
-        // Hang around till is done
-        AsyncTask.Status taskStatus;
-        do {
-            taskStatus = createUserTask.getStatus();
-        } while (taskStatus != AsyncTask.Status.FINISHED);
-
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        String query = String.format(
-                "{\n" +
-                        "    \"query\": {\n" +
-                        "       \"term\" : { \"userName\" : \"%s\" }\n" +
-                        "    }\n" +
-                        "}", userName);
-        Log.d("Debug", query);
-
-        User.GetUserProfileTask getUserTask = new User.GetUserProfileTask(mockTask);
-        getUserTask.execute(query);
-        User getUser = new User();
-        // Hang around till is done
-        AsyncTask.Status anotherStatus;
-        do {
-            anotherStatus = getUserTask.getStatus();
-        } while (anotherStatus != AsyncTask.Status.FINISHED);
-
-        try {
-            getUser = getUserTask.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        assertEquals(user.getID(), getUser.getID());
-        assertEquals(user, getUser);
-    }
 
     /**
      * Test cases for search user exist task
@@ -153,5 +99,20 @@ public class UserUnitTest extends ActivityInstrumentationTestCase2<LoginActivity
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Test constrain of the username in the model
+     */
+    @Test
+    public void testTitle(){
+        User user = new User("user", "123456789", "user@email.ca");
+        try {
+            user.setUserName("longusername");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        assertNotEquals(user.getUserName(), "longusername");
+        assertEquals(user.getUserName(), "user");
     }
 }

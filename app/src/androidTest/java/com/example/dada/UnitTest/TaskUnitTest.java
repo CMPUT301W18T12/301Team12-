@@ -20,6 +20,8 @@ import android.widget.EditText;
 
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.AssignedTask;
+import com.example.dada.Model.Task.BiddedTask;
 import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.RequestedTask;
 import com.example.dada.Model.Task.Task;
@@ -30,12 +32,14 @@ import com.robotium.solo.Solo;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -87,96 +91,57 @@ public class TaskUnitTest extends ActivityInstrumentationTestCase2<LoginActivity
         assertTrue(solo.waitForText("User does not exist, please signup"));
     }
 
-    /**
-     * Test update task. Once the task is modified,
-     * created, this method would be called to update task
-     * to the server. This test covers all update method
-     * for the rest of tests. In other word, no need to implement
-     * UpdateRequestTask in the rest of the test cases.
-     * Generally, the interaction with database or server should be mocked
-     * up in the unittest (waste of resource, and possbility to mess up
-     * the production environment). Also, this test is not guarantee to pass.
-     */
-    public void testUpdateRequest() {
-        Task.CreateTaskTask createTaskTask = new Task.CreateTaskTask(null);
-        String requesterUserName = "sfeng3_tutu";
-        Task task = new RequestedTask("title1", "description1", requesterUserName);
-        task.setID(UUID.randomUUID().toString());
-        createTaskTask.execute(task);
-        AsyncTask.Status taskStatus;
-        do {
-            taskStatus = createTaskTask.getStatus();
-        } while (taskStatus != AsyncTask.Status.FINISHED);
 
-        // Wait for task to finished
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must\" : [\n " +
-                        "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", requesterUserName);
-
-        Task.GetTasksListTask getTasksListTask = new Task.GetTasksListTask(null);
-        getTasksListTask.execute(query);
-        AsyncTask.Status anotherStatus;
-        do {
-            anotherStatus = getTasksListTask.getStatus();
-        } while (anotherStatus != AsyncTask.Status.FINISHED);
-
-        ArrayList<NormalTask> getTasks = new ArrayList<>();
-        try {
-            getTasks = getTasksListTask.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        assertEquals(task.getID(), getTasks.get(0).getID());
-        assertEquals(task, getTasks.get(0));
-    }
 
     /**
-     * Test requester confirm task's completion.
+     * Test requester confirm task's request.
      */
-    public void testRequesterConfirmTaskComplete() {
-        Task request = new RequestedTask("title1", "description1", "sfeng3");
-        request.requesterConfirmTaskComplete();
-        assertTrue(request.getIsCompleted());
+    public void testProviderConfirmTaskComplete() {
+        Task requester = new RequestedTask("titile1", "description", "sfeng3");
+        assertEquals(requester.getStatus(), "requested");
     }
 
     /**
      * Test requester assign provider.
      */
-    public void testRequesterAssignProvider() {
+    public void testRequesterAssignProvider() throws TaskException {
         Task request = new RequestedTask("title1", "description1", "sfeng3");
-        request.providerBidTask("yz6_1");
-        request.providerBidTask("yz6_2");
+        request.providerBidTask("yz6_1", 1);
+        request.providerBidTask("yz6_2",2);
         try {
             request.requesterAssignProvider("yz6_1");
         } catch (TaskException e) {
             e.printStackTrace();
         }
         assertEquals(request.getProviderUserName(), "yz6_1");
-        assertNull(request.getProviderList());
     }
 
     /**
      * Test provider bid task.
      */
-    public void testRequesterBidTask() {
+    public void testRequesterBidTask() throws TaskException {
         Task request = new RequestedTask("title1", "description1", "sfeng3");
-        request.providerBidTask("yz6");
-        assertTrue(request.getProviderUserName().contains("yz6"));
+        request.providerBidTask("yz6", 6);
+        assertEquals("bidded", request.getStatus());
     }
 
+
+    /**
+     * Test constrain of the task title
+     */
+    @Test
+    public void testTitle(){
+        Task request = new RequestedTask("title1", "description1", "sfeng3");
+        try {
+            request.setTitle("1234567890123456789012345678901");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        assertNotEquals(request.getTitle(), "1234567890123456789012345678901");
+        assertEquals(request.getTitle(), "title1");
+    }
+
+    /**
+     * Test description is too long to test
+     */
 }
