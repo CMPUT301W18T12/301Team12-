@@ -48,8 +48,7 @@
             android:id="@+id/edit_text_login_username"
             android:layout_width="325dp"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:text="Username" />
+            android:hint="Username" />
     </android.support.design.widget.TextInputLayout>
 
     <Button

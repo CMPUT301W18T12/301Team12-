@@ -37,8 +37,7 @@
             android:id="@+id/edit_text_signup_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:text="Username" />
+            android:hint="Username" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -58,8 +57,7 @@
             android:id="@+id/edit_text_signup_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:text="Email" />
+            android:hint="Email" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -80,8 +78,7 @@
             android:id="@+id/edit_text_signup_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:text="Phone" />
+            android:hint="Phone" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
