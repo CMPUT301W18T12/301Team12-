@@ -47,7 +47,7 @@ public class RequesterMainActivity extends AppCompatActivity
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
     private ListView completedTaskListView;
-    private ListView DoneTaskListView;
+    private ListView doneTaskListView;
 
     private ArrayAdapter<Task> requestedTaskAdapter;
     private ArrayAdapter<Task> biddedTaskAdapter;
@@ -61,7 +61,7 @@ public class RequesterMainActivity extends AppCompatActivity
     private ArrayList<Task> completedTaskList = new ArrayList<>();
     private ArrayList<Task> DoneTaskList = new ArrayList<>();
 
-    private String sortType = "all";
+    private String sortType;
 
     // Get list of tasks
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
@@ -104,7 +104,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
-    private TaskController DoneTaskController = new TaskController(new OnAsyncTaskCompleted() {
+    private TaskController doneTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
             DoneTaskList = (ArrayList<Task>) o;
@@ -140,6 +140,8 @@ public class RequesterMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_main);
+
+        sortType = "requested";
 
         // monitor network connectivity
         merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
@@ -203,7 +205,7 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskController.getRequesterBiddedTask(requester.getUserName());
         assignedTaskController.getRequesterAssignedTask(requester.getUserName());
         completedTaskController.getRequesterCompletedTask(requester.getUserName());
-        DoneTaskController.getRequesterDoneTask(requester.getUserName());
+        doneTaskController.getRequesterDoneTask(requester.getUserName());
     }
 
     @Override
@@ -249,14 +251,56 @@ public class RequesterMainActivity extends AppCompatActivity
             // intent to UserEditProfileActivity
             Intent intentUserEditProfile = new Intent(getApplicationContext(), UserEditProfileActivity.class);
             startActivity(intentUserEditProfile);
+        }
+        else if (id == R.id.nav_allTask_Rmain) {
 
-        } else if (id == R.id.nav_logout) {
+            clearListView(sortType);
+            sortType = "all";
+            setListView(sortType);
+            setAdapter(sortType);
+        }
+        else if (id == R.id.nav_requestedTask_Rmain) {
+
+            clearListView(sortType);
+            sortType = "requested";
+            setListView(sortType);
+            setAdapter(sortType);
+        }
+        else if (id == R.id.nav_biddedTask_Rmain) {
+
+            clearListView(sortType);
+            sortType = "bidded";
+            setListView(sortType);
+            setAdapter(sortType);
+        }
+        else if (id == R.id.nav_assignedTask_Rmain) {
+
+            clearListView(sortType);
+            sortType = "assigned";
+            setListView(sortType);
+            setAdapter(sortType);
+        }
+        else if (id == R.id.nav_completedTask_Rmain) {
+
+            clearListView(sortType);
+            sortType = "completed";
+            setListView(sortType);
+            setAdapter(sortType);
+        }
+        else if (id == R.id.nav_doneTask_Rmain) {
+
+            clearListView(sortType);
+            sortType = "done";
+            setListView(sortType);
+            setAdapter(sortType);
+        }
+        else if (id == R.id.nav_logout) {
 
             // intent to login activity
-            startActivity(new Intent(this, LoginActivity.class));
-
-
+//            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -450,7 +494,7 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskController.getRequesterOfflineBiddedTask(requester.getUserName(), this);
         assignedTaskController.getRequesterOfflineAssignedTask(requester.getUserName(), this);
         completedTaskController.getRequesterOfflineCompletedTask(requester.getUserName(), this);
-        DoneTaskController.getRequesterOfflineDoneTask(requester.getUserName(), this);
+        doneTaskController.getRequesterOfflineDoneTask(requester.getUserName(), this);
     }
 
     /**
@@ -499,8 +543,8 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            DoneTaskListView = findViewById(R.id.listView_DoneTask_all_RequesterMainActivity);
-            DoneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            doneTaskListView = findViewById(R.id.listView_doneTask_all_RequesterMainActivity);
+            doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open completed task info dialog
@@ -537,6 +581,36 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
+    public void clearListView(String oldSortType){
+        if(oldSortType.equals("all")){
+            requestedTaskListView.setAdapter(null);
+            biddedTaskListView.setAdapter(null);
+            assignedTaskListView.setAdapter(null);
+            completedTaskListView.setAdapter(null);
+            doneTaskListView.setAdapter(null);
+        }
+        else if(oldSortType.equals("requested")){
+            requestedTaskListView.setAdapter(null);
+        }
+        else if(oldSortType.equals("bidded")){
+            biddedTaskListView.setAdapter(null);
+        }
+        else if(oldSortType.equals("assigned")){
+            assignedTaskListView.setAdapter(null);
+        }
+        else if(oldSortType.equals("completed")){
+            completedTaskListView.setAdapter(null);
+        }
+        else if(oldSortType.equals("done")){
+            doneTaskListView.setAdapter(null);
+        }
+//        requestedTaskListView.setAdapter(null);
+//        biddedTaskListView.setAdapter(null);
+//        assignedTaskListView.setAdapter(null);
+//        completedTaskListView.setAdapter(null);
+//        doneTaskListView.setAdapter(null);
+    }
+
     @Override
     public void onBind(NetworkStatus networkStatus) {
         onStart();
@@ -561,7 +635,7 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
-        updateTaskList();
+        onStart();
     }
 
 }

@@ -3,11 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/Rmenu_top"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Profile" />
+    </group>
+
+    <group
+        android:id="@+id/Rmenu_down"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_allTask_Rmain"
+            android:icon="@drawable/ic_menu_send"
+            android:title="All My Task" />
+
+        <item
+            android:id="@+id/nav_requestedTask_Rmain"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Requested Task" />
+
+        <item
+            android:id="@+id/nav_biddedTask_Rmain"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Bidded Task" />
+
+        <item
+            android:id="@+id/nav_assignedTask_Rmain"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Assigned Task" />
+
+        <item
+            android:id="@+id/nav_completedTask_Rmain"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Completed Task" />
+
+        <item
+            android:id="@+id/nav_doneTask_Rmain"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Done Task" />
     </group>
 
     <item android:title="">
