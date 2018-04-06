@@ -318,6 +318,11 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param task
      */
     private void openRequestedTaskDialog(final Task task){
+        Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDialog");
+        Intent intent = new Intent(this, RequesterDetailActivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
@@ -346,6 +351,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -353,7 +359,12 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param task
      */
     private void openBiddedTaskDialog(final Task task) {
+        Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDialog");
         // get task info, and show it on the dialog
+        Intent intent = new Intent(this, RequesterDetailActivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
         String title = task.getTitle();
         ArrayList<ArrayList<String>> bidList = task.getBidList();
 
@@ -416,6 +427,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -423,6 +435,10 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param task
      */
     private void openAssignedTaskDialog(final Task task) {
+        Intent intent = new Intent(this, RequesterDetailActivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
@@ -453,6 +469,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -460,7 +477,11 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param task
      */
     private void openCompletedTaskDialog(final Task task) {
+        Intent intent = new Intent(this, RequesterDetailActivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
         // get task info, and show it on the dialog
+        /**
         String title = task.getTitle();
         String description = task.getDescription();
         String price = task.getPrice().toString();
@@ -490,6 +511,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -545,6 +567,7 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param sortType
      */
     public void setListView(String sortType){
+        Log.i("Method start----->", "ResquesterMainActivity setListView");
         TextView textView = (TextView) findViewById(R.id.editText_allTask_RequesterMainActivity);
         if (sortType.equals("all")){
 
@@ -556,6 +579,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
                     openRequestedTaskDialog(requestedTaskList.get(position));
+
                 }
             });
 
