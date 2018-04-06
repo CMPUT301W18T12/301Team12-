@@ -254,6 +254,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_allTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "all";
             setListView(sortType);
@@ -261,6 +262,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_requestedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "requested";
             setListView(sortType);
@@ -268,6 +270,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_biddedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "bidded";
             setListView(sortType);
@@ -275,6 +278,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_assignedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "assigned";
             setListView(sortType);
@@ -282,6 +286,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_completedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "completed";
             setListView(sortType);
@@ -289,6 +294,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_doneTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "done";
             setListView(sortType);
@@ -736,6 +742,12 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
+        onStart();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
         onStart();
     }
 
