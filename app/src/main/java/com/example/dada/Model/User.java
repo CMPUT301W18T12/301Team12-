@@ -286,7 +286,12 @@ public class User {
     }
 
     public void setUserName(String userName){
-        this.userName = userName;
+        if (userName.length() > 8){
+            throw new IllegalArgumentException("username exceeds 8 characters");
+        }
+        else {
+            this.userName = userName;
+        }
     }
 
     public String getID(){

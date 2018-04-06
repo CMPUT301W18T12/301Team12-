@@ -572,13 +572,25 @@ public abstract class Task {
 
     public String getTitle(){ return this.title; }
 
-    public void setTitle(String title){ this.title = title; }
+    public void setTitle(String title){
+        if (title.length() > 30) {
+            throw new IllegalArgumentException("title exceeds 30 characters");
+        }
+        else{
+        this.title = title; }
+    }
 
     public String getDescription(){
         return this.description;
     }
 
-    public void setDescription(String description){ this.description = description; }
+    public void setDescription(String description){
+        if (title.length() > 300) {
+            throw new IllegalArgumentException("description exceeds 300 characters");
+        }
+        else{
+        this.description = description; }
+    }
 
     public String getStatus(){
         return this.status;

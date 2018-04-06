@@ -86,7 +86,11 @@ public class UserEditProfileActivity extends AppCompatActivity {
 
         if ( !(validUsername && validEmail && validMobile) ){
             Toast.makeText(this, "Username/Email/Mobile is not valid.", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else if(username.length() > 8){
+            Toast.makeText(this, "max username length is 8 characters", Toast.LENGTH_SHORT).show();
+        }
+        else {
             try {
                 Log.i("Debug", user.getID());
                 userController.updateUser(user, oldUserName);
