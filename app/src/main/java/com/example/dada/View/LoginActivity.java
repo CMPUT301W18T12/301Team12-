@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -102,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(){
+        Log.i("Method start----->", "ResquesterMainActivity setListView");
         String username = usernameText.getText().toString();
 
         // TODO check user validity, replace following line with elastic search
