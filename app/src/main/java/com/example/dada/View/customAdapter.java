@@ -18,7 +18,12 @@ public class customAdapter extends ArrayAdapter<Task>{
     private int mResource;
 
 
-
+    /**
+     * Default constructor for custom adapter
+     * @param context
+     * @param resource
+     * @param objects
+     */
     public customAdapter(Context context, int resource, ArrayList<Task> objects) {
         super(context, resource, objects);
         mContext = context;
@@ -28,10 +33,9 @@ public class customAdapter extends ArrayAdapter<Task>{
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Get row needed info
         String title = getItem(position).getTitle();
         String status = getItem(position).getStatus();
-
-
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -41,25 +45,26 @@ public class customAdapter extends ArrayAdapter<Task>{
 
         taskStatus.setTextColor(Color.parseColor("white"));
         if (status.equals("requested")){
-            taskStatus.setBackgroundColor(Color.parseColor("red"));
+            taskStatus.setBackgroundColor(Color.parseColor("#FF3333"));//red
         }
         else if (status.equals("bidded")){
-            taskStatus.setBackgroundColor(Color.parseColor("blue"));
+            taskStatus.setBackgroundColor(Color.parseColor("#33FFFF"));//blue
         }
         else if (status.equals("assigned")){
-            taskStatus.setBackgroundColor(Color.parseColor("green"));
+            taskStatus.setBackgroundColor(Color.parseColor("#33FF33"));//green
         }
         else if (status.equals("completed")){
-            taskStatus.setBackgroundColor(Color.parseColor("cyan"));
+            taskStatus.setBackgroundColor(Color.parseColor("#3333FF"));//darker blue
         }
         else if (status.equals("done")){
-            taskStatus.setBackgroundColor(Color.parseColor("darkgray"));
+            taskStatus.setBackgroundColor(Color.parseColor("#A0A0A0"));//dark
         }
 
 
-//        taskStatus.setTextColor(Color.parseColor("#fe00fb"));
         taskTitle.setText(title);
         taskStatus.setText(status);
+
+        convertView.setBackgroundColor(Color.parseColor("white"));
 
         return convertView;
     }
