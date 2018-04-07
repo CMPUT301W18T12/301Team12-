@@ -137,7 +137,7 @@ public class RequesterMainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_main);
 
-        sortType = "requested";
+        sortType = "all";
 
         // Set activity background color
         ConstraintLayout rl = (ConstraintLayout)findViewById(R.id.content_Rmain_layout);
@@ -307,8 +307,8 @@ public class RequesterMainActivity extends AppCompatActivity
      * Dialog for Requested Task
      * @param task
      */
-    private void openRequestedTaskDialog(final Task task){
-        Log.i("Method start----->", "RequesterMainActivity openRequestedTaskDialog");
+    private void openRequestedTaskDetail(final Task task){
+        Log.i("Method start----->", "RequesterMainActivity openRequestedTaskDetail");
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
@@ -348,8 +348,8 @@ public class RequesterMainActivity extends AppCompatActivity
      * Dialog for Bidded Task
      * @param task
      */
-    private void openBiddedTaskDialog(final Task task) {
-        Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDialog");
+    private void openBiddedTaskDetail(final Task task) {
+        Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDetail");
         // get task info, and show it on the dialog
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
@@ -424,7 +424,7 @@ public class RequesterMainActivity extends AppCompatActivity
      * Dialog for Assigned Task
      * @param task
      */
-    private void openAssignedTaskDialog(final Task task) {
+    private void openAssignedTaskDetail(final Task task) {
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
@@ -466,7 +466,7 @@ public class RequesterMainActivity extends AppCompatActivity
      * Dialog for Done Task
      * @param task
      */
-    private void openDoneTaskDialog(final Task task) {
+    private void openDoneTaskDetail(final Task task) {
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
@@ -673,7 +673,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openRequestedTaskDialog(requestedTaskList.get(position));
+                    openRequestedTaskDetail(requestedTaskList.get(position));
 
                 }
             });
@@ -683,7 +683,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open bidded task info dialog
-                    openBiddedTaskDialog(biddedTaskList.get(position));
+                    openBiddedTaskDetail(biddedTaskList.get(position));
                 }
             });
 
@@ -692,7 +692,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open assigned task info dialog
-                    openAssignedTaskDialog(assignedTaskList.get(position));
+                    openAssignedTaskDetail(assignedTaskList.get(position));
                 }
             });
 
@@ -701,7 +701,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open done task info dialog
-                    openDoneTaskDialog(doneTaskList.get(position));
+                    openDoneTaskDetail(doneTaskList.get(position));
                 }
             });
 
@@ -747,7 +747,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openRequestedTaskDialog(requestedTaskList.get(position));
+                    openRequestedTaskDetail(requestedTaskList.get(position));
 
                 }
             });
@@ -768,7 +768,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openBiddedTaskDialog(biddedTaskList.get(position));
+                    openBiddedTaskDetail(biddedTaskList.get(position));
                 }
             });
             biddedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -788,7 +788,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openAssignedTaskDialog(assignedTaskList.get(position));
+                    openAssignedTaskDetail(assignedTaskList.get(position));
                 }
             });
             assignedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -808,7 +808,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openDoneTaskDialog(doneTaskList.get(position));
+                    openDoneTaskDetail(doneTaskList.get(position));
                 }
             });
             doneTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
