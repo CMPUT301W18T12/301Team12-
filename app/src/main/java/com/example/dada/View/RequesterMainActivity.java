@@ -2,7 +2,9 @@ package com.example.dada.View;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -151,6 +153,10 @@ public class RequesterMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_requester_main);
 
         sortType = "requested";
+
+        // Set activity background color
+        ConstraintLayout rl = (ConstraintLayout)findViewById(R.id.content_Rmain_layout);
+        rl.setBackgroundColor(Color.parseColor("#F3F3F3"));
 
         // monitor network connectivity
         merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
