@@ -319,6 +319,9 @@ public abstract class Task {
          * The Listener.
          */
         public OnAsyncTaskCompleted listener;
+        public OnAsyncTaskFailure offlineHandler;
+        private TaskException taskException;
+
 
         /**
          * Constructor for DeleteTaskTask class
@@ -327,6 +330,17 @@ public abstract class Task {
          */
         public DeleteTaskTask(OnAsyncTaskCompleted listener) {
             this.listener = listener;
+        }
+
+
+        /**
+         * Constructor for DeleteTaskTask async task
+         * @param listener the customize job after the async task is done
+         * @param offlineHandler the customize job after the async task is fail
+         */
+        public DeleteTaskTask(OnAsyncTaskCompleted listener, OnAsyncTaskFailure offlineHandler) {
+            this.listener = listener;
+            this.offlineHandler = offlineHandler;
         }
 
         /**

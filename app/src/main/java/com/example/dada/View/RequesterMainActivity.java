@@ -136,6 +136,15 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
+    // normal task
+    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            Task t = (Task) o;
+            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -629,7 +638,11 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openRequestedTaskDialog(requestedTaskList.get(position));
+//                    openRequestedTaskDialog(requestedTaskList.get(position));
+                    Task theTask = requestedTaskList.get(position);
+                    taskController.deleteTask(theTask);
+                    requestedTaskAdapter.remove(theTask);
+                    requestedTaskAdapter.notifyDataSetChanged();
                 }
             });
         }
