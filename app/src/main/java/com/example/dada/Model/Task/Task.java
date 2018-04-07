@@ -319,6 +319,9 @@ public abstract class Task {
          * The Listener.
          */
         public OnAsyncTaskCompleted listener;
+        public OnAsyncTaskFailure offlineHandler;
+        private TaskException taskException;
+
 
         /**
          * Constructor for DeleteTaskTask class
@@ -327,6 +330,17 @@ public abstract class Task {
          */
         public DeleteTaskTask(OnAsyncTaskCompleted listener) {
             this.listener = listener;
+        }
+
+
+        /**
+         * Constructor for DeleteTaskTask async task
+         * @param listener the customize job after the async task is done
+         * @param offlineHandler the customize job after the async task is fail
+         */
+        public DeleteTaskTask(OnAsyncTaskCompleted listener, OnAsyncTaskFailure offlineHandler) {
+            this.listener = listener;
+            this.offlineHandler = offlineHandler;
         }
 
         /**
@@ -530,28 +544,14 @@ public abstract class Task {
     }
 
     /**
-     * Provider confirm task complete.
-     */
-    public void providerCompleteTask() throws TaskException {
-        assert getStatus().equals("assigned");
-        setStatus("completed");
-    }
-
-    /**
-     * Requester confirm task not complete.
-     */
-    public void requesterConfirmTaskNotComplete() {
-        this.setStatus("requested");
-    }
-
-
-    /**
-     * Requester confirm task is done.
+     * Requester confirm task complete.
      */
     public void requesterDoneTask() throws TaskException {
-        assert getStatus().equals("completed");
+        assert getStatus().equals("assigned");
         setStatus("done");
     }
+
+
 
     /**
      * Getters and Setters

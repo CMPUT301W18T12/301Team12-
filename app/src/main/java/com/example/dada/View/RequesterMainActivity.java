@@ -2,7 +2,9 @@ package com.example.dada.View;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -49,11 +51,11 @@ public class RequesterMainActivity extends AppCompatActivity
     private ListView completedTaskListView;
     private ListView doneTaskListView;
 
-    private ArrayAdapter<Task> requestedTaskAdapter;
-    private ArrayAdapter<Task> biddedTaskAdapter;
-    private ArrayAdapter<Task> assignedTaskAdapter;
-    private ArrayAdapter<Task> completedTaskAdapter;
-    private ArrayAdapter<Task> doneTaskAdapter;
+    private customAdapter requestedTaskAdapter;
+    private customAdapter biddedTaskAdapter;
+    private customAdapter assignedTaskAdapter;
+    private customAdapter completedTaskAdapter;
+    private customAdapter doneTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
@@ -136,12 +138,25 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
+    // normal task
+    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            Task t = (Task) o;
+            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_main);
 
         sortType = "requested";
+
+        // Set activity background color
+        ConstraintLayout rl = (ConstraintLayout)findViewById(R.id.content_Rmain_layout);
+        rl.setBackgroundColor(Color.parseColor("#F3F3F3"));
 
         // monitor network connectivity
         merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
@@ -189,11 +204,11 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
-        biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
-        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
-        completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
-        doneTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, doneTaskList);
+        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
+        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
+        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
+        completedTaskAdapter = new customAdapter(this, R.layout.task_list_item, completedTaskList);
+        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
 
         setAdapter(sortType);
 
@@ -204,7 +219,7 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskController.getRequesterRequestedTask(requester.getUserName());
         biddedTaskController.getRequesterBiddedTask(requester.getUserName());
         assignedTaskController.getRequesterAssignedTask(requester.getUserName());
-        completedTaskController.getRequesterCompletedTask(requester.getUserName());
+        completedTaskController.getRequesterDoneTask(requester.getUserName());
         doneTaskController.getRequesterDoneTask(requester.getUserName());
     }
 
@@ -254,6 +269,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_allTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "all";
             setListView(sortType);
@@ -261,6 +277,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_requestedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "requested";
             setListView(sortType);
@@ -268,6 +285,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_biddedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "bidded";
             setListView(sortType);
@@ -275,6 +293,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_assignedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "assigned";
             setListView(sortType);
@@ -282,6 +301,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_completedTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "completed";
             setListView(sortType);
@@ -289,6 +309,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_doneTask_Rmain) {
 
+            onStart();
             clearListView(sortType);
             sortType = "done";
             setListView(sortType);
@@ -312,7 +333,7 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param task
      */
     private void openRequestedTaskDialog(final Task task){
-        Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDialog");
+        Log.i("Method start----->", "RequesterMainActivity openRequestedTaskDialog");
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
@@ -552,7 +573,6 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskController.getRequesterOfflineRequestedTask(requester.getUserName(), this);
         biddedTaskController.getRequesterOfflineBiddedTask(requester.getUserName(), this);
         assignedTaskController.getRequesterOfflineAssignedTask(requester.getUserName(), this);
-        completedTaskController.getRequesterOfflineCompletedTask(requester.getUserName(), this);
         doneTaskController.getRequesterOfflineDoneTask(requester.getUserName(), this);
     }
 
@@ -623,7 +643,11 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openRequestedTaskDialog(requestedTaskList.get(position));
+//                    openRequestedTaskDialog(requestedTaskList.get(position));
+                    Task theTask = requestedTaskList.get(position);
+                    taskController.deleteTask(theTask);
+                    requestedTaskAdapter.remove(theTask);
+                    requestedTaskAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -736,6 +760,8 @@ public class RequesterMainActivity extends AppCompatActivity
 //        doneTaskListView.setAdapter(null);
     }
 
+
+
     @Override
     public void onBind(NetworkStatus networkStatus) {
         onStart();
@@ -746,20 +772,29 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onDisconnect() {
         Log.i("Debug", "Offline");
-//        inProgressRequestController.getRiderOfflineRequest(requester.getUserName(), this);
+        offlineHandler();
     }
 
     @Override
     public void onConnect() {
-        offlineHandler();
+        // try to update after regain internet access
+        requestedTaskController.updateRequesterOfflineTask(requester.getUserName(), this);
+        updateTaskList();
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        onStart();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
         onStart();
     }
 

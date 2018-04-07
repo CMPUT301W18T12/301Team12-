@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -52,17 +51,17 @@ public class ProviderMainActivity extends AppCompatActivity
     private ListView requestedTaskListView;
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
-    private ListView completedTaskListView;
+    private ListView doneTaskListView;
 
-    private ArrayAdapter<Task> requestedTaskAdapter;
-    private ArrayAdapter<Task> biddedTaskAdapter;
-    private ArrayAdapter<Task> assignedTaskAdapter;
-    private ArrayAdapter<Task> completedTaskAdapter;
+    private customAdapter requestedTaskAdapter;
+    private customAdapter biddedTaskAdapter;
+    private customAdapter assignedTaskAdapter;
+    private customAdapter doneTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
-    private ArrayList<Task> completedTaskList = new ArrayList<>();
+    private ArrayList<Task> doneTaskList = new ArrayList<>();
 
     private SimpleLocation location;
 
@@ -100,10 +99,10 @@ public class ProviderMainActivity extends AppCompatActivity
     private TaskController completedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
-            completedTaskList = (ArrayList<Task>) o;
-            completedTaskAdapter.clear();
-            completedTaskAdapter.addAll(completedTaskList);
-            completedTaskAdapter.notifyDataSetChanged();
+            doneTaskList = (ArrayList<Task>) o;
+            doneTaskAdapter.clear();
+            doneTaskAdapter.addAll(doneTaskList);
+            doneTaskAdapter.notifyDataSetChanged();
         }
     });
 
@@ -128,9 +127,9 @@ public class ProviderMainActivity extends AppCompatActivity
         @Override
         public void onTaskCompleted(Object o) {
             assignedTaskAdapter.remove((Task) o);
-            completedTaskAdapter.add((Task) o);
+            doneTaskAdapter.add((Task) o);
             assignedTaskAdapter.notifyDataSetChanged();
-            completedTaskAdapter.notifyDataSetChanged();
+            doneTaskAdapter.notifyDataSetChanged();
         }
     });
 
@@ -196,12 +195,12 @@ public class ProviderMainActivity extends AppCompatActivity
             }
         });
 
-        completedTaskListView = findViewById(R.id.listView_completedTask_ProviderMainActivity);
-        completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        doneTaskListView = findViewById(R.id.listView_completedTask_ProviderMainActivity);
+        doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // open completed task dialog
-                openCompletedTaskDialog(completedTaskList.get(position));
+                openCompletedTaskDialog(doneTaskList.get(position));
             }
         });
 
@@ -210,14 +209,14 @@ public class ProviderMainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
-        biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
-        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
-        completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
+        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
+        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
+        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
+        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
         requestedTaskListView.setAdapter(requestedTaskAdapter);
         biddedTaskListView.setAdapter(biddedTaskAdapter);
         assignedTaskListView.setAdapter(assignedTaskAdapter);
-        completedTaskListView.setAdapter(completedTaskAdapter);
+        doneTaskListView.setAdapter(doneTaskAdapter);
         updateTaskList();
     }
 
@@ -283,7 +282,7 @@ public class ProviderMainActivity extends AppCompatActivity
         requestedTaskController.getProviderRequestedTask();
         biddedTaskController.getProviderBiddedTask();
         assignedTaskController.getProviderAssignedTask(provider.getUserName());
-        completedTaskController.getProviderCompletedTask(provider.getUserName());
+        completedTaskController.getRequesterDoneTask(provider.getUserName());
     }
 
     /**
@@ -473,7 +472,7 @@ public class ProviderMainActivity extends AppCompatActivity
 
                         // Bid requested task
                         try {
-                            completeAssignedTaskController.providerCompleteTask(task);
+                            completeAssignedTaskController.requesterDoneTask(task);
                         } catch (TaskException e) {
                             e.printStackTrace();
                         }
@@ -487,7 +486,7 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     * Dialog for Completed Task
+     * Dialog for done Task
      * @param task
      */
     private void openCompletedTaskDialog(final Task task) {
@@ -496,6 +495,9 @@ public class ProviderMainActivity extends AppCompatActivity
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
         /**
+=======
+    private void openDoneTaskDialog(final Task task) {
+>>>>>>> f00cbab8449b0b0728d3adf6329dde495bea6321
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
@@ -537,7 +539,7 @@ public class ProviderMainActivity extends AppCompatActivity
         requestedTaskController.getProviderOfflineRequestedTask(this);
         biddedTaskController.getProviderOfflineBiddedTask(this);
         assignedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
-        completedTaskController.getProviderOfflineCompletedTask(provider.getUserName(), this);
+        completedTaskController.getProviderOfflineDoneTask(provider.getUserName(), this);
     }
 
     @Override

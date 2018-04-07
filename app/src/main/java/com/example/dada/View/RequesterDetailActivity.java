@@ -292,16 +292,4 @@ public class RequesterDetailActivity extends ListActivity {
         }
     }
 
-    /**
-     * not complete button click
-     * @param view click action
-     */
-
-    public void notCompleteOnClick(View view) {
-        if (task.getStatus().equals(statusAssigned)) {
-            task.requesterConfirmTaskNotComplete();
-            taskController.updateTask(task);
-            setViews();
-        }
-    }
 }
