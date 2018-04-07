@@ -219,7 +219,7 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskController.getRequesterRequestedTask(requester.getUserName());
         biddedTaskController.getRequesterBiddedTask(requester.getUserName());
         assignedTaskController.getRequesterAssignedTask(requester.getUserName());
-        completedTaskController.getRequesterCompletedTask(requester.getUserName());
+        completedTaskController.getRequesterDoneTask(requester.getUserName());
         doneTaskController.getRequesterDoneTask(requester.getUserName());
     }
 
@@ -573,7 +573,6 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskController.getRequesterOfflineRequestedTask(requester.getUserName(), this);
         biddedTaskController.getRequesterOfflineBiddedTask(requester.getUserName(), this);
         assignedTaskController.getRequesterOfflineAssignedTask(requester.getUserName(), this);
-        completedTaskController.getRequesterOfflineCompletedTask(requester.getUserName(), this);
         doneTaskController.getRequesterOfflineDoneTask(requester.getUserName(), this);
     }
 

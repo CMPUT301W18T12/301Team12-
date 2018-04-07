@@ -544,28 +544,14 @@ public abstract class Task {
     }
 
     /**
-     * Provider confirm task complete.
-     */
-    public void providerCompleteTask() throws TaskException {
-        assert getStatus().equals("assigned");
-        setStatus("completed");
-    }
-
-    /**
-     * Requester confirm task not complete.
-     */
-    public void requesterConfirmTaskNotComplete() {
-        this.setStatus("requested");
-    }
-
-
-    /**
-     * Requester confirm task is done.
+     * Requester confirm task complete.
      */
     public void requesterDoneTask() throws TaskException {
-        assert getStatus().equals("completed");
+        assert getStatus().equals("assigned");
         setStatus("done");
     }
+
+
 
     /**
      * Getters and Setters

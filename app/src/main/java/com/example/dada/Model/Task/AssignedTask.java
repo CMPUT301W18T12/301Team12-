@@ -32,7 +32,7 @@ public class AssignedTask extends Task{
         super(requesterUserName, providerUserName, price, location);
     }
 
-    public void providerCompleteTask() throws TaskException {
-        super.providerCompleteTask();
+    public void requesterDoneTask() throws TaskException {
+        super.requesterDoneTask();
     }
 }
