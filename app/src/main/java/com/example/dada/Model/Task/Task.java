@@ -628,4 +628,8 @@ public abstract class Task {
         location.setDistance(distance);
     }
 
+    public Bitmap getImg() {return img;}
+
+    public void setImg(Bitmap img) {this.img = img;}
+
 }

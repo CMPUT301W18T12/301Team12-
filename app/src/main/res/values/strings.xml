@@ -12,6 +12,10 @@
     <string name="title_activity_provider_browse_task">ProviderBrowseTaskActivity</string>
 
     <string name="title_activity_requester_main"></string>
+    <string name="image_button">button</string>
+
+    <string name="task_picture">task_picture</string>
+    <string name="task_back">backGround</string>
 
     <string-array name="filterOption">
         <item>ALL TASKS</item>

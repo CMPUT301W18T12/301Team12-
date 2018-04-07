@@ -6,18 +6,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.example.dada.Controller.TaskController;
+import com.example.dada.Controller.UserController;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.Task;
@@ -47,11 +49,19 @@ public class RequesterDetailActivity extends ListActivity {
      * @param taskController save and load tha task
      */
     private Task task;
-    private String statusRequested = "REQUSTED";
+    private String statusRequested = "REQUESTED";
     private String statusAssigned = "ASSIGNED";
     private String statusBidded = "BIDDED";
     private String statusDone = "DONE";
     private String providerName;
+    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            Task t = (Task) o;
+            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+        }
+    });
+    /**
     private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -65,6 +75,17 @@ public class RequesterDetailActivity extends ListActivity {
             FileIOUtil.saveOfflineTaskInFile(task, getApplicationContext());
         }
     });
+     **/
+
+    private UserController userController = new UserController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            User user = (User) o;
+            FileIOUtil.saveUserInFile(user, getApplicationContext());
+        }
+    });
+    private User requester;
+    private User provider;
 
     /**
      * main function of requesterdetailclass; control the listview click action
@@ -135,6 +156,10 @@ public class RequesterDetailActivity extends ListActivity {
      */
 
     private void setViews(){
+        // set Toolbar
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle(task.getTitle());
+
         // Hidden the view that will not in requested page
         ListView listView = (ListView)findViewById(android.R.id.list);
         listView.setVisibility(View.GONE);
@@ -171,7 +196,18 @@ public class RequesterDetailActivity extends ListActivity {
 
         TextView textViewStatus = (TextView)findViewById(R.id.textViewStatus);
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
-        textViewStatus.setText(task.getStatus());
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        if (true) {
+            //imageView.setImageBitmap();
+            imageView.setImageResource(R.drawable.temp_taskimg);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        }
+        // set map button
+        ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
+        imageButton.setImageResource(R.drawable.ic_launcher_foreground);
+        imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+        textViewStatus.setText(task.getStatus().toUpperCase());
         if (task.getStatus().equals(statusBidded)) {
             imageViewStatus.setColorFilter(Color.MAGENTA);
             listView.setVisibility(View.VISIBLE);
@@ -204,6 +240,7 @@ public class RequesterDetailActivity extends ListActivity {
         }
 
         //Wait to set Picture                                                                //^_^//
+
 
         //wait to set location
 

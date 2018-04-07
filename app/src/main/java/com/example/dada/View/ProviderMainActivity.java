@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import com.example.dada.Controller.TaskController;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.ProviderDetailAvitivity;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
@@ -289,7 +291,11 @@ public class ProviderMainActivity extends AppCompatActivity
      * @param task
      */
     private void openRequestedTaskDialog(final Task task) {
-
+        Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
+        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
@@ -337,6 +343,7 @@ public class ProviderMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -344,6 +351,11 @@ public class ProviderMainActivity extends AppCompatActivity
      * @param task
      */
     private void openBiddedTaskDialog(final Task task) {
+        Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
+        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
@@ -414,6 +426,7 @@ public class ProviderMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -421,6 +434,11 @@ public class ProviderMainActivity extends AppCompatActivity
      * @param task
      */
     private void openAssignedTaskDialog(final Task task) {
+        Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
+        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
@@ -465,6 +483,7 @@ public class ProviderMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -472,6 +491,11 @@ public class ProviderMainActivity extends AppCompatActivity
      * @param task
      */
     private void openCompletedTaskDialog(final Task task) {
+        Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
+        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+        /**
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
@@ -503,6 +527,7 @@ public class ProviderMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**

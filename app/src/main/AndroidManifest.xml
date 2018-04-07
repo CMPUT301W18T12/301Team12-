@@ -52,6 +52,8 @@
             android:name=".View.RequesterMainActivity"
             android:label="@string/title_activity_requester_main"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Model.Task.ProviderDetailAvitivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
