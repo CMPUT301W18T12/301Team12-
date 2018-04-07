@@ -53,11 +53,8 @@ public class customAdapter extends ArrayAdapter<Task>{
         else if (status.equals("assigned")){
             taskStatus.setBackgroundColor(Color.parseColor("#33FF33"));//green
         }
-        else if (status.equals("completed")){
-            taskStatus.setBackgroundColor(Color.parseColor("#3333FF"));//darker blue
-        }
         else if (status.equals("done")){
-            taskStatus.setBackgroundColor(Color.parseColor("#A0A0A0"));//dark
+            taskStatus.setBackgroundColor(Color.parseColor("#3333FF"));//darker blue
         }
 
 

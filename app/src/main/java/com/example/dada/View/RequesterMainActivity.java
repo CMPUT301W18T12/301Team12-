@@ -46,19 +46,16 @@ public class RequesterMainActivity extends AppCompatActivity
     private ListView requestedTaskListView;
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
-    private ListView completedTaskListView;
     private ListView doneTaskListView;
 
     private customAdapter requestedTaskAdapter;
     private customAdapter biddedTaskAdapter;
     private customAdapter assignedTaskAdapter;
-    private customAdapter completedTaskAdapter;
     private customAdapter doneTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
-    private ArrayList<Task> completedTaskList = new ArrayList<>();
     private ArrayList<Task> doneTaskList = new ArrayList<>();
 
     private String sortType;
@@ -94,16 +91,6 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
-    private TaskController completedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            completedTaskList = (ArrayList<Task>) o;
-            completedTaskAdapter.clear();
-            completedTaskAdapter.addAll(completedTaskList);
-            completedTaskAdapter.notifyDataSetChanged();
-        }
-    });
-
     private TaskController doneTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -125,13 +112,13 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
-    // done completed task
-    private TaskController DoneCompletedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+    // done assigned task
+    private TaskController DoneAssignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
-            completedTaskList.remove((Task) o);
+            assignedTaskList.remove((Task) o);
             doneTaskList.add((Task) o);
-            completedTaskAdapter.notifyDataSetChanged();
+            assignedTaskAdapter.notifyDataSetChanged();
             doneTaskAdapter.notifyDataSetChanged();
         }
     });
@@ -205,7 +192,6 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
         biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
         assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
-        completedTaskAdapter = new customAdapter(this, R.layout.task_list_item, completedTaskList);
         doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
 
         setAdapter(sortType);
@@ -217,7 +203,6 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskController.getRequesterRequestedTask(requester.getUserName());
         biddedTaskController.getRequesterBiddedTask(requester.getUserName());
         assignedTaskController.getRequesterAssignedTask(requester.getUserName());
-        completedTaskController.getRequesterDoneTask(requester.getUserName());
         doneTaskController.getRequesterDoneTask(requester.getUserName());
     }
 
@@ -294,14 +279,6 @@ public class RequesterMainActivity extends AppCompatActivity
             onStart();
             clearListView(sortType);
             sortType = "assigned";
-            setListView(sortType);
-            setAdapter(sortType);
-        }
-        else if (id == R.id.nav_completedTask_Rmain) {
-
-            onStart();
-            clearListView(sortType);
-            sortType = "completed";
             setListView(sortType);
             setAdapter(sortType);
         }
@@ -453,48 +430,6 @@ public class RequesterMainActivity extends AppCompatActivity
         startActivity(intent);
         /**
         // get task info, and show it on the dialog
-        String title = task.getTitle();
-        String description = task.getDescription();
-        String price = task.getPrice().toString();
-        String providerUserName = task.getProviderUserName();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
-
-        builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: " + price + "\n" + "Provider: " + providerUserName + "\n")
-                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
-
-                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-                        // Serialize the task object and pass it over through the intent
-                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentRequesterBrowse);
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-
-        // Create & Show the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-         **/
-    }
-
-    /**
-     * Dialog for Completed Task
-     * @param task
-     */
-    private void openCompletedTaskDialog(final Task task) {
-        Intent intent = new Intent(this, RequesterDetailActivity.class);
-        intent.putExtra("Task", TaskUtil.serializer(task));
-        startActivity(intent);
-        // get task info, and show it on the dialog
-        /**
         String title = task.getTitle();
         String description = task.getDescription();
         String price = task.getPrice().toString();
@@ -761,20 +696,11 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            completedTaskListView = findViewById(R.id.listView_completedTask_all_RequesterMainActivity);
-            completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open completed task info dialog
-                    openCompletedTaskDialog(completedTaskList.get(position));
-                }
-            });
-
             doneTaskListView = findViewById(R.id.listView_doneTask_all_RequesterMainActivity);
             doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open completed task info dialog
+                    // open done task info dialog
                     openDoneTaskDialog(doneTaskList.get(position));
                 }
             });
@@ -873,19 +799,6 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
         }
-        else if(sortType.equals("completed")){
-
-            textView.setText("Completed Tasks");
-
-            completedTaskListView = findViewById(R.id.listView_completedTask_all_RequesterMainActivity);
-            completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open requested task info dialog
-                    openCompletedTaskDialog(completedTaskList.get(position));
-                }
-            });
-        }
         else if(sortType.equals("done")){
 
             textView.setText("Done Tasks");
@@ -913,7 +826,6 @@ public class RequesterMainActivity extends AppCompatActivity
             requestedTaskListView.setAdapter(requestedTaskAdapter);
             biddedTaskListView.setAdapter(biddedTaskAdapter);
             assignedTaskListView.setAdapter(assignedTaskAdapter);
-            completedTaskListView.setAdapter(completedTaskAdapter);
         }
         else if (sortType.equals("requested")){
             requestedTaskListView.setAdapter(requestedTaskAdapter);
@@ -923,9 +835,6 @@ public class RequesterMainActivity extends AppCompatActivity
         }
         else if (sortType.equals("assigned")){
             assignedTaskListView.setAdapter(assignedTaskAdapter);
-        }
-        else if (sortType.equals("completed")){
-            completedTaskListView.setAdapter(completedTaskAdapter);
         }
         else if (sortType.equals("done")){
             doneTaskListView.setAdapter(doneTaskAdapter);
@@ -937,7 +846,6 @@ public class RequesterMainActivity extends AppCompatActivity
             requestedTaskListView.setAdapter(null);
             biddedTaskListView.setAdapter(null);
             assignedTaskListView.setAdapter(null);
-            completedTaskListView.setAdapter(null);
             doneTaskListView.setAdapter(null);
         }
         else if(oldSortType.equals("requested")){
@@ -949,16 +857,12 @@ public class RequesterMainActivity extends AppCompatActivity
         else if(oldSortType.equals("assigned")){
             assignedTaskListView.setAdapter(null);
         }
-        else if(oldSortType.equals("completed")){
-            completedTaskListView.setAdapter(null);
-        }
         else if(oldSortType.equals("done")){
             doneTaskListView.setAdapter(null);
         }
 //        requestedTaskListView.setAdapter(null);
 //        biddedTaskListView.setAdapter(null);
 //        assignedTaskListView.setAdapter(null);
-//        completedTaskListView.setAdapter(null);
 //        doneTaskListView.setAdapter(null);
     }
 
