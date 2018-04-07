@@ -121,15 +121,16 @@
 
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="172dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="4dp"
         android:text="TextView"
+        android:gravity="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@android:id/list"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
 
     <ImageView
@@ -148,8 +149,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Please"
+        android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -160,7 +161,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="#FB966E"
-        android:text="Button"
+        android:onClick="onClickBid"
+        android:text="Bidded"
         app:layout_constraintBaseline_toBaselineOf="@+id/editTextInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/editTextInput" />
