@@ -186,6 +186,35 @@ public class ProviderDetailAvitivity extends AppCompatActivity {
 
     }
 
+    public void onClickBid(View view) {
+        EditText input = (EditText)findViewById(R.id.editTextInput);
+        String value_str = input.getText().toString();
+        if (value_str == null) {
+            Toast.makeText(this, "Please add price.", Toast.LENGTH_SHORT).show();
+        }
+        int value = Integer.parseInt(value_str);
+        ArrayList<ArrayList<String>> bidList = task.getBidList();
+
+        if (task.getStatus().toUpperCase().equals(statusBidded)) {
+            for (ArrayList<String> bided : bidList) {
+                if (bided.get(0).equals(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName())) {
+                    bided.remove(1);
+                    bided.add(value_str);
+                }
+            }
+        } else {
+            ArrayList<String> bid = new ArrayList<String>();
+            bid.add(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName());
+            bid.add(value_str);
+            task.setStatus(statusBidded.toLowerCase());
+            bidList.add(bid);
+            task.setBidList(bidList);
+        }
+        taskController.updateTask(task);
+
+        setViews();
+    }
+
 
 }
 
