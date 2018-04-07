@@ -779,6 +779,38 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
+            requestedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteRequestedTask(requestedTaskList.get(position));
+                    return true;
+                }
+            });
+
+            biddedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteBiddedTask(biddedTaskList.get(position));
+                    return true;
+                }
+            });
+
+            assignedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteAssignedTask(assignedTaskList.get(position));
+                    return true;
+                }
+            });
+
+            doneTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteDoneTask(doneTaskList.get(position));
+                    return true;
+                }
+            });
+
         }
         else if(sortType.equals("requested")){
 
@@ -874,7 +906,6 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
         }
-
     }
 
     public void setAdapter(String sortType){
