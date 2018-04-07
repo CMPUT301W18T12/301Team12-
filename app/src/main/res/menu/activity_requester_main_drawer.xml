@@ -36,11 +36,6 @@
             android:title="Assigned Task" />
 
         <item
-            android:id="@+id/nav_completedTask_Rmain"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Completed Task" />
-
-        <item
             android:id="@+id/nav_doneTask_Rmain"
             android:icon="@drawable/ic_menu_send"
             android:title="Done Task" />
