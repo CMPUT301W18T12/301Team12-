@@ -97,11 +97,39 @@ public abstract class Task {
         this.requesterUserName = requesterUserName;
     }
 
+    /**
+     * Constructor for a requested task.
+     *
+     * @param title         title of the task
+     * @param description   description of the task
+     * @param requesterUserName
+     * @param status
+     * @param img image
+     */
     public Task(String title, String description, String requesterUserName, String status, Bitmap img) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.img = img;
+        this.requesterUserName = requesterUserName;
+    }
+
+    /**
+     * Constructor for a requested task.
+     *
+     * @param title         title of the task
+     * @param description   description of the task
+     * @param requesterUserName
+     * @param status
+     * @param img           image
+     * @param location      locations
+     */
+    public Task(String title, String description, String requesterUserName, String status, Bitmap img, Locations location) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.img = img;
+        this.location = location;
         this.requesterUserName = requesterUserName;
     }
 
@@ -117,6 +145,38 @@ public abstract class Task {
         this.requesterUserName = requesterUserName;
         this.providerUserName = providerUserName;
         this.price = price;
+        this.location = location;
+    }
+
+    /**
+     * Constructor for AssignedTask or CompletedTask.
+     *
+     * @param requesterUserName  the requester user name
+     * @param providerUserName   the provider user name
+     * @param price              the price
+     * @param img
+     */
+    public Task(String requesterUserName, String providerUserName, double price, Bitmap img) {
+        this.requesterUserName = requesterUserName;
+        this.providerUserName = providerUserName;
+        this.price = price;
+        this.img = img;
+    }
+
+    /**
+     * Constructor for AssignedTask or CompletedTask.
+     *
+     * @param requesterUserName  the requester user name
+     * @param providerUserName   the provider user name
+     * @param price              the price
+     * @param location             location
+     * @param img                   image
+     */
+    public Task(String requesterUserName, String providerUserName, double price, Bitmap img, Locations location) {
+        this.requesterUserName = requesterUserName;
+        this.providerUserName = providerUserName;
+        this.price = price;
+        this.img = img;
         this.location = location;
     }
 
@@ -145,6 +205,38 @@ public abstract class Task {
         this.requesterUserName = requesterUserName;
         this.bidList.add(bid);
         this.price = price;
+        this.location = location;
+    }
+
+    /**
+     * Constructor for BiddedTask
+     *
+     * @param requesterUserName     the requester user name
+     * @param bid                   the list of providers username and price who bidded the task
+     * @param price                 the price
+     * @param img                     the image
+     */
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, Bitmap img){
+        this.requesterUserName = requesterUserName;
+        this.bidList.add(bid);
+        this.price = price;
+        this.img = img;
+    }
+
+    /**
+     * Constructor for BiddedTask
+     *
+     * @param requesterUserName     the requester user name
+     * @param bid                   the list of providers username and price who bidded the task
+     * @param price                 the price
+     * @param img                     the image
+     * @param location                         the location
+     */
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, Bitmap img, Locations location){
+        this.requesterUserName = requesterUserName;
+        this.bidList.add(bid);
+        this.price = price;
+        this.img = img;
         this.location = location;
     }
 

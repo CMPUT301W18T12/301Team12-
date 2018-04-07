@@ -20,4 +20,12 @@ public class DoneTask extends Task{
     public DoneTask(String requesterUserName, String providerUserName, double price, Locations location) {
         super(requesterUserName, providerUserName, price, location);
     }
+
+    public DoneTask(String requesterUserName, String providerUserName, double price, Bitmap img) {
+        super(requesterUserName, providerUserName, price, img);
+    }
+
+    public DoneTask(String requesterUserName, String providerUserName, double price, Bitmap img, Locations location) {
+        super(requesterUserName, providerUserName, price, img, location);
+    }
 }

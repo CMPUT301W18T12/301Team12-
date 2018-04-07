@@ -11,6 +11,8 @@
 
 package com.example.dada.Model.Task;
 
+import android.graphics.Bitmap;
+
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
@@ -26,6 +28,14 @@ public class AssignedTask extends Task{
 
     public AssignedTask(String requesterUserName, String providerUserName, double price) {
         super(requesterUserName, providerUserName, price);
+    }
+
+    public AssignedTask(String requesterUserName, String providerUserName, double price, Bitmap img) {
+        super(requesterUserName, providerUserName, price, img);
+    }
+
+    public AssignedTask(String requesterUserName, String providerUserName, double price, Bitmap img, Locations location) {
+        super(requesterUserName, providerUserName, price, img, location);
     }
 
     public AssignedTask(String requesterUserName, String providerUserName, double price, Locations location) {
