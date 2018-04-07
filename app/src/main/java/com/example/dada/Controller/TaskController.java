@@ -21,6 +21,8 @@ import com.example.dada.Model.Task.Task;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
 
+import org.osmdroid.util.GeoPoint;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
@@ -108,53 +110,50 @@ public class TaskController {
     }
 
 
-    // TODO Get a list of task that match the geo-location
-//    /**
-//     * Get a list of task that match the geo-location
-//     *
-//     * @param location       the coordinate of the location
-//     * @param driverUserName the driver user name
-//     */
-//    // http://stackoverflow.com/questions/36805014/how-to-merge-geo-distance-filter-with-bool-term-query
-//    // Author: Val
-//    public void searchTaskByGeoLocation(GeoPoint location, String driverUserName) {
-//        String query = String.format(
-//                "{\n" +
-//                        "    \"filter\": {\n" +
-//                        "       \"bool\" : {\n" +
-//                        "           \"must_not\" : [\n" +
-//                        "               { \"term\": {\"isCompleted\": true} },\n" +
-//                        "               { \"term\": {\"driverList\": \"%s\"} }\n" +
-//                        "           ],\n" +
-//                        "           \"must\": [\n" +
-//                        "               {\n" +
-//                        "                   \"nested\": {\n" +
-//                        "                       \"path\": \"route\",\n" +
-//                        "                       \"filter\": {\n" +
-//                        "                           \"geo_distance\": {\n" +
-//                        "                               \"distance\": \"5km\",\n" +
-//                        "                               \"origin\": [%.6f, %.6f]\n" +
-//                        "                           }\n" +
-//                        "                       }\n" +
-//                        "                   }\n" +
-//                        "               }\n" +
-//                        "           ]\n" +
-//                        "       }\n" +
-//                        "    }\n" +
-//                        "}", driverUserName, location.getLongitude(), location.getLatitude());
-//
-//        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-//        task.execute(query);
-//    }
+    /**
+     * Get a list of task that match the geo-location
+     *
+     * @param location       the coordinate of the provider location
+     */
+    // http://stackoverflow.com/questions/36805014/how-to-merge-geo-distance-filter-with-bool-term-query
+    // Author: Val
+    public void searchTaskByGeoLocation(GeoPoint location) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must_not\" : [\n" +
+                        "               { \"term\": {\"isCompleted\": true} },\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "               { \"term\": {\"status\": \"done\"} }\n" +                        "           ],\n" +
+                        "           \"must\": [\n" +
+                        "               {\n" +
+                        "                   \"nested\": {\n" +
+                        "                       \"path\": \"location\",\n" +
+                        "                       \"filter\": {\n" +
+                        "                           \"geo_distance\": {\n" +
+                        "                               \"distance\": \"5km\",\n" +
+                        "                               \"origin\": [%.6f, %.6f]\n" +
+                        "                           }\n" +
+                        "                       }\n" +
+                        "                   }\n" +
+                        "               }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", location.getLongitude(), location.getLatitude());
+
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
 
     /**
      * Get a list of tasks that match the keyword
      *
      * @param keyword           The keyword to match
-     * @param providerUserName  The provider user name
      * @return An ArrayList of matching tasks.
      */
-    public void searchTaskByKeyword(String keyword, String providerUserName) {
+    public void searchTaskByKeyword(String keyword) {
         String query = String.format(
                 "{\n" +
                         "    \"query\": {\n" +
@@ -166,11 +165,12 @@ public class TaskController {
                         "       \"bool\" : {\n" +
                         "           \"must_not\" : [" +
                         "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "               { \"term\": {\"status\": \"done\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", keyword, providerUserName);
+                        "}", keyword);
 
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
