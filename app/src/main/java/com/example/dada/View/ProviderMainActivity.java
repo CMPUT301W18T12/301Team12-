@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -52,10 +51,10 @@ public class ProviderMainActivity extends AppCompatActivity
     private ListView assignedTaskListView;
     private ListView completedTaskListView;
 
-    private ArrayAdapter<Task> requestedTaskAdapter;
-    private ArrayAdapter<Task> biddedTaskAdapter;
-    private ArrayAdapter<Task> assignedTaskAdapter;
-    private ArrayAdapter<Task> completedTaskAdapter;
+    private customAdapter requestedTaskAdapter;
+    private customAdapter biddedTaskAdapter;
+    private customAdapter assignedTaskAdapter;
+    private customAdapter completedTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
@@ -208,10 +207,10 @@ public class ProviderMainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
-        biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
-        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
-        completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
+        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
+        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
+        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
+        completedTaskAdapter = new customAdapter(this, R.layout.task_list_item, completedTaskList);
         requestedTaskListView.setAdapter(requestedTaskAdapter);
         biddedTaskListView.setAdapter(biddedTaskAdapter);
         assignedTaskListView.setAdapter(assignedTaskAdapter);
