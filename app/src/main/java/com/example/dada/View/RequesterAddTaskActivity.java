@@ -23,6 +23,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.novoda.merlin.NetworkStatus;
 
 import java.io.File;
 import org.osmdroid.util.GeoPoint;
@@ -132,6 +134,7 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         }
     }
 
+
     public void addImage(View view) {
         Intent i = new Intent(
                 Intent.ACTION_PICK,
@@ -156,4 +159,5 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
             }
         }
     }
+
 }

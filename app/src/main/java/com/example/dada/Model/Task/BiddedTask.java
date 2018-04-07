@@ -11,6 +11,8 @@
 
 package com.example.dada.Model.Task;
 
+import android.graphics.Bitmap;
+
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
@@ -30,6 +32,10 @@ public class BiddedTask extends Task {
         super(requesterUserName, providerUserName, price, location);
     }
 
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img) {
+        super(requesterUserName, providerUserName, price, img);
+    }
+
     public BiddedTask(String requesterUserName, String providerUserName, Double price) {
         super(requesterUserName, providerUserName, price);
     }
@@ -42,6 +48,17 @@ public class BiddedTask extends Task {
         super(requesterUserName, providerList, price, location);
     }
 
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img) {
+        super(requesterUserName, providerList, price, img);
+    }
+
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img, Locations location) {
+        super(requesterUserName, providerUserName, price, img, location);
+    }
+
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img, Locations location) {
+        super(requesterUserName, providerList, price, img, location);
+    }
     @Override
     public void requesterAssignProvider(String providerUserName) throws TaskException {
         super.requesterAssignProvider(providerUserName);

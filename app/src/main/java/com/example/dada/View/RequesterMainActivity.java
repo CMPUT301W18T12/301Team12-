@@ -18,12 +18,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dada.Controller.TaskController;
-import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
@@ -567,6 +565,154 @@ public class RequesterMainActivity extends AppCompatActivity
     }
 
     /**
+     * Dialog for confirm delete Requested Task
+     * @param task
+     */
+    private void AskDeleteRequestedTask(final Task task)
+    {
+        AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
+                //set message, title, and icon
+        builder.setTitle("Delete")
+                .setMessage("Do you want to Delete")
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        taskController.deleteTask(task);
+                        requestedTaskAdapter.remove(task);
+                        requestedTaskAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+
+                })
+
+
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                });
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    /**
+     * Dialog for confirm delete Bidded Task
+     * @param task
+     */
+    private void AskDeleteBiddedTask(final Task task)
+    {
+        AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
+        //set message, title, and icon
+        builder.setTitle("Delete")
+                .setMessage("Do you want to Delete")
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        taskController.deleteTask(task);
+                        biddedTaskAdapter.remove(task);
+                        biddedTaskAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+
+                })
+
+
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                });
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    /**
+     * Dialog for confirm delete Assigned Task
+     * @param task
+     */
+    private void AskDeleteAssignedTask(final Task task)
+    {
+        AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
+        //set message, title, and icon
+        builder.setTitle("Delete")
+                .setMessage("Do you want to Delete")
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        taskController.deleteTask(task);
+                        assignedTaskAdapter.remove(task);
+                        assignedTaskAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+
+                })
+
+
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                });
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    /**
+     * Dialog for confirm delete Done Task
+     * @param task
+     */
+    private void AskDeleteDoneTask(final Task task)
+    {
+        AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
+        //set message, title, and icon
+        builder.setTitle("Delete")
+                .setMessage("Do you want to Delete")
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        taskController.deleteTask(task);
+                        doneTaskAdapter.remove(task);
+                        doneTaskAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+
+                })
+
+
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                });
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    /**
      * Once the device went offline, try to get task list from internal storage
      */
     protected void offlineHandler() {
@@ -643,11 +789,15 @@ public class RequesterMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-//                    openRequestedTaskDialog(requestedTaskList.get(position));
-                    Task theTask = requestedTaskList.get(position);
-                    taskController.deleteTask(theTask);
-                    requestedTaskAdapter.remove(theTask);
-                    requestedTaskAdapter.notifyDataSetChanged();
+                    openRequestedTaskDialog(requestedTaskList.get(position));
+
+                }
+            });
+            requestedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteRequestedTask(requestedTaskList.get(position));
+                    return true;
                 }
             });
         }
@@ -663,6 +813,13 @@ public class RequesterMainActivity extends AppCompatActivity
                     openBiddedTaskDialog(biddedTaskList.get(position));
                 }
             });
+            biddedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteBiddedTask(biddedTaskList.get(position));
+                    return true;
+                }
+            });
         }
         else if(sortType.equals("assigned")){
 
@@ -674,6 +831,13 @@ public class RequesterMainActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
                     openAssignedTaskDialog(assignedTaskList.get(position));
+                }
+            });
+            assignedTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteAssignedTask(assignedTaskList.get(position));
+                    return true;
                 }
             });
         }
@@ -700,6 +864,13 @@ public class RequesterMainActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
                     openDoneTaskDialog(doneTaskList.get(position));
+                }
+            });
+            doneTaskListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    AskDeleteDoneTask(doneTaskList.get(position));
+                    return true;
                 }
             });
         }
@@ -775,7 +946,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
     @Override
     public void onDisconnect() {
-        Log.i("Debug", "Offline");
+        Log.i("Debug ---------->", "Offline");
         offlineHandler();
     }
 
@@ -789,7 +960,14 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
+        merlin.bind();
         onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        merlin.unbind();
     }
 
     @Override
