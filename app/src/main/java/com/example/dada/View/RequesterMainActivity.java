@@ -49,11 +49,11 @@ public class RequesterMainActivity extends AppCompatActivity
     private ListView completedTaskListView;
     private ListView doneTaskListView;
 
-    private ArrayAdapter<Task> requestedTaskAdapter;
-    private ArrayAdapter<Task> biddedTaskAdapter;
-    private ArrayAdapter<Task> assignedTaskAdapter;
-    private ArrayAdapter<Task> completedTaskAdapter;
-    private ArrayAdapter<Task> doneTaskAdapter;
+    private customAdapter requestedTaskAdapter;
+    private customAdapter biddedTaskAdapter;
+    private customAdapter assignedTaskAdapter;
+    private customAdapter completedTaskAdapter;
+    private customAdapter doneTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
@@ -198,11 +198,11 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
-        biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
-        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
-        completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
-        doneTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, doneTaskList);
+        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
+        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
+        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
+        completedTaskAdapter = new customAdapter(this, R.layout.task_list_item, completedTaskList);
+        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
 
         setAdapter(sortType);
 
@@ -327,7 +327,7 @@ public class RequesterMainActivity extends AppCompatActivity
      * @param task
      */
     private void openRequestedTaskDialog(final Task task){
-        Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDialog");
+        Log.i("Method start----->", "RequesterMainActivity openRequestedTaskDialog");
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
