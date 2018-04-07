@@ -755,6 +755,8 @@ public class RequesterMainActivity extends AppCompatActivity
 //        doneTaskListView.setAdapter(null);
     }
 
+
+
     @Override
     public void onBind(NetworkStatus networkStatus) {
         onStart();
@@ -765,15 +767,18 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onDisconnect() {
         Log.i("Debug", "Offline");
-//        inProgressRequestController.getRiderOfflineRequest(requester.getUserName(), this);
+        offlineHandler();
     }
 
     @Override
     public void onConnect() {
-        offlineHandler();
+        // try to update after regain internet access
+        requestedTaskController.updateRequesterOfflineTask(requester.getUserName(), this);
+        updateTaskList();
     }
 
     @Override

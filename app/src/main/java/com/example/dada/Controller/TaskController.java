@@ -147,34 +147,34 @@ public class TaskController {
 //        task.execute(query);
 //    }
 
-//    /**
-//     * Get a list of tasks that match the keyword
-//     *
-//     * @param keyword           The keyword to match
-//     * @param providerUserName  The provider user name
-//     * @return An ArrayList of matching tasks.
-//     */
-//    public void searchTaskByKeyword(String keyword, String providerUserName) {
-//        String query = String.format(
-//                "{\n" +
-//                        "    \"query\": {\n" +
-//                        "       \"match\" : {\n" +
-//                        "           \"taskDescription\" : \"%s\" \n" +
-//                        "       }\n" +
-//                        "    },\n" +
-//                        "    \"filter\": {\n" +
-//                        "       \"bool\" : {\n" +
-//                        "           \"must_not\" : [" +
-//                        "               { \"term\": {\"isCompleted\": true} },\n" +
-//                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
-//                        "           ]\n" +
-//                        "       }\n" +
-//                        "    }\n" +
-//                        "}", keyword, providerUserName);
-//
-//        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-//        task.execute(query);
-//    }
+    /**
+     * Get a list of tasks that match the keyword
+     *
+     * @param keyword           The keyword to match
+     * @param providerUserName  The provider user name
+     * @return An ArrayList of matching tasks.
+     */
+    public void searchTaskByKeyword(String keyword, String providerUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"match\" : {\n" +
+                        "           \"taskDescription\" : \"%s\" \n" +
+                        "       }\n" +
+                        "    },\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must_not\" : [" +
+                        "               { \"term\": {\"isCompleted\": true} },\n" +
+                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", keyword, providerUserName);
+
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
 
     /**
      * Get a list of requested tasks for provider
@@ -588,43 +588,43 @@ public class TaskController {
         if (tasksList.isEmpty()) return;
         listener.onTaskCompleted(tasksList);
     }
-//    /**
-//     * Send provider's bidded request to the server once the device is back online
-//     * @param providerUserName the provider's user name
-//     * @param context activity context
-//     */
-//    public void updateProviderOfflineTask(String providerUserName, Context context) {
-//        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
-//        if (fileList == null) return;
-//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-//        for (Task r : requestsList) {
-//            if (r.getProviderList() == null || r.getDriverList().contains(driverUserName)) {
-//                updateTask(r);
-//                // Delete file after it has been upload
-//                context.deleteFile(TaskUtil.generateAcceptedReqestFileName(r));
-//            }
-//        }
-//    }
+    /**
+     * Send provider's bidded request to the server once the device is back online
+     * @param requesterUserName the requester's user name
+     * @param context activity context
+     */
+    public void updateRequesterOfflineTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+        for (Task t : requestsList) {
+            if (t.getRequesterUserName() == null || t.getRequesterUserName() == requesterUserName) {
+                updateTask(t);
+                // Delete file after it has been upload
+                context.deleteFile(TaskUtil.generateAcceptedTaskFileName(t));
+            }
+        }
+    }
 
-    //    /**
-//     * Get a list of requester's pending tasks while offline
-//     * @param providerUserName   the driver's user name
-//     * @param context            activity context
-//     */
-//    public void getRequesterOfflineTask(String riderUserName, Context context) {
-//        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
-//        if (fileList == null) return;
-//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-//        Iterator<Task> it = requestsList.iterator();
-//        while (it.hasNext()) {
-//            Task r = it.next();
-//            if (!r.getRiderUserName().equals(riderUserName)) {
-//                it.remove();
-//            }
-//        }
-//        if (requestsList.isEmpty()) return;
-//        listener.onTaskCompleted(requestsList);
-//    }
+        /**
+     * Get a list of requester's pending tasks while offline
+     * @param requesterUserName   the driver's user name
+     * @param context            activity context
+     */
+    public void getRequesterOfflineTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = requestsList.iterator();
+        while (it.hasNext()) {
+            Task t = it.next();
+            if (!t.getRequesterUserName().equals(requesterUserName)) {
+                it.remove();
+            }
+        }
+        if (requestsList.isEmpty()) return;
+        listener.onTaskCompleted(requestsList);
+    }
 
     /**
      * Provider bid task.
