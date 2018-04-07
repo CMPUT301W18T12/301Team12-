@@ -252,9 +252,10 @@ public class RequesterDetailActivity extends ListActivity {
      * set the listview (adapter)
      */
     private void setListview() {
+        Log.i("Tracing----->", "setListview");
 
         SimpleAdapter listViewAdapter = new SimpleAdapter(this, setListItem(),
-                R.layout.activity_requester_detail_listitem, new String[]{"img", "title", "prive"},
+                R.layout.activity_requester_detail_listitem, new String[]{"img", "title", "price"},
                 new int[]{R.id.img, R.id.title, R.id.price});
         setListAdapter(listViewAdapter);
     }

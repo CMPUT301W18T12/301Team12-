@@ -1,11 +1,7 @@
 package com.example.dada.View;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,15 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dada.Controller.TaskController;
-import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
-import com.example.dada.Model.Task.ProviderDetailAvitivity;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
@@ -291,7 +283,7 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openRequestedTaskDialog(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
-        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
         /**
@@ -351,7 +343,7 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openBiddedTaskDialog(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
-        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
         /**
@@ -434,7 +426,7 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openAssignedTaskDialog(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
-        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
         /**
@@ -491,7 +483,7 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openCompletedTaskDialog(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDialog");
-        Intent intent = new Intent(this, ProviderDetailAvitivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
         /**
