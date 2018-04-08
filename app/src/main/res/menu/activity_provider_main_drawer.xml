@@ -18,7 +18,7 @@
         <item
             android:id="@+id/nav_allTask_Pmain"
             android:icon="@drawable/ic_menu_send"
-            android:title="All My Task" />
+            android:title="All Task" />
 
         <item
             android:id="@+id/nav_requestedTask_Pmain"
