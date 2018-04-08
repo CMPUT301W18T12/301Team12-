@@ -125,6 +125,18 @@ public class TaskUnitTest extends ActivityInstrumentationTestCase2<LoginActivity
         assertEquals("bidded", request.getStatus());
     }
 
+    /**
+     * Test requester cancel provider's assigned task.
+     */
+    public void testRequesterCancelTask() throws TaskException{
+        // if only one bid
+        Task request = new AssignedTask("hq1", "sfeng3", 100);
+        request.requesterCancelAssigned("sfeng3");
+        assertEquals("requested", request.getStatus());
+
+        // if multiple bids
+        request.providerBidTask("yz6", 6);
+    }
 
     /**
      * Test constrain of the task title

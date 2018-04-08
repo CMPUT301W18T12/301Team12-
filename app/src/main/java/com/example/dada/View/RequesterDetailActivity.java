@@ -300,7 +300,7 @@ public class RequesterDetailActivity extends ListActivity {
 
     public void notComOnClick(View view) {
         if (task.getStatus().toUpperCase().equals(statusAssigned)) {
-            task.
+//            task.
             taskController.updateTask(task);
             setViews();
         }
