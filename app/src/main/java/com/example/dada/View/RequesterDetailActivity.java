@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -106,41 +107,51 @@ public class RequesterDetailActivity extends ListActivity {
          * listener of listview click action
          */
 
-        if (task.getStatus().equals(statusBidded)) {
+        if (task.getStatus().toUpperCase().equals(statusBidded)) {
             final ListView listView = (ListView)findViewById(android.R.id.list);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     ArrayList<String> bid = task.getBidList().get(position);
                     providerName = bid.get(0);
                     AlertDialog.Builder builder = new AlertDialog.Builder(RequesterDetailActivity.this);
-                    builder.setMessage("What do you due with" + providerName).setTitle("Notofocation");
+                    builder.setMessage("What do you due with " + providerName + "'s bidded").setTitle("Notofocation");
 
                     builder.setPositiveButton("Is Him", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             try {
                                 task.requesterAssignProvider(providerName);
+                                task.setStatus(statusAssigned.toLowerCase());
+                                taskController.updateTask(task);
+                                setViews();
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), e.toString(),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
+
                     builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                         }
                     });
+
                     builder.setNeutralButton("Delete Him", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             ArrayList<ArrayList<String>> bidList = task.getBidList();
                             bidList.remove(i);
                             task.setBidList(bidList);
+                            if (bidList == null) {
+                                task.setStatus(statusRequested.toLowerCase());
+                            }
+                            taskController.updateTask(task);
                             setViews();
                         }
                     });
+
                     taskController.updateTask(task);
                     AlertDialog dialog = builder.create();
                     dialog.show();
@@ -166,16 +177,13 @@ public class RequesterDetailActivity extends ListActivity {
         TextView textViewName = (TextView)findViewById(R.id.textViewName);
         textViewName.setVisibility(View.GONE);
         TextView textViewPhone = (TextView)findViewById(R.id.textViewPhone);
-        Log.i("ActivityStart----->", "0");
         textViewPhone.setVisibility(View.GONE);
         ImageView imageViewHead = (ImageView)findViewById(R.id.circleImageView);
         imageViewHead.setVisibility(View.GONE);
-        Log.i("ActivityStart----->", "00");
         Button buttonDone = (Button)findViewById(R.id.buttonDone);
         buttonDone.setVisibility(View.GONE);
         Button buttonNotComplete = (Button)findViewById(R.id.buttonNotComplete);
         buttonNotComplete.setVisibility(View.GONE);
-        Log.i("ActivityStart----->", "1");
 
         // getActionBar().setTitle(task.getTitle());        set actionbar
 
@@ -218,35 +226,37 @@ public class RequesterDetailActivity extends ListActivity {
         });
 
         textViewStatus.setText(task.getStatus().toUpperCase());
-        if (task.getStatus().equals(statusBidded)) {
+
+        if (task.getStatus().toUpperCase().equals(statusBidded)) {
+            Log.i("Tracing----->", task.getStatus());
             imageViewStatus.setColorFilter(Color.MAGENTA);
             listView.setVisibility(View.VISIBLE);
             setListview();
         }
-        if (task.getStatus().equals(statusAssigned)) {
+        if (task.getStatus().toUpperCase().equals(statusAssigned)) {
+            Log.i("Tracing----->", task.getStatus());
             imageViewStatus.setColorFilter(Color.RED);
             imageViewHead.setVisibility(View.VISIBLE);
-            // temp test                                                                     //^_^//
-            imageViewHead.setImageResource(R.drawable.temp_head);
-            imageViewHead.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
+            imageViewHead.setImageBitmap(provider.getProfile_photo());
             textViewName.setVisibility(View.VISIBLE);
-            textViewName.setText(task.getRequesterUserName());
+            textViewName.setText(provider.getUserName());
             textViewPhone.setVisibility(View.VISIBLE);
-            textViewPhone.setText(task.getRequesterUserName());
+            textViewPhone.setText(provider.getPhone());
             buttonDone.setVisibility(View.VISIBLE);
             buttonNotComplete.setVisibility(View.VISIBLE);
         }
 
-        if (task.getStatus().equals(statusDone)) {
+        if (task.getStatus().toUpperCase().equals(statusDone)) {
+            Log.i("Tracing----->", task.getStatus());
             imageViewStatus.setColorFilter(Color.GREEN);
             imageViewHead.setVisibility(View.VISIBLE);
-            // temp test                                                                     //^_^//
-            imageViewHead.setImageResource(R.drawable.temp_head);
-            imageViewHead.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
+            imageViewHead.setImageBitmap(provider.getProfile_photo());
             textViewName.setVisibility(View.VISIBLE);
-            textViewName.setText(task.getRequesterUserName());
+            textViewName.setText(provider.getUserName());
             textViewPhone.setVisibility(View.VISIBLE);
-            textViewPhone.setText(task.getRequesterUserName());
+            textViewPhone.setText(provider.getPhone());
         }
 
         //Wait to set Picture                                                                //^_^//
@@ -278,14 +288,14 @@ public class RequesterDetailActivity extends ListActivity {
         List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
         ArrayList<ArrayList<String>> providerNames = task.getBidList();
         for (int i=0; i < providerNames.size(); i++) {
-            Map<String, Object> map = new HashMap<String, Object>();
 
+            Map<String, Object> map = new HashMap<String, Object>();
+            Bitmap img = userController.getUser(providerNames.get(i).get(0)).getProfile_photo();
             // set picture                                                                   //^_^//
-            map.put("img", R.drawable.temp_head);
+            map.put("img", img);
             String name = providerNames.get(i).get(0);
             map.put("title", name);
-            //^_^//
-            map.put("price", 1);
+            map.put("price", "$"+providerNames.get(i).get(1));
             itemList.add(map);
         }
         return itemList;
@@ -296,8 +306,20 @@ public class RequesterDetailActivity extends ListActivity {
      * @param view click action
      */
     public void doneOnClick(View view) {
-        if (task.getStatus().equals(statusAssigned)) {
-            task.setStatus(statusDone);
+        if (task.getStatus().toUpperCase().equals(statusAssigned)) {
+            task.setStatus(statusDone.toLowerCase());
+            taskController.updateTask(task);
+            setViews();
+        }
+    }
+
+    public void notComOnClick(View view) {
+        if (task.getStatus().toUpperCase().equals(statusAssigned)) {
+            try {
+                task.requesterCancelAssigned(task.getProviderUserName());
+            } catch (Exception e){
+
+            }
             taskController.updateTask(task);
             setViews();
         }

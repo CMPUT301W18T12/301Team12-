@@ -35,12 +35,15 @@ import com.example.dada.Controller.TaskController;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.RequestedTask;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
-import com.novoda.merlin.NetworkStatus;
+import com.example.dada.Util.TaskUtil;
+
+
 
 import java.io.File;
 import org.osmdroid.util.GeoPoint;
@@ -67,13 +70,24 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 //    private Locations location;
     private List<Double> coordinates = new ArrayList<>();
 
-    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            Task t = (Task) o;
-            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
-        }
-    });
+    private ArrayList<Task> offlineRequesterList = new ArrayList<>();
+
+    private TaskController taskController = new TaskController(
+        new OnAsyncTaskCompleted() {
+            @Override
+            public void onTaskCompleted(Object o) {
+                Task t = (Task) o;
+                FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+            }
+        },
+        new OnAsyncTaskFailure() {
+            @Override
+            public void onTaskFailed (Object o){
+                Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
+                offlineRequesterList.add((Task) o);
+                FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
+            }
+        });
 
 
     @Override
@@ -156,6 +170,23 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            // https://blog.csdn.net/nupt123456789/article/details/7844076
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String path = cursor.getString(columnIndex);
+            cursor.close();
+            File file = new File(path);
+            if (file.length() > 65536) {
+                Toast.makeText(this, "Image file is larger than 64 KB.", Toast.LENGTH_SHORT);
+                return;
+            }
+            if (file.length() == 0) {
+                Toast.makeText(this, "File cannot be access or not exist.", Toast.LENGTH_SHORT);
+                return;
+            }
             try {
                 photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton2);
@@ -182,7 +213,4 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 
         }
     }
-
-
-
 }

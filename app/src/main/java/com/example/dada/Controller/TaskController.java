@@ -137,26 +137,25 @@ public class TaskController {
         task.execute(query);
     }
 
+
     /**
      * Get a list of tasks that match the keyword
      *
      * @param keyword           The keyword to match
      * @return An ArrayList of matching tasks.
      */
-    public void searchTaskByKeyword(String keyword) {
+    public void searchRequestedTaskByKeyword(String keyword) {
         String query = String.format(
                 "{\n" +
                         "    \"query\": {\n" +
-                        "       \"match\" : {\n" +
-                        "           \"taskDescription\" : \"%s\" \n" +
+                        "       \"wildcard\" : {\n" +
+                        "           \"description\" : \"*%s*\" \n" +
                         "       }\n" +
                         "    },\n" +
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
-                        "           \"must_not\" : [" +
-                        "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
-                        "               { \"term\": {\"status\": \"done\"} }\n" +
+                        "           \"must\" : [" +
+                        "               { \"term\": {\"status\": \"requested\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
@@ -165,6 +164,35 @@ public class TaskController {
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
+
+
+    /**
+     * Get a list of tasks that match the keyword
+     *
+     * @param keyword           The keyword to match
+     * @return An ArrayList of matching tasks.
+     */
+    public void searchBiddedTaskByKeyword(String keyword) {
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"wildcard\" : {\n" +
+                        "           \"description\" : \"*%s*\" \n" +
+                        "       }\n" +
+                        "    },\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [" +
+                        "               { \"term\": {\"status\": \"bidded\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", keyword);
+
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
 
     /**
      * Get a list of requested tasks for provider
@@ -569,8 +597,8 @@ public class TaskController {
      * @param task the task to be assigned completed
      * @param providerUserName the provider user name
      */
-    public void requesterAssignToBidTask(Task task, String providerUserName) throws TaskException {
-        task.requesterMoveProviderToBidded(providerUserName);
+    public void requesterCancelAssignedTask(Task task, String providerUserName) throws TaskException {
+        task.requesterCancelAssigned(providerUserName);
         updateTask(task);
     }
 

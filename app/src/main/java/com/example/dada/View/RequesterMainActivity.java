@@ -20,9 +20,11 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dada.Controller.TaskController;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
@@ -101,36 +103,26 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
-    // assign bidded task
-    private TaskController assignBiddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            biddedTaskAdapter.remove((Task) o);
-            assignedTaskAdapter.add((Task) o);
-            biddedTaskAdapter.notifyDataSetChanged();
-            assignedTaskAdapter.notifyDataSetChanged();
-        }
-    });
-
-    // done assigned task
-    private TaskController DoneAssignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            assignedTaskList.remove((Task) o);
-            doneTaskList.add((Task) o);
-            assignedTaskAdapter.notifyDataSetChanged();
-            doneTaskAdapter.notifyDataSetChanged();
-        }
-    });
 
     // normal task
-    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            Task t = (Task) o;
-            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
-        }
-    });
+    private ArrayList<Task> offlineRequesterList = new ArrayList<>();
+
+    private TaskController taskController = new TaskController(
+            new OnAsyncTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Object o) {
+                    Task t = (Task) o;
+                    FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+                }
+            },
+            new OnAsyncTaskFailure() {
+                @Override
+                public void onTaskFailed (Object o){
+                    Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
+                    offlineRequesterList.add((Task) o);
+                    FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +140,7 @@ public class RequesterMainActivity extends AppCompatActivity
         merlin.registerConnectable(this);
         merlin.registerDisconnectable(this);
         merlin.registerBindable(this);
+        merlin.bind();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -556,15 +549,10 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 });
         // Create & Show the AlertDialog
@@ -593,15 +581,10 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 });
         // Create & Show the AlertDialog
@@ -630,15 +613,10 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 });
         // Create & Show the AlertDialog
@@ -661,14 +639,14 @@ public class RequesterMainActivity extends AppCompatActivity
      *  Set click for different sorting situation
      * @param sortType
      */
-    public void setListView(String sortType){
+    public void setListView(final String sortType){
         Log.i("Method start----->", "ResquesterMainActivity setListView");
         TextView textView = (TextView) findViewById(R.id.editText_allTask_RequesterMainActivity);
         if (sortType.equals("all")){
 
             textView.setText("All Tasks");
 
-            requestedTaskListView = findViewById(R.id.listView_requestedTask_all_RequesterMainActivity);
+            requestedTaskListView = findViewById(R.id.listView_requestedTask_RequesterMainActivity);
             requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -678,7 +656,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            biddedTaskListView = findViewById(R.id.listView_biddedTask_all_RequesterMainActivity);
+            biddedTaskListView = findViewById(R.id.listView_biddedTask_RequesterMainActivity);
             biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -687,7 +665,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            assignedTaskListView = findViewById(R.id.listView_assignedTask_all_RequesterMainActivity);
+            assignedTaskListView = findViewById(R.id.listView_assignedTask_RequesterMainActivity);
             assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -696,7 +674,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            doneTaskListView = findViewById(R.id.listView_doneTask_all_RequesterMainActivity);
+            doneTaskListView = findViewById(R.id.listView_doneTask_RequesterMainActivity);
             doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -742,7 +720,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Requested Tasks");
 
-            requestedTaskListView = findViewById(R.id.listView_requestedTask_all_RequesterMainActivity);
+            requestedTaskListView = findViewById(R.id.listView_requestedTask_RequesterMainActivity);
             requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -763,7 +741,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Bidded Tasks");
 
-            biddedTaskListView = findViewById(R.id.listView_biddedTask_all_RequesterMainActivity);
+            biddedTaskListView = findViewById(R.id.listView_biddedTask_RequesterMainActivity);
             biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -783,7 +761,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Assigned Tasks");
 
-            assignedTaskListView = findViewById(R.id.listView_assignedTask_all_RequesterMainActivity);
+            assignedTaskListView = findViewById(R.id.listView_assignedTask_RequesterMainActivity);
             assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -803,7 +781,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Done Tasks");
 
-            doneTaskListView = findViewById(R.id.listView_doneTask_all_RequesterMainActivity);
+            doneTaskListView = findViewById(R.id.listView_doneTask_RequesterMainActivity);
             doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -826,6 +804,7 @@ public class RequesterMainActivity extends AppCompatActivity
             requestedTaskListView.setAdapter(requestedTaskAdapter);
             biddedTaskListView.setAdapter(biddedTaskAdapter);
             assignedTaskListView.setAdapter(assignedTaskAdapter);
+            doneTaskListView.setAdapter(doneTaskAdapter);
         }
         else if (sortType.equals("requested")){
             requestedTaskListView.setAdapter(requestedTaskAdapter);
@@ -866,6 +845,17 @@ public class RequesterMainActivity extends AppCompatActivity
 //        doneTaskListView.setAdapter(null);
     }
 
+    protected void updateOfflineRequest() {
+        ArrayList<String> offlineList = TaskUtil.getOfflineTaskList(getApplicationContext());
+        if (offlineList == null) return;
+        offlineRequesterList = FileIOUtil.loadTaskFromFile(getApplicationContext(), offlineList);
+        for (Task t : offlineRequesterList) {
+            if (t.getRequesterUserName().equals(requester.getUserName())) {
+                taskController.createTask(t);
+                deleteFile(TaskUtil.generateOfflineTaskFileName(t));
+            }
+        }
+    }
 
 
     @Override
@@ -883,26 +873,22 @@ public class RequesterMainActivity extends AppCompatActivity
     public void onDisconnect() {
         Log.i("Debug ---------->", "Offline");
         offlineHandler();
+        requestedTaskController.getRequesterOfflineTask(requester.getUserName(), this);
     }
 
     @Override
     public void onConnect() {
         // try to update after regain internet access
-        requestedTaskController.updateRequesterOfflineTask(requester.getUserName(), this);
-        updateTaskList();
+
+        updateOfflineRequest();
+        taskController.updateRequesterOfflineTask(requester.getUserName(), this);
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        merlin.bind();
-        onStart();
-    }
 
     @Override
     protected void onPause() {
-        super.onPause();
         merlin.unbind();
+        super.onPause();
     }
 
     @Override

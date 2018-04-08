@@ -45,11 +45,11 @@ public class TaskUtil {
     }
 
     public static String generateRequesterTaskFileName(Task task) {
-        return "rider-" + task.getID() + ".json";
+        return "requester-" + task.getID() + ".json";
     }
 
     public static String generateProviderTaskFileName(Task task) {
-        return "driver-" + task.getID() + ".json";
+        return "provider-" + task.getID() + ".json";
     }
 
     public static ArrayList<String> getOfflineTaskList(Context context) {

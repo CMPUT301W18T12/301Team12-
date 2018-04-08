@@ -17,6 +17,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.example.dada.R;
+import com.example.dada.View.RequesterMainActivity;
 import com.robotium.solo.Solo;
 import android.widget.EditText;
 import com.example.dada.View.LoginActivity;
@@ -62,7 +63,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2{
         solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "user");
         solo.clickOnButton("Provider");
         solo.clickOnButton("Login");
-
+        solo.assertCurrentActivity("Wrong Activity", RequesterMainActivity.class);
     }
 
 

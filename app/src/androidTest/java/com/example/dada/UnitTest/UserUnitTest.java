@@ -76,6 +76,7 @@ public class UserUnitTest extends ActivityInstrumentationTestCase2<LoginActivity
 
     /**
      * Test cases for search user exist task
+     * root is the test account in the server
      */
     public void testSearchUserExist() {
         String query = String.format(
@@ -83,7 +84,7 @@ public class UserUnitTest extends ActivityInstrumentationTestCase2<LoginActivity
                         "    \"query\": {\n" +
                         "       \"term\" : { \"userName\" : \"%s\" }\n" +
                         "    }\n" +
-                        "}", "sfeng3");
+                        "}", "root");
         User.SearchUserExistTask task = new User.SearchUserExistTask();
         task.execute(query);
         // Hang around till it's done

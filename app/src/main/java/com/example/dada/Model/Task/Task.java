@@ -134,7 +134,7 @@ public abstract class Task {
     }
 
     /**
-     * Constructor for AssignedTask or CompletedTask.
+     * Constructor for assigned and  doneTask.
      *
      * @param requesterUserName  the requester user name
      * @param providerUserName   the provider user name
@@ -149,7 +149,7 @@ public abstract class Task {
     }
 
     /**
-     * Constructor for AssignedTask or CompletedTask.
+     * Constructor for assigned and doneTask.
      *
      * @param requesterUserName  the requester user name
      * @param providerUserName   the provider user name
@@ -164,7 +164,7 @@ public abstract class Task {
     }
 
     /**
-     * Constructor for AssignedTask or CompletedTask.
+     * Constructor for assigned and doneTask.
      *
      * @param requesterUserName  the requester user name
      * @param providerUserName   the provider user name
@@ -181,7 +181,7 @@ public abstract class Task {
     }
 
     /**
-     * Constructor for AssignedTask or CompletedTask.
+     * Constructor for assigned and doneTask.
      *
      * @param requesterUserName  the requester user name
      * @param providerUserName   the provider user name
@@ -192,6 +192,9 @@ public abstract class Task {
         this.providerUserName = providerUserName;
         this.price = price;
     }
+
+
+
 
     /**
      * Constructor for BiddedTask
@@ -404,7 +407,7 @@ public abstract class Task {
     }
 
     /**
-     * TODO Static class that cancel the task
+     *  Static class that cancel the task
      */
     public static class DeleteTaskTask extends AsyncTask<Task, Void, Task> {
         /**
@@ -599,7 +602,7 @@ public abstract class Task {
     /**
      * Requester assign provider.
      *
-     * @param  providerUserName the provider user namen
+     * @param  providerUserName the provider user name
      * @throws TaskException    raise exception when request has not been confirmed
      */
     public void requesterAssignProvider(String providerUserName) throws TaskException {
@@ -615,24 +618,29 @@ public abstract class Task {
             for ( ArrayList<String> bid : bidList ){
                 if ( bid.get(0).equals(providerUserName) ){
                    setPrice(Double.parseDouble(bid.get(1)));
+                   bidList.remove(bid);
+                   break;
                 }
             }
-
-            bidList.clear();
         }
     }
 
     /**
-     * Requester move provider from assigned to bidded.
+     * Requester move provider from assigned to bidded or requested.
      *
      * @param  providerUserName the provider user namen
      * @throws TaskException    raise exception when request has not been confirmed
      */
-    public void requesterMoveProviderToBidded(String providerUserName) throws TaskException {
-        if ( getStatus().equals("assigned") ) {
+    public void requesterCancelAssigned(String providerUserName) throws TaskException {
+        if (bidList == null || bidList.isEmpty()) {
+            // If the task has not been bidded yet
+            assert getStatus().equals("assigned");
+            setStatus("requested");
+        } else {
+            // Assigned provider
+            assert getStatus().equals("assigned");
             setStatus("bidded");
         }
-
     }
 
     /**
@@ -641,6 +649,7 @@ public abstract class Task {
     public void requesterDoneTask() throws TaskException {
         assert getStatus().equals("assigned");
         setStatus("done");
+        bidList.clear();
     }
 
 
