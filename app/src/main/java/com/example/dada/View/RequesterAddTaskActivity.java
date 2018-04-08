@@ -42,11 +42,8 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
+
+
 
 import java.io.File;
 import org.osmdroid.util.GeoPoint;
@@ -60,7 +57,7 @@ import im.delight.android.location.SimpleLocation;
  * activity to handle interface of adding new task from user
  */
 
-public class RequesterAddTaskActivity extends AppCompatActivity implements Connectable, Disconnectable, Bindable {
+public class RequesterAddTaskActivity extends AppCompatActivity {
     private EditText titleText;
     private EditText descriptionText;
     private User requester;
@@ -68,8 +65,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
     private Button doneButton;
     private Bitmap photo;
     private Locations location;
-
-    private Merlin merlin;
 
     private ArrayList<Task> offlineRequesterList = new ArrayList<>();
 
@@ -99,12 +94,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // monitor network connectivity
-        merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
-        merlin.registerConnectable(this);
-        merlin.registerDisconnectable(this);
-        merlin.registerBindable(this);
 
         titleText = findViewById(R.id.editText_requester_add_task_title);
         descriptionText = findViewById(R.id.editText_requester_add_task_description);
@@ -186,23 +175,5 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
         }
     }
 
-    @Override
-    public void onBind(NetworkStatus networkStatus) {
-        if (!networkStatus.isAvailable()) {
-            onDisconnect();
-        } else if (networkStatus.isAvailable()) {
-            onConnect();
-        }
-    }
-
-    @Override
-    public void onConnect() {
-        Log.i("Debug", "Connected");
-    }
-
-    @Override
-    public void onDisconnect() {
-        Log.i("Debug ---------->", "Offline");
-    }
 
 }
