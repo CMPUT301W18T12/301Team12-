@@ -580,7 +580,7 @@ public class TaskController {
      * @param providerUserName the provider user name
      */
     public void requesterAssignToBidTask(Task task, String providerUserName) throws TaskException {
-        task.requesterMoveProviderToBidded(providerUserName);
+        task.requesterCancelAssigned(providerUserName);
         updateTask(task);
     }
 

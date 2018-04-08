@@ -16,6 +16,8 @@ import android.graphics.Bitmap;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
+import java.util.ArrayList;
+
 /**
  * Task that has been sent by the requester,
  * and accepted by one or more driver. Also,
