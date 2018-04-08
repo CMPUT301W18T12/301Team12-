@@ -25,6 +25,7 @@ import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -113,35 +114,24 @@ public class TaskController {
     /**
      * Get a list of task that match the geo-location
      *
-     * @param location       the coordinate of the provider location
+     * @param coordinates   the coordinate of the provider location
      */
     // http://stackoverflow.com/questions/36805014/how-to-merge-geo-distance-filter-with-bool-term-query
     // Author: Val
-    public void searchTaskByGeoLocation(GeoPoint location) {
+    public void searchTaskByGeoLocation(List<Double> coordinates) {
         String query = String.format(
                 "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must_not\" : [\n" +
-                        "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
-                        "               { \"term\": {\"status\": \"done\"} }\n" +                        "           ],\n" +
-                        "           \"must\": [\n" +
-                        "               {\n" +
-                        "                   \"nested\": {\n" +
-                        "                       \"path\": \"location\",\n" +
-                        "                       \"filter\": {\n" +
-                        "                           \"geo_distance\": {\n" +
-                        "                               \"distance\": \"5km\",\n" +
-                        "                               \"origin\": [%.6f, %.6f]\n" +
-                        "                           }\n" +
-                        "                       }\n" +
-                        "                   }\n" +
-                        "               }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", location.getLongitude(), location.getLatitude());
+                        "    \"query\": {\n" +
+                        "       \"filtered\" : {\n" +
+                        "           \"filter\" : {\n" +
+                        "               \"geo_distance\" : {\n" +
+                        "                   \"distance\" : \"5km\",\n" +
+                        "                   \"coordinates\" : [%.6f, %.6f]\n" +
+                        "                 }\n" +
+                        "             }\n" +
+                        "         }\n" +
+                        "      }\n" +
+                        "}", coordinates.get(0), coordinates.get(1));
 
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
