@@ -146,6 +146,29 @@ public class TaskController {
         task.execute(query);
     }
 
+    public void searchTaskByKeyword(String keyword) {
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"match\" : {\n" +
+                        "           \"taskDescription\" : \"%s\" \n" +
+                        "       }\n" +
+                        "    },\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must_not\" : [" +
+                        "               { \"term\": {\"isCompleted\": true} },\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "               { \"term\": {\"status\": \"done\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", keyword);
+
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
     /**
      * Get a list of tasks that match the keyword
      *

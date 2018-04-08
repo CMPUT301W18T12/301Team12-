@@ -124,7 +124,7 @@ public class ProviderMainActivity extends AppCompatActivity
         public void onTaskCompleted(Object o) {
             biddedSearchTaskList = (ArrayList<Task>) o;
             biddedSearchTaskAdapter.clear();
-            biddedSearchTaskList.addAll(biddedSearchTaskList);
+            biddedSearchTaskAdapter.addAll(biddedSearchTaskList);
             biddedSearchTaskAdapter.notifyDataSetChanged();
         }
     });
@@ -366,11 +366,9 @@ public class ProviderMainActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     // Do something with value!
-                    onStart();
                     clearListView(sortType);
-                    requestedSearchTaskController.getProviderRequestedTask();
-                    biddedSearchTaskController.searchBiddedTaskByKeyword("3");
-
+                    requestedSearchTaskController.searchRequestedTaskByKeyword(input.getText().toString());
+                    biddedSearchTaskController.searchBiddedTaskByKeyword(input.getText().toString());
                     sortType = "search";
                     setListView(sortType);
                     setAdapter(sortType);
@@ -389,15 +387,6 @@ public class ProviderMainActivity extends AppCompatActivity
             });
 
             alert.show();
-
-
-
-//            onStart();
-//            requestedSearchTaskController.searchRequestedTaskByKeyword("1");
-//            clearListView(sortType);
-//            sortType = "search";
-//            setListView(sortType);
-//            setAdapter(sortType);
 
         }
         else if (id == R.id.nav_logout) {
