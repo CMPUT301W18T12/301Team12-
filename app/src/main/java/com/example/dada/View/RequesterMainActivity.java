@@ -549,15 +549,10 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 });
         // Create & Show the AlertDialog
@@ -586,15 +581,10 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 });
         // Create & Show the AlertDialog
@@ -623,15 +613,10 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 });
         // Create & Show the AlertDialog
@@ -819,6 +804,7 @@ public class RequesterMainActivity extends AppCompatActivity
             requestedTaskListView.setAdapter(requestedTaskAdapter);
             biddedTaskListView.setAdapter(biddedTaskAdapter);
             assignedTaskListView.setAdapter(assignedTaskAdapter);
+            doneTaskListView.setAdapter(doneTaskAdapter);
         }
         else if (sortType.equals("requested")){
             requestedTaskListView.setAdapter(requestedTaskAdapter);
