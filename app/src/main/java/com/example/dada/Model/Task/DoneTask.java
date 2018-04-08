@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
+import java.util.List;
+
 /**
  * Task that has been Confirmed done by the requester
  *
@@ -17,15 +19,15 @@ public class DoneTask extends Task{
         super(requesterUserName, providerUserName, price);
     }
 
-    public DoneTask(String requesterUserName, String providerUserName, double price, Locations location) {
-        super(requesterUserName, providerUserName, price, location);
+    public DoneTask(String requesterUserName, String providerUserName, double price, List<Double> coordinates) {
+        super(requesterUserName, providerUserName, price, coordinates);
     }
 
     public DoneTask(String requesterUserName, String providerUserName, double price, Bitmap img) {
         super(requesterUserName, providerUserName, price, img);
     }
 
-    public DoneTask(String requesterUserName, String providerUserName, double price, Bitmap img, Locations location) {
-        super(requesterUserName, providerUserName, price, img, location);
+    public DoneTask(String requesterUserName, String providerUserName, double price, Bitmap img, List<Double> coordinates) {
+        super(requesterUserName, providerUserName, price, img, coordinates);
     }
 }

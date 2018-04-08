@@ -45,6 +45,8 @@ import com.novoda.merlin.NetworkStatus;
 import java.io.File;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import im.delight.android.location.SimpleLocation;
@@ -58,9 +60,12 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
     private EditText descriptionText;
     private User requester;
     private static int RESULT_LOAD_IMAGE = 1;
+    private static int RESULT_LOAD_LOC = 2;
     private Button doneButton;
     private Bitmap photo;
-    private Locations location;
+    private Button locationButton;
+//    private Locations location;
+    private List<Double> coordinates = new ArrayList<>();
 
     private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
@@ -83,6 +88,14 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         titleText = findViewById(R.id.editText_requester_add_task_title);
         descriptionText = findViewById(R.id.editText_requester_add_task_description);
 
+        locationButton  = findViewById(R.id.addTaskLocationButtion);
+        assert locationButton != null;
+        locationButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                addLocation(v);
+            }
+        });
+
         doneButton = findViewById(R.id.newTask_done_button);
         assert doneButton != null;
         doneButton.setOnClickListener(new View.OnClickListener(){
@@ -104,18 +117,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         boolean validTitle = !(title.isEmpty() || title.trim().isEmpty());
         boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
 
-//        location = new SimpleLocation(this);
-//        // if we can't access the location yet
-//        if (!location.hasLocationEnabled()) {
-//            // ask the user to enable location access
-//               SimpleLocation.openSettings(this);
-//        }
-//
-//        // get current location
-//        Double user_latitude = location.getLatitude();
-//        Double user_longitude = location.getLongitude();
-//        GeoPoint User_point = new GeoPoint(user_latitude, user_longitude);
-
         if (!(validTitle && validDescription)) {
             Toast.makeText(this, "Task Title/Description is not valid.", Toast.LENGTH_SHORT).show();
         } else {
@@ -125,7 +126,8 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
                 if (description.length() > 300) {
                     Toast.makeText(this, "Max length of task description is 300.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Task task = new RequestedTask(title, description, requester.getUserName());
+                    System.out.println(coordinates.toString());
+                    Task task = new RequestedTask(title, description, requester.getUserName(), coordinates);
                     task.setID(UUID.randomUUID().toString());
                     taskController.createTask(task);
                     finish();
@@ -134,6 +136,11 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         }
     }
 
+
+    public void addLocation(View view) {
+        Intent intentRequesterAddTaskLoc = new Intent(getApplicationContext(), RequesterAddTaskLocationActivity.class);
+        startActivityForResult(intentRequesterAddTaskLoc, RESULT_LOAD_LOC);
+    }
 
     public void addImage(View view) {
         Intent i = new Intent(
@@ -158,6 +165,24 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 
             }
         }
+
+        if (requestCode == RESULT_LOAD_LOC && resultCode == RESULT_OK) {
+            try {
+                String str = data.getStringExtra("coordinates");
+                String s[] = str.split(",");
+                Double lan = Double.parseDouble(s[0]);
+                Double lon = Double.parseDouble(s[1]);
+
+
+                coordinates.add(lon);
+                coordinates.add(lan);
+            } catch (Exception e){
+
+            }
+
+        }
     }
+
+
 
 }

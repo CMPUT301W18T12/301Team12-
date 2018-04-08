@@ -202,10 +202,20 @@ public class RequesterDetailActivity extends ListActivity {
             imageView.setImageResource(R.drawable.temp_taskimg);
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
+
         // set map button
-        ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
-        imageButton.setImageResource(R.drawable.ic_launcher_foreground);
-        imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        ImageButton locationBtn = (ImageButton)findViewById(R.id.taskDetailMapBtn);
+        locationBtn.setImageResource(R.drawable.ic_launcher_foreground);
+        locationBtn.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        assert locationBtn != null;
+        locationBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                String coordinates = task.getCoordinatesString();
+                Intent intentDetailMap = new Intent(getApplicationContext(), RequesterDetailMapActivity.class);
+                intentDetailMap.putExtra("coordinates", coordinates);
+                startActivity(intentDetailMap);
+            }
+        });
 
         textViewStatus.setText(task.getStatus().toUpperCase());
         if (task.getStatus().equals(statusBidded)) {

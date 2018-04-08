@@ -16,6 +16,8 @@ import android.graphics.Bitmap;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
+import java.util.List;
+
 /**
  * Task that has been sent by the requester,
  * and accepted by one or more driver. Also,
@@ -34,12 +36,12 @@ public class AssignedTask extends Task{
         super(requesterUserName, providerUserName, price, img);
     }
 
-    public AssignedTask(String requesterUserName, String providerUserName, double price, Bitmap img, Locations location) {
-        super(requesterUserName, providerUserName, price, img, location);
+    public AssignedTask(String requesterUserName, String providerUserName, double price, Bitmap img, List<Double> coordinates) {
+        super(requesterUserName, providerUserName, price, img, coordinates);
     }
 
-    public AssignedTask(String requesterUserName, String providerUserName, double price, Locations location) {
-        super(requesterUserName, providerUserName, price, location);
+    public AssignedTask(String requesterUserName, String providerUserName, double price, List<Double> coordinates) {
+        super(requesterUserName, providerUserName, price, coordinates);
     }
 
     public void requesterDoneTask() throws TaskException {

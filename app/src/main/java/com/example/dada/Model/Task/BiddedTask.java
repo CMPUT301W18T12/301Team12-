@@ -17,6 +17,7 @@ import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Task that has been sent by the requester,
@@ -28,8 +29,8 @@ import java.util.ArrayList;
  */
 public class BiddedTask extends Task {
 
-    public BiddedTask(String requesterUserName, String providerUserName, Double price, Locations location) {
-        super(requesterUserName, providerUserName, price, location);
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, List<Double> coordinates) {
+        super(requesterUserName, providerUserName, price, coordinates);
     }
 
     public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img) {
@@ -44,20 +45,20 @@ public class BiddedTask extends Task {
         super(requesterUserName, providerList, price);
     }
 
-    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Locations location) {
-        super(requesterUserName, providerList, price, location);
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, List<Double> coordinates) {
+        super(requesterUserName, providerList, price, coordinates);
     }
 
     public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img) {
         super(requesterUserName, providerList, price, img);
     }
 
-    public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img, Locations location) {
-        super(requesterUserName, providerUserName, price, img, location);
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img, List<Double> coordinates) {
+        super(requesterUserName, providerUserName, price, img, coordinates);
     }
 
-    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img, Locations location) {
-        super(requesterUserName, providerList, price, img, location);
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img, List<Double> coordinates) {
+        super(requesterUserName, providerList, price, img, coordinates);
     }
     @Override
     public void requesterAssignProvider(String providerUserName) throws TaskException {

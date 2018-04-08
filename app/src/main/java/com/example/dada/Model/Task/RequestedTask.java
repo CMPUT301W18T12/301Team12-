@@ -17,6 +17,8 @@ import android.graphics.Bitmap;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
+import java.util.List;
+
 /**
  * Task that has been requested by the requester
  *
@@ -33,12 +35,12 @@ public class RequestedTask extends Task {
      * @param title         title of the task
      * @param description   description of the task
      */
-    public RequestedTask(String title, String description, String requesterUserName, Locations location) {
-        super(title, description, requesterUserName, "requested", location);
+    public RequestedTask(String title, String description, String requesterUserName, List<Double> coordinates) {
+        super(title, description, requesterUserName, "requested", coordinates);
     }
 
-    public RequestedTask(String title, String description, String requesterUserName, Bitmap img, Locations location) {
-        super(title, description, requesterUserName, "requested", img, location);
+    public RequestedTask(String title, String description, String requesterUserName, Bitmap img, List<Double> coordinates) {
+        super(title, description, requesterUserName, "requested", img, coordinates);
     }
 
     public RequestedTask(String title, String description, String requesterUserName, Bitmap img) {
