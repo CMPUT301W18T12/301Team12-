@@ -40,13 +40,13 @@ public class RequesterDetailMapActivity extends FragmentActivity implements OnMa
 
         String str = getIntent().getStringExtra("coordinates");
         String s[] = str.split(",");
-        Double lan = Double.parseDouble(s[0]);
-        Double lon = Double.parseDouble(s[1]);
+        Double lon = Double.parseDouble(s[0]);
+        Double lan = Double.parseDouble(s[1]);
 
 
         // Add a marker in Sydney and move the camera
         LatLng position = new LatLng(lan, lon);
         mMap.addMarker(new MarkerOptions().position(position));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 12));
     }
 }
