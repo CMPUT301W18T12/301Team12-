@@ -123,8 +123,7 @@ public class TaskController {
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
                         "           \"must_not\" : [\n" +
-                        "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} },\n" +
                         "               { \"term\": {\"status\": \"done\"} }\n" +                        "           ],\n" +
                         "           \"must\": [\n" +
                         "               {\n" +
@@ -158,7 +157,7 @@ public class TaskController {
                 "{\n" +
                         "    \"query\": {\n" +
                         "       \"match\" : {\n" +
-                        "           \"taskDescription\" : \"%s\" \n" +
+                        "           \"description\" : \"%s\" \n" +
                         "       }\n" +
                         "    },\n" +
                         "    \"filter\": {\n" +
@@ -185,7 +184,7 @@ public class TaskController {
                 "{\n" +
                         "    \"query\": {\n" +
                         "       \"match\" : {\n" +
-                        "           \"taskDescription\" : \"%s\" \n" +
+                        "           \"description\" : \"%s\" \n" +
                         "       }\n" +
                         "    },\n" +
                         "    \"filter\": {\n" +
