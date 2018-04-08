@@ -123,8 +123,7 @@ public class TaskController {
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
                         "           \"must_not\" : [\n" +
-                        "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} },\n" +
                         "               { \"term\": {\"status\": \"done\"} }\n" +                        "           ],\n" +
                         "           \"must\": [\n" +
                         "               {\n" +
