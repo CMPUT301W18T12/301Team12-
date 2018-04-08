@@ -11,6 +11,7 @@
 
 package com.example.dada.Model;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 import android.os.AsyncTask;
@@ -38,11 +39,11 @@ public class User {
     private String email;
 
     private int type;
-    private Image profile_photo;
+    private Bitmap profile_photo;
 
     private transient static JestDroidClient client;
 
-    public User(String userName, String ID, int type, Image profile_photo, String phone){
+    public User(String userName, String ID, int type, Bitmap profile_photo, String phone){
         this.userName = userName;
         this.ID = ID;
         this.type = type;
@@ -327,5 +328,9 @@ public class User {
     public String getEmail(){ return this.email; }
 
     public void setEmail(String email){ this.email = email; }
+
+    public void setProfile_photo(Bitmap profile_photo) {this.profile_photo = profile_photo;}
+
+    public Bitmap getProfile_photo() {return profile_photo;}
 
 }

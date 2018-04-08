@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -143,6 +144,9 @@ public class RequesterDetailActivity extends ListActivity {
                             ArrayList<ArrayList<String>> bidList = task.getBidList();
                             bidList.remove(i);
                             task.setBidList(bidList);
+                            if (bidList == null) {
+                                task.setStatus(statusRequested.toLowerCase());
+                            }
                             taskController.updateTask(task);
                             setViews();
                         }
@@ -224,7 +228,7 @@ public class RequesterDetailActivity extends ListActivity {
             imageViewStatus.setColorFilter(Color.RED);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
-            imageViewHead.setImageResource(R.drawable.temp_head);
+            imageViewHead.setImageBitmap(provider.getProfile_photo());
             textViewName.setVisibility(View.VISIBLE);
             textViewName.setText(provider.getUserName());
             textViewPhone.setVisibility(View.VISIBLE);
@@ -238,7 +242,7 @@ public class RequesterDetailActivity extends ListActivity {
             imageViewStatus.setColorFilter(Color.GREEN);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
-            imageViewHead.setImageResource(R.drawable.temp_head);
+            imageViewHead.setImageBitmap(provider.getProfile_photo());
             textViewName.setVisibility(View.VISIBLE);
             textViewName.setText(provider.getUserName());
             textViewPhone.setVisibility(View.VISIBLE);
@@ -274,10 +278,11 @@ public class RequesterDetailActivity extends ListActivity {
         List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
         ArrayList<ArrayList<String>> providerNames = task.getBidList();
         for (int i=0; i < providerNames.size(); i++) {
-            Map<String, Object> map = new HashMap<String, Object>();
 
+            Map<String, Object> map = new HashMap<String, Object>();
+            Bitmap img = userController.getUser(providerNames.get(i).get(0)).getProfile_photo();
             // set picture                                                                   //^_^//
-            map.put("img", R.drawable.temp_head);
+            map.put("img", img);
             String name = providerNames.get(i).get(0);
             map.put("title", name);
             map.put("price", "$"+providerNames.get(i).get(1));
@@ -300,7 +305,11 @@ public class RequesterDetailActivity extends ListActivity {
 
     public void notComOnClick(View view) {
         if (task.getStatus().toUpperCase().equals(statusAssigned)) {
-            task.
+            try {
+                task.requesterCancelAssigned(task.getProviderUserName());
+            } catch (Exception e){
+
+            }
             taskController.updateTask(task);
             setViews();
         }
