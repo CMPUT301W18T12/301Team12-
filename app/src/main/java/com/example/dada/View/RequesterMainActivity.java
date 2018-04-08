@@ -20,9 +20,11 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dada.Controller.TaskController;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
@@ -124,13 +126,24 @@ public class RequesterMainActivity extends AppCompatActivity
     });
 
     // normal task
-    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            Task t = (Task) o;
-            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
-        }
-    });
+    private ArrayList<Task> offlineRequesterList = new ArrayList<>();
+
+    private TaskController taskController = new TaskController(
+            new OnAsyncTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Object o) {
+                    Task t = (Task) o;
+                    FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+                }
+            },
+            new OnAsyncTaskFailure() {
+                @Override
+                public void onTaskFailed (Object o){
+                    Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
+                    offlineRequesterList.add((Task) o);
+                    FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -866,6 +879,17 @@ public class RequesterMainActivity extends AppCompatActivity
 //        doneTaskListView.setAdapter(null);
     }
 
+    protected void updateOfflineRequest() {
+        ArrayList<String> offlineList = TaskUtil.getOfflineTaskList(getApplicationContext());
+        if (offlineList == null) return;
+        offlineRequesterList = FileIOUtil.loadTaskFromFile(getApplicationContext(), offlineList);
+        for (Task t : offlineRequesterList) {
+            if (t.getRequesterUserName().equals(requester.getUserName())) {
+                taskController.createTask(t);
+                deleteFile(TaskUtil.generateOfflineTaskFileName(t));
+            }
+        }
+    }
 
 
     @Override
@@ -883,13 +907,14 @@ public class RequesterMainActivity extends AppCompatActivity
     public void onDisconnect() {
         Log.i("Debug ---------->", "Offline");
         offlineHandler();
-        taskController.getRequesterOfflineTask(requester.getUserName(), this);
+        requestedTaskController.getRequesterOfflineTask(requester.getUserName(), this);
     }
 
     @Override
     public void onConnect() {
         // try to update after regain internet access
         requestedTaskController.updateRequesterOfflineTask(requester.getUserName(), this);
+        updateOfflineRequest();
         updateTaskList();
     }
 

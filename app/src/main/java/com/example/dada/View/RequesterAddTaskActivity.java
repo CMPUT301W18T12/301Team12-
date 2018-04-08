@@ -71,7 +71,7 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
 
     private Merlin merlin;
 
-    private ArrayList<Task> offlineRequestList = new ArrayList<>();
+    private ArrayList<Task> offlineRequesterList = new ArrayList<>();
 
     private TaskController taskController = new TaskController(
         new OnAsyncTaskCompleted() {
@@ -85,7 +85,7 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
             @Override
             public void onTaskFailed (Object o){
                 Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
-                offlineRequestList.add((Task) o);
+                offlineRequesterList.add((Task) o);
                 FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
             }
         });
@@ -189,8 +189,8 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
     protected void updateOfflineRequest() {
         ArrayList<String> offlineList = TaskUtil.getOfflineTaskList(getApplicationContext());
         if (offlineList == null) return;
-        offlineRequestList = FileIOUtil.loadTaskFromFile(getApplicationContext(), offlineList);
-        for (Task t : offlineRequestList) {
+        offlineRequesterList = FileIOUtil.loadTaskFromFile(getApplicationContext(), offlineList);
+        for (Task t : offlineRequesterList) {
             if (t.getRequesterUserName().equals(requester.getUserName())) {
                 taskController.createTask(t);
                 deleteFile(TaskUtil.generateOfflineTaskFileName(t));
@@ -215,6 +215,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
 
     @Override
     public void onDisconnect() {
-        Log.i("Debug", "Disconnect");
+        taskController.getRequesterOfflineTask(requester.getUserName(), this);
     }
 }
