@@ -61,7 +61,7 @@ public class RequesterAddTaskLocationActivity extends FragmentActivity implement
         mMap = googleMap;
 
         LatLng currLoc = new LatLng(latitude, longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currLoc, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currLoc, 12));
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

@@ -39,8 +39,8 @@ public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMap
             tasks = (ArrayList<Task>) o;
 
             for ( Task task : tasks){
-
-                if (task.getStatus() == "requested" || task.getStatus() == "bidded") {
+                String status = task.getStatus();
+                if (status.equals("requested") || status.equals("bidded")) {
                     LatLng marker = new LatLng(task.getCoordinates().get(1), task.getCoordinates().get(0));
                     mMap.addMarker(new MarkerOptions().position(marker).title("Marker"));
                 }

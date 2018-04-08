@@ -43,7 +43,6 @@ public class RequesterDetailMapActivity extends FragmentActivity implements OnMa
         Double lon = Double.parseDouble(s[0]);
         Double lan = Double.parseDouble(s[1]);
 
-
         // Add a marker in Sydney and move the camera
         LatLng position = new LatLng(lan, lon);
         mMap.addMarker(new MarkerOptions().position(position));
