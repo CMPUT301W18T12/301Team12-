@@ -619,6 +619,7 @@ public abstract class Task {
                 if ( bid.get(0).equals(providerUserName) ){
                    setPrice(Double.parseDouble(bid.get(1)));
                    bidList.remove(bid);
+                   break;
                 }
             }
         }
