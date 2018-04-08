@@ -579,7 +579,7 @@ public class TaskController {
      * @param task the task to be assigned completed
      * @param providerUserName the provider user name
      */
-    public void requesterAssignToBidTask(Task task, String providerUserName) throws TaskException {
+    public void requesterCancelAssignedTask(Task task, String providerUserName) throws TaskException {
         task.requesterCancelAssigned(providerUserName);
         updateTask(task);
     }
