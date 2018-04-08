@@ -186,18 +186,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
         }
     }
 
-    protected void updateOfflineRequest() {
-        ArrayList<String> offlineList = TaskUtil.getOfflineTaskList(getApplicationContext());
-        if (offlineList == null) return;
-        offlineRequesterList = FileIOUtil.loadTaskFromFile(getApplicationContext(), offlineList);
-        for (Task t : offlineRequesterList) {
-            if (t.getRequesterUserName().equals(requester.getUserName())) {
-                taskController.createTask(t);
-                deleteFile(TaskUtil.generateOfflineTaskFileName(t));
-            }
-        }
-    }
-
     @Override
     public void onBind(NetworkStatus networkStatus) {
         if (!networkStatus.isAvailable()) {
@@ -210,11 +198,11 @@ public class RequesterAddTaskActivity extends AppCompatActivity implements Conne
     @Override
     public void onConnect() {
         Log.i("Debug", "Connected");
-        updateOfflineRequest();
     }
 
     @Override
     public void onDisconnect() {
-        taskController.getRequesterOfflineTask(requester.getUserName(), this);
+        Log.i("Debug ---------->", "Offline");
     }
+
 }
