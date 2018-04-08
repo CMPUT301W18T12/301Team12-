@@ -682,7 +682,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("All Tasks");
 
-            requestedTaskListView = findViewById(R.id.listView_requestedTask_all_RequesterMainActivity);
+            requestedTaskListView = findViewById(R.id.listView_requestedTask_RequesterMainActivity);
             requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -692,7 +692,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            biddedTaskListView = findViewById(R.id.listView_biddedTask_all_RequesterMainActivity);
+            biddedTaskListView = findViewById(R.id.listView_biddedTask_RequesterMainActivity);
             biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -701,7 +701,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            assignedTaskListView = findViewById(R.id.listView_assignedTask_all_RequesterMainActivity);
+            assignedTaskListView = findViewById(R.id.listView_assignedTask_RequesterMainActivity);
             assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -710,7 +710,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
 
-            doneTaskListView = findViewById(R.id.listView_doneTask_all_RequesterMainActivity);
+            doneTaskListView = findViewById(R.id.listView_doneTask_RequesterMainActivity);
             doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -756,7 +756,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Requested Tasks");
 
-            requestedTaskListView = findViewById(R.id.listView_requestedTask_all_RequesterMainActivity);
+            requestedTaskListView = findViewById(R.id.listView_requestedTask_RequesterMainActivity);
             requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -777,7 +777,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Bidded Tasks");
 
-            biddedTaskListView = findViewById(R.id.listView_biddedTask_all_RequesterMainActivity);
+            biddedTaskListView = findViewById(R.id.listView_biddedTask_RequesterMainActivity);
             biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -797,7 +797,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Assigned Tasks");
 
-            assignedTaskListView = findViewById(R.id.listView_assignedTask_all_RequesterMainActivity);
+            assignedTaskListView = findViewById(R.id.listView_assignedTask_RequesterMainActivity);
             assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -817,7 +817,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
             textView.setText("Done Tasks");
 
-            doneTaskListView = findViewById(R.id.listView_doneTask_all_RequesterMainActivity);
+            doneTaskListView = findViewById(R.id.listView_doneTask_RequesterMainActivity);
             doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
