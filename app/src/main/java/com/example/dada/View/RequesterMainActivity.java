@@ -161,6 +161,7 @@ public class RequesterMainActivity extends AppCompatActivity
         merlin.registerConnectable(this);
         merlin.registerDisconnectable(this);
         merlin.registerBindable(this);
+        merlin.bind();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -674,7 +675,7 @@ public class RequesterMainActivity extends AppCompatActivity
      *  Set click for different sorting situation
      * @param sortType
      */
-    public void setListView(String sortType){
+    public void setListView(final String sortType){
         Log.i("Method start----->", "ResquesterMainActivity setListView");
         TextView textView = (TextView) findViewById(R.id.editText_allTask_RequesterMainActivity);
         if (sortType.equals("all")){
@@ -913,17 +914,11 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onConnect() {
         // try to update after regain internet access
-        requestedTaskController.updateRequesterOfflineTask(requester.getUserName(), this);
+
         updateOfflineRequest();
-        updateTaskList();
+        taskController.updateRequesterOfflineTask(requester.getUserName(), this);
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        merlin.bind();
-        onStart();
-    }
 
     @Override
     protected void onPause() {
