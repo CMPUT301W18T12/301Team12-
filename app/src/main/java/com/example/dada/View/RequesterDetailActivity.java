@@ -142,9 +142,13 @@ public class RequesterDetailActivity extends ListActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             ArrayList<ArrayList<String>> bidList = task.getBidList();
-                            bidList.remove(i);
-                            task.setBidList(bidList);
-                            if (bidList == null) {
+                            if (bidList.size() > 1){
+                                bidList.remove(i);
+                                task.setBidList(bidList);
+                            }
+                            else{
+                                bidList.clear();
+                                task.setBidList(bidList);
                                 task.setStatus(statusRequested.toLowerCase());
                             }
                             taskController.updateTask(task);

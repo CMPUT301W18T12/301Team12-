@@ -626,6 +626,29 @@ public abstract class Task {
     }
 
     /**
+     * Requester decline bid from provider.
+     *
+     * @param  providerUserName the provider user name
+     * @throws TaskException    raise exception when request has not been confirmed
+     */
+    public void requesterDeclineBid(String providerUserName) throws TaskException {
+        if (bidList == null || bidList.isEmpty()) {
+            // If the task has not been bidded yet
+            throw new TaskException("This task has not been bidded by any provider yet");
+        } else {
+            // Assigned provider
+            assert getStatus().equals("bidded");
+            for ( ArrayList<String> bid : bidList ){
+                if ( bid.get(0).equals(providerUserName) ){
+                    setPrice(Double.parseDouble(bid.get(1)));
+                    bidList.remove(bid);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Requester move provider from assigned to bidded or requested.
      *
      * @param  providerUserName the provider user namen
