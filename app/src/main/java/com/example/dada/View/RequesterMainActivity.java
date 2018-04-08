@@ -97,7 +97,7 @@ public class RequesterMainActivity extends AppCompatActivity
         @Override
         public void onTaskCompleted(Object o) {
             doneTaskList = (ArrayList<Task>) o;
-            doneTaskList.clear();
+            doneTaskAdapter.clear();
             doneTaskAdapter.addAll(doneTaskList);
             doneTaskAdapter.notifyDataSetChanged();
         }
