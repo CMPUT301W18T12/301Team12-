@@ -68,7 +68,10 @@
             android:label="@string/title_activity_requester_add_task_location" />
         <activity
             android:name=".View.RequesterDetailMapActivity"
-            android:label="@string/title_activity_requester_detail_map"></activity>
+            android:label="@string/title_activity_requester_detail_map" />
+        <activity
+            android:name=".View.ProviderShowTasks5kmOnMap"
+            android:label="@string/title_activity_requester_show_tasks5km_on_map"></activity>
     </application>
 
 </manifest>

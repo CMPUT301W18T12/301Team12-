@@ -33,7 +33,6 @@ import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import im.delight.android.location.SimpleLocation;
 
@@ -157,11 +156,6 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
-    private TaskController mapTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {}
-    });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,9 +255,6 @@ public class ProviderMainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-
-
-
 
         requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
         biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
@@ -399,6 +390,12 @@ public class ProviderMainActivity extends AppCompatActivity
             alert.show();
 
         }
+        else if (id == R.id.nav_location) {
+            // display all requested/bidded tasks on mao
+            Intent intentLocationMap = new Intent(getApplicationContext(), ProviderShowTasks5kmOnMap.class);
+//            intentDetailMap.putExtra("coordinates", coordinates);
+            startActivity(intentLocationMap);
+        }
         else if (id == R.id.nav_logout) {
 
             // intent to login activity
@@ -412,10 +409,6 @@ public class ProviderMainActivity extends AppCompatActivity
 
     private void updateTaskList() {
 
-        List<Double> co = new ArrayList<>();
-        co.add(-122.0843);
-        co.add(37.4190);
-        mapTaskController.searchTaskByGeoLocation(co);
         requestedTaskController.getProviderRequestedTask();
         biddedTaskController.getProviderBiddedTask();
         assignedTaskController.getProviderAssignedTask(provider.getUserName());

@@ -1,5 +1,6 @@
 package com.example.dada.Util;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -57,6 +59,7 @@ public class GPSTracker extends Service implements LocationListener {
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
@@ -99,7 +102,7 @@ public class GPSTracker extends Service implements LocationListener {
                             }
                         }
                     } catch (SecurityException e) {
-                        System.out.println("gps"); // lets the user know there is a problem with the gps
+                        e.printStackTrace();
                     }
                 }
             }
