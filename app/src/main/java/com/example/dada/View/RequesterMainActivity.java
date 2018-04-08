@@ -103,27 +103,6 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
-    // assign bidded task
-    private TaskController assignBiddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            biddedTaskAdapter.remove((Task) o);
-            assignedTaskAdapter.add((Task) o);
-            biddedTaskAdapter.notifyDataSetChanged();
-            assignedTaskAdapter.notifyDataSetChanged();
-        }
-    });
-
-    // done assigned task
-    private TaskController DoneAssignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            assignedTaskList.remove((Task) o);
-            doneTaskList.add((Task) o);
-            assignedTaskAdapter.notifyDataSetChanged();
-            doneTaskAdapter.notifyDataSetChanged();
-        }
-    });
 
     // normal task
     private ArrayList<Task> offlineRequesterList = new ArrayList<>();
