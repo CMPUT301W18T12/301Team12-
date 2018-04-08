@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Dada</string>
     <string name="title_activity_signup">SignupActivity</string>
-    <string name="title_activity_provider_main">ProviderMainActivity</string>
+    <string name="title_activity_provider_main">Provider</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,7 +11,7 @@
     <string name="title_activity_requester_browse_task">RequesterBrowseTaskActivity</string>
     <string name="title_activity_provider_browse_task">ProviderBrowseTaskActivity</string>
 
-    <string name="title_activity_requester_main"></string>
+    <string name="title_activity_requester_main">Requester</string>
     <string name="image_button">button</string>
 
     <string name="task_picture">task_picture</string>

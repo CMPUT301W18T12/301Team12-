@@ -14,6 +14,7 @@ package com.example.dada.ActivityTest;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import android.widget.EditText;
 
 import com.example.dada.R;
 import com.example.dada.View.RequesterMainActivity;
