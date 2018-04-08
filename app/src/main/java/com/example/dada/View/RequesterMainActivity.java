@@ -883,6 +883,7 @@ public class RequesterMainActivity extends AppCompatActivity
     public void onDisconnect() {
         Log.i("Debug ---------->", "Offline");
         offlineHandler();
+        taskController.getRequesterOfflineTask(requester.getUserName(), this);
     }
 
     @Override
@@ -901,8 +902,8 @@ public class RequesterMainActivity extends AppCompatActivity
 
     @Override
     protected void onPause() {
-        super.onPause();
         merlin.unbind();
+        super.onPause();
     }
 
     @Override

@@ -35,16 +35,23 @@ import com.example.dada.Controller.TaskController;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.RequestedTask;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.example.dada.Util.TaskUtil;
+import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import java.io.File;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import im.delight.android.location.SimpleLocation;
@@ -53,7 +60,7 @@ import im.delight.android.location.SimpleLocation;
  * activity to handle interface of adding new task from user
  */
 
-public class RequesterAddTaskActivity extends AppCompatActivity {
+public class RequesterAddTaskActivity extends AppCompatActivity implements Connectable, Disconnectable, Bindable {
     private EditText titleText;
     private EditText descriptionText;
     private User requester;
@@ -62,13 +69,26 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
     private Bitmap photo;
     private Locations location;
 
-    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            Task t = (Task) o;
-            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
-        }
-    });
+    private Merlin merlin;
+
+    private ArrayList<Task> offlineRequestList = new ArrayList<>();
+
+    private TaskController taskController = new TaskController(
+        new OnAsyncTaskCompleted() {
+            @Override
+            public void onTaskCompleted(Object o) {
+                Task t = (Task) o;
+                FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+            }
+        },
+        new OnAsyncTaskFailure() {
+            @Override
+            public void onTaskFailed (Object o){
+                Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
+                offlineRequestList.add((Task) o);
+                FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
+            }
+        });
 
 
     @Override
@@ -79,6 +99,12 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // monitor network connectivity
+        merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
+        merlin.registerConnectable(this);
+        merlin.registerDisconnectable(this);
+        merlin.registerBindable(this);
 
         titleText = findViewById(R.id.editText_requester_add_task_title);
         descriptionText = findViewById(R.id.editText_requester_add_task_description);
@@ -160,4 +186,35 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         }
     }
 
+    protected void updateOfflineRequest() {
+        ArrayList<String> offlineList = TaskUtil.getOfflineTaskList(getApplicationContext());
+        if (offlineList == null) return;
+        offlineRequestList = FileIOUtil.loadTaskFromFile(getApplicationContext(), offlineList);
+        for (Task t : offlineRequestList) {
+            if (t.getRequesterUserName().equals(requester.getUserName())) {
+                taskController.createTask(t);
+                deleteFile(TaskUtil.generateOfflineTaskFileName(t));
+            }
+        }
+    }
+
+    @Override
+    public void onBind(NetworkStatus networkStatus) {
+        if (!networkStatus.isAvailable()) {
+            onDisconnect();
+        } else if (networkStatus.isAvailable()) {
+            onConnect();
+        }
+    }
+
+    @Override
+    public void onConnect() {
+        Log.i("Debug", "Connected");
+        updateOfflineRequest();
+    }
+
+    @Override
+    public void onDisconnect() {
+        Log.i("Debug", "Disconnect");
+    }
 }

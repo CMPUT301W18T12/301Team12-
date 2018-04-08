@@ -7,6 +7,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dada.Controller.UserController;
@@ -21,6 +22,7 @@ public class UserEditProfileActivity extends AppCompatActivity {
     private EditText usernameText;
     private EditText emailText;
     private EditText mobileText;
+
 
     private Button saveButton;
     private User user;
@@ -43,7 +45,6 @@ public class UserEditProfileActivity extends AppCompatActivity {
         usernameText = findViewById(R.id.editText_userName_EditUserProfileActivity);
         emailText = findViewById(R.id.editText_email_EditUserProfileActivity);
         mobileText = findViewById(R.id.editText_mobile_EditUserProfileActivity);
-
         saveButton = findViewById(R.id.button_save_EditUserProfileActivity);
         assert saveButton != null;
 
