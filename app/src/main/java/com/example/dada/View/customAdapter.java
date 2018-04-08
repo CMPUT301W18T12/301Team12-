@@ -191,7 +191,7 @@ public class customAdapter extends ArrayAdapter<Task>{
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
             if (true) {
                 //imageView.setImageBitmap();
-                imageView.setImageResource(R.drawable.temp_taskimg);
+                imageView.setImageBitmap(task.getImg());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             }
             // set map button
@@ -209,7 +209,7 @@ public class customAdapter extends ArrayAdapter<Task>{
 
             textViewName.setText(requester.getUserName());
             textViewPhone.setText(requester.getPhone());
-            imageViewHead.setImageResource(R.drawable.temp_head);                           // temp
+            imageViewHead.setImageBitmap(requester.getProfile_photo());                           // temp
 
 
             textViewStatus.setText(task.getStatus().toUpperCase());

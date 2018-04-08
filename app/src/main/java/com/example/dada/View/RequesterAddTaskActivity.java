@@ -164,6 +164,23 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            // https://blog.csdn.net/nupt123456789/article/details/7844076
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String path = cursor.getString(columnIndex);
+            cursor.close();
+            File file = new File(path);
+            if (file.length() > 65536) {
+                Toast.makeText(this, "Image file is larger than 64 KB.", Toast.LENGTH_SHORT);
+                return;
+            }
+            if (file.length() == 0) {
+                Toast.makeText(this, "File cannot be access or not exist.", Toast.LENGTH_SHORT);
+                return;
+            }
             try {
                 photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton2);
