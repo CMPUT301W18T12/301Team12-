@@ -1,7 +1,9 @@
 package com.example.dada.View;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -44,16 +47,22 @@ public class ProviderMainActivity extends AppCompatActivity
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
     private ListView doneTaskListView;
+    private ListView requestedSearchTaskListView;
+    private ListView biddedSearchTaskListView;
 
     private customAdapter requestedTaskAdapter;
     private customAdapter biddedTaskAdapter;
     private customAdapter assignedTaskAdapter;
     private customAdapter doneTaskAdapter;
+    private customAdapter requestedSearchTaskAdapter;
+    private customAdapter biddedSearchTaskAdapter;
 
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> doneTaskList = new ArrayList<>();
+    private ArrayList<Task> requestedSearchTaskList = new ArrayList<>();
+    private ArrayList<Task> biddedSearchTaskList = new ArrayList<>();
 
     private SimpleLocation location;
 
@@ -97,6 +106,26 @@ public class ProviderMainActivity extends AppCompatActivity
             doneTaskAdapter.clear();
             doneTaskAdapter.addAll(doneTaskList);
             doneTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private TaskController requestedSearchTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            requestedSearchTaskList = (ArrayList<Task>) o;
+            requestedSearchTaskAdapter.clear();
+            requestedSearchTaskAdapter.addAll(requestedSearchTaskList);
+            requestedSearchTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private TaskController biddedSearchTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            biddedSearchTaskList = (ArrayList<Task>) o;
+            biddedSearchTaskAdapter.clear();
+            biddedSearchTaskList.addAll(biddedSearchTaskList);
+            biddedSearchTaskAdapter.notifyDataSetChanged();
         }
     });
 
@@ -203,6 +232,24 @@ public class ProviderMainActivity extends AppCompatActivity
             }
         });
 
+        requestedSearchTaskListView = findViewById(R.id.listView_requestedSearchTask_ProviderMainActivity);
+        requestedSearchTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // open requested task dialog
+                openRequestedTaskDetail(requestedSearchTaskList.get(position));
+            }
+        });
+
+        biddedSearchTaskListView = findViewById(R.id.listView_biddedSearchTask_ProviderMainActivity);
+        biddedSearchTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // open bidded task dialog
+                openBiddedTaskDetail(biddedSearchTaskList.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -212,6 +259,8 @@ public class ProviderMainActivity extends AppCompatActivity
         biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
         assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
         doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
+        requestedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedSearchTaskList);
+        biddedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedSearchTaskList);
 
         setAdapter(sortType);
 
@@ -302,13 +351,60 @@ public class ProviderMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        else if (id == R.id.nav_search_Pmain) {
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+            alert.setTitle("Search Task");
+            alert.setMessage("Enter the keyword for search");
+
+            // Set an EditText view to get user input
+            final EditText input = new EditText(this);
+            alert.setView(input);
+
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    // Do something with value!
+                    onStart();
+                    clearListView(sortType);
+                    requestedSearchTaskController.getProviderRequestedTask();
+                    biddedSearchTaskController.searchBiddedTaskByKeyword("3");
+
+                    sortType = "search";
+                    setListView(sortType);
+                    setAdapter(sortType);
+
+
+                }
+            });
+
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                    onStart();
+                    clearListView(sortType);
+                    sortType = "search";
+                }
+            });
+
+            alert.show();
+
+
+
+//            onStart();
+//            requestedSearchTaskController.searchRequestedTaskByKeyword("1");
+//            clearListView(sortType);
+//            sortType = "search";
+//            setListView(sortType);
+//            setAdapter(sortType);
+
+        }
         else if (id == R.id.nav_logout) {
 
             // intent to login activity
-//            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_provider_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -370,6 +466,22 @@ public class ProviderMainActivity extends AppCompatActivity
 
     }
 
+    private void openRequestedSearchTaskDetail(final Task task) {
+        Log.i("Method start----->", "ProviderMainActivity openRequestedSearchTaskDetail");
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+
+    }
+
+    private void openBiddedSearchTaskDetail(final Task task) {
+        Log.i("Method start----->", "ProviderMainActivity openBiddedSearchTaskDetail");
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
+
+    }
+
     /**
      * Once the device went offline, try to get task list from internal storage
      */
@@ -398,6 +510,10 @@ public class ProviderMainActivity extends AppCompatActivity
         }
         else if (sortType.equals("done")){
             doneTaskListView.setAdapter(doneTaskAdapter);
+        }
+        else if (sortType.equals("search")){
+            requestedSearchTaskListView.setAdapter(requestedSearchTaskAdapter);
+            biddedSearchTaskListView.setAdapter(biddedSearchTaskAdapter);
         }
     }
 
@@ -501,6 +617,28 @@ public class ProviderMainActivity extends AppCompatActivity
                 }
             });
         }
+        else if(sortType.equals("search")){
+            textView.setText("Search Result");
+
+            requestedSearchTaskListView = findViewById(R.id.listView_requestedSearchTask_ProviderMainActivity);
+            requestedSearchTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open requested task info dialog
+                    openRequestedTaskDetail(requestedSearchTaskList.get(position));
+
+                }
+            });
+
+            biddedSearchTaskListView = findViewById(R.id.listView_biddedSearchTask_ProviderMainActivity);
+            biddedSearchTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // open bidded task info dialog
+                    openBiddedTaskDetail(biddedSearchTaskList.get(position));
+                }
+            });
+        }
     }
 
     public void clearListView(String oldSortType){
@@ -521,6 +659,10 @@ public class ProviderMainActivity extends AppCompatActivity
         }
         else if(oldSortType.equals("done")){
             doneTaskListView.setAdapter(null);
+        }
+        else if(oldSortType.equals("search")) {
+            requestedSearchTaskListView.setAdapter(null);
+            biddedSearchTaskListView.setAdapter(null);
         }
 //        requestedTaskListView.setAdapter(null);
 //        biddedTaskListView.setAdapter(null);

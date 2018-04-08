@@ -41,6 +41,15 @@
             android:title="Done Task" />
     </group>
 
+    <group
+        android:id="@+id/Pmenu_search"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_search_Pmain"
+            android:icon="@drawable/ic_search_white"
+            android:title="Search Task" />
+    </group>
+
     <item android:title="">
         <menu>
             <item

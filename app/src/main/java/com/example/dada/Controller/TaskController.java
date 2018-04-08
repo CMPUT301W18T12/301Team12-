@@ -158,7 +158,7 @@ public class TaskController {
                 "{\n" +
                         "    \"query\": {\n" +
                         "       \"match\" : {\n" +
-                        "           \"taskDescription\" : \"%s\" \n" +
+                        "           \"description\" : \"%s\" \n" +
                         "       }\n" +
                         "    },\n" +
                         "    \"filter\": {\n" +
@@ -174,6 +174,7 @@ public class TaskController {
         task.execute(query);
     }
 
+
     /**
      * Get a list of tasks that match the keyword
      *
@@ -185,7 +186,7 @@ public class TaskController {
                 "{\n" +
                         "    \"query\": {\n" +
                         "       \"match\" : {\n" +
-                        "           \"taskDescription\" : \"%s\" \n" +
+                        "           \"description\" : \"%s\" \n" +
                         "       }\n" +
                         "    },\n" +
                         "    \"filter\": {\n" +
