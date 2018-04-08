@@ -18,14 +18,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="All Tasks"
-        app:layout_constraintBottom_toTopOf="@+id/listView_requestedTask_all_RequesterMainActivity"
+        app:layout_constraintBottom_toTopOf="@+id/listView_requestedTask_RequesterMainActivity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/listView_requestedTask_all_RequesterMainActivity"
+        android:id="@+id/listView_requestedTask_RequesterMainActivity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_allTask_RequesterMainActivity" />
 
     <ListView
-        android:id="@+id/listView_biddedTask_all_RequesterMainActivity"
+        android:id="@+id/listView_biddedTask_RequesterMainActivity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -47,10 +47,10 @@
         android:dividerHeight="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView_requestedTask_all_RequesterMainActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/listView_requestedTask_RequesterMainActivity" />
 
     <ListView
-        android:id="@+id/listView_assignedTask_all_RequesterMainActivity"
+        android:id="@+id/listView_assignedTask_RequesterMainActivity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -60,10 +60,10 @@
         android:dividerHeight="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView_biddedTask_all_RequesterMainActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/listView_biddedTask_RequesterMainActivity" />
 
     <ListView
-        android:id="@+id/listView_doneTask_all_RequesterMainActivity"
+        android:id="@+id/listView_doneTask_RequesterMainActivity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -73,5 +73,5 @@
         android:dividerHeight="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView_assignedTask_all_RequesterMainActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/listView_assignedTask_RequesterMainActivity" />
 </android.support.constraint.ConstraintLayout>
