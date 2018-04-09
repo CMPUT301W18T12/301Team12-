@@ -31,12 +31,16 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:contentDescription="@string/image_button"
+        android:id="@+id/taskDetailMapBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/image_button"
-        tools:layout_editor_absoluteX="344dp"
-        tools:layout_editor_absoluteY="249dp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBackground" />
 
     <TextView
         android:id="@+id/textViewDescription"
@@ -46,9 +50,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Description Description Description Description Description Description Description"
         app:layout_constraintBottom_toTopOf="@+id/textViewLowestPrice"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/taskDetailMapBtn"
         app:layout_constraintStart_toStartOf="@+id/imageViewBackground"
         app:layout_constraintTop_toTopOf="@+id/imageViewBackground" />
 
@@ -145,7 +148,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:hint="Please"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
