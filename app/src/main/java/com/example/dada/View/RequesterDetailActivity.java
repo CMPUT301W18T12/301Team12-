@@ -241,7 +241,6 @@ public class RequesterDetailActivity extends ListActivity {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         //imageView.setImageBitmap();
 
-        Log.i("DEBUG----->", task.getImgStr());
 
         if (task.getImg() != null) {
             //imageView.setImageBitmap();
@@ -274,14 +273,20 @@ public class RequesterDetailActivity extends ListActivity {
 
         textViewStatus.setText(task.getStatus().toUpperCase());
 
+        if (task.getStatus().toUpperCase().equals(statusRequested)) {
+            imageViewStatus.setBackgroundColor(Color.parseColor("#FF3333"));
+        }
+
         if (task.getStatus().toUpperCase().equals(statusBidded)) {
-            Log.i("Tracing----->", task.getStatus());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#33FFFF"));
             imageViewStatus.setColorFilter(Color.MAGENTA);
             listView.setVisibility(View.VISIBLE);
             setListview();
         }
         if (task.getStatus().toUpperCase().equals(statusAssigned)) {
-            Log.i("Tracing----->", task.getStatus());
+
+            textViewLowestPrice.setText("Your assigned price is $"+ task.getPrice());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#33FF33"));
             imageViewStatus.setColorFilter(Color.RED);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());
@@ -300,7 +305,8 @@ public class RequesterDetailActivity extends ListActivity {
         }
 
         if (task.getStatus().toUpperCase().equals(statusDone)) {
-            Log.i("Tracing----->", task.getStatus());
+            textViewLowestPrice.setText("Your final price is $"+ task.getPrice());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#3333FF"));
             imageViewStatus.setColorFilter(Color.GREEN);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
