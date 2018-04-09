@@ -207,7 +207,7 @@ public class providerDetailActivity extends AppCompatActivity {
     public void onClickBid(View view) {
         EditText input = (EditText)findViewById(R.id.editTextInput);
         String value_str = input.getText().toString();
-        if (value_str == null) {
+        if (value_str.equals("") || value_str.equals(".")) {
             Toast.makeText(this, "Please add price.", Toast.LENGTH_SHORT).show();
             return;
         }
