@@ -196,7 +196,8 @@ public class RequesterDetailActivity extends ListActivity {
         TextView textViewDescription = (TextView)findViewById(R.id.textViewDescription);
         textViewDescription.setText(task.getDescription());
 
-        double lowestPrice = task.getPrice();
+
+        double lowestPrice = task.getLowestPrice();
         TextView textViewLowestPrice = (TextView)findViewById(R.id.textViewLowestPrice);
         textViewLowestPrice.setText("Lowest Price Right Now: $" + lowestPrice);
         //Should not allow it since bid cannot with price 0
@@ -253,7 +254,7 @@ public class RequesterDetailActivity extends ListActivity {
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());
             if (provider.getProfile_photo() != null) {//^_^//
-                imageViewHead.setImageBitmap(provider.getProfile_photo());
+                // imageViewHead.setImageBitmap(provider.getProfile_photo());
             } else {
                 Toast.makeText(this, "Did not find user image. Replace by default", Toast.LENGTH_SHORT).show();
                 imageViewHead.setImageResource(R.drawable.temp_head);
@@ -272,7 +273,7 @@ public class RequesterDetailActivity extends ListActivity {
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
             if (provider.getProfile_photo() != null) {//^_^//
-                imageViewHead.setImageBitmap(provider.getProfile_photo());
+                // imageViewHead.setImageBitmap(provider.getProfile_photo());
             } else {
                 Toast.makeText(this, "Did not find user image. Replace by default", Toast.LENGTH_SHORT).show();
                 imageViewHead.setImageResource(R.drawable.temp_head);

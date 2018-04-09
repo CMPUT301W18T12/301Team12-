@@ -486,7 +486,7 @@ public class RequesterMainActivity extends AppCompatActivity
         String description = task.getDescription();
         String price = task.getPrice().toString();
         String providerUserName = task.getProviderUserName();
-
+        /**
         AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
 
         builder.setTitle("Task Information")
@@ -511,6 +511,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+         **/
     }
 
     /**
@@ -536,10 +537,12 @@ public class RequesterMainActivity extends AppCompatActivity
 
 
 
-                .setNegativeButton("edit", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Edit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Intent intent = new Intent(getApplicationContext(), RequesterEditTaskActivity.class);
+                        intent.putExtra("Task", TaskUtil.serializer(task));
+                        startActivity(intent);
                         dialog.dismiss();
 
                     }

@@ -178,7 +178,7 @@ public class customAdapter extends ArrayAdapter<Task>{
             TextView textViewDescription = (TextView)findViewById(R.id.textViewDescription);
             textViewDescription.setText(task.getDescription());
 
-            double lowestPrice = task.getPrice();
+            double lowestPrice = task.getLowestPrice();
             TextView textViewLowestPrice = (TextView)findViewById(R.id.textViewLowestPrice);
             textViewLowestPrice.setText("Lowest Price Right Now: $" + lowestPrice);
             //Should not allow it since bid cannot with price 0
@@ -193,7 +193,7 @@ public class customAdapter extends ArrayAdapter<Task>{
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
             if (task.getImg() != null) {
                 //imageView.setImageBitmap();
-                imageView.setImageBitmap(task.getImg());
+                //imageView.setImageBitmap(task.getImg());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             } else {
                 Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -211,12 +211,11 @@ public class customAdapter extends ArrayAdapter<Task>{
             ImageView imageViewHead = (ImageView)findViewById(R.id.circleImageView);
 
             requester = userController.getUser(task.getRequesterUserName());
-            Log.i("test--->",task.getRequesterUserName());
 
             textViewName.setText(requester.getUserName());
             textViewPhone.setText(requester.getPhone());
             if (requester.getProfile_photo() != null) {//^_^//
-                imageViewHead.setImageBitmap(requester.getProfile_photo());
+                // imageViewHead.setImageBitmap(requester.getProfile_photo());
             } else {
                 Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT).show();
                 imageViewHead.setImageResource(R.drawable.temp_head);
