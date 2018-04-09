@@ -11,6 +11,7 @@
 
 package com.example.dada.View;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -42,12 +43,18 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
+import com.google.gson.Gson;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -381,7 +388,8 @@ public class RequesterMainActivity extends AppCompatActivity
     private void openRequestedTaskDetail(final Task task){
         Log.i("Method start----->", "RequesterMainActivity openRequestedTaskDetail");
         Intent intent = new Intent(this, RequesterDetailActivity.class);
-        intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Filename", "Task");
+        saveInFile(task);
         startActivity(intent);
     }
 
@@ -394,7 +402,8 @@ public class RequesterMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ResquesterMainActivity openRequestedTaskDetail");
         // get task info, and show it on the dialog
         Intent intent = new Intent(this, RequesterDetailActivity.class);
-        intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Filename", "Task");
+        saveInFile(task);
         startActivity(intent);
     }
 
@@ -404,7 +413,8 @@ public class RequesterMainActivity extends AppCompatActivity
      */
     private void openAssignedTaskDetail(final Task task) {
         Intent intent = new Intent(this, RequesterDetailActivity.class);
-        intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Filename", "Task");
+        saveInFile(task);
         startActivity(intent);
     }
 
@@ -415,7 +425,8 @@ public class RequesterMainActivity extends AppCompatActivity
      */
     private void openDoneTaskDetail(final Task task) {
         Intent intent = new Intent(this, RequesterDetailActivity.class);
-        intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Filename", "Task");
+        saveInFile(task);
         startActivity(intent);
     }
 
@@ -857,6 +868,27 @@ public class RequesterMainActivity extends AppCompatActivity
         clearListView(sortType);
         setListView(sortType);
         setAdapter(sortType);
+    }
+
+    protected void saveInFile(Task task) {
+        Log.i("LifeCycle ---->", "save file is called");
+        try {
+            FileOutputStream fos = openFileOutput("Task", Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
+            Gson gson = new Gson();
+            String file = TaskUtil.serializer(task);
+            gson.toJson(file, out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            Log.i("LifeCycle ---->", "save error1 is called");
+            throw new RuntimeException();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.i("LifeCycle ---->", "save error2 is called");
+            throw new RuntimeException();
+        }
     }
 
 }

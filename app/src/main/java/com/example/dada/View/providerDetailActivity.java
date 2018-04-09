@@ -1,5 +1,6 @@
 package com.example.dada.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -24,7 +25,16 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +101,7 @@ public class providerDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_provider_detail);
         //more intent part need                                                              //^_^//
         Intent intent = getIntent();
-        task = TaskUtil.deserializer(intent.getStringExtra("Task"));
+        task = loadFromFile();
         providerName = intent.getStringExtra("Name");
         setViews();
 
@@ -326,6 +336,51 @@ public class providerDetailActivity extends AppCompatActivity {
         }
         if (photoIndex < 0) {
             photoIndex += 10;
+        }
+    }
+
+    protected Task loadFromFile() {
+        Log.i("LifeCycle ---->", "load file is called");
+        try {
+            FileInputStream fis = openFileInput("Task");
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+            Gson gson = new Gson();
+
+            //Taken https://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            // 2018-01-23
+            String file = gson.fromJson(in, String.class);
+            Task task = TaskUtil.deserializer(file);
+
+            return task;
+        } catch (FileNotFoundException e) {
+            Log.i("Error:", "Task load failed");
+            return task;
+        }
+    }
+
+    /**
+     * save the file to avoid data lost
+     *
+     */
+
+    protected void saveInFile(Task task) {
+        Log.i("LifeCycle ---->", "save file is called");
+        try {
+            FileOutputStream fos = openFileOutput("Task", Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
+            Gson gson = new Gson();
+            gson.toJson(task, out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            Log.i("LifeCycle ---->", "save error1 is called");
+            throw new RuntimeException();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.i("LifeCycle ---->", "save error2 is called");
+            throw new RuntimeException();
         }
     }
 }

@@ -12,6 +12,7 @@ package com.example.dada.View;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,8 +41,19 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -115,7 +127,9 @@ public class RequesterDetailActivity extends ListActivity {
         //more intent part need                                                              //^_^//
         Intent intent = getIntent();
         Log.i("ActivityStart----->", "RequesterDetailActivity");
-        task = TaskUtil.deserializer(intent.getStringExtra("Task"));
+        // task = TaskUtil.deserializer(intent.getStringExtra("Task"));
+        String name = intent.getStringExtra("Filename");
+        task = loadFromFile();
 
         setViews();
         task.setNewBid("0");
@@ -251,11 +265,16 @@ public class RequesterDetailActivity extends ListActivity {
 
 
         ArrayList<Bitmap> imgs = task.getImg();
-        if (imgs != null) {
+        int i;
+        if (imgs.size() > 0) {
             //imageView.setImageBitmap();
-            Log.i("photo"+photoIndex, "---------------------"+imgs.size());
-            int i = photoIndex % imgs.size();
-            imageView.setImageBitmap(task.getImg().get(i));
+            Log.i("photo" + photoIndex, "---------------------" + imgs.size());
+            if (imgs.size() == 0) {
+                i = 0;
+            } else {
+                i = photoIndex % imgs.size();
+            }
+            imageView.setImageBitmap(imgs.get(i));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -529,4 +548,52 @@ public class RequesterDetailActivity extends ListActivity {
         setViews();
     }
 
+    /**
+     * load function of the app in main class
+     */
+
+    protected Task loadFromFile() {
+        Log.i("LifeCycle ---->", "load file is called");
+        try {
+            FileInputStream fis = openFileInput("Task");
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+            Gson gson = new Gson();
+
+            //Taken https://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            // 2018-01-23
+            String file = gson.fromJson(in, String.class);
+            Task task = TaskUtil.deserializer(file);
+
+            return task;
+        } catch (FileNotFoundException e) {
+            Log.i("Error:", "Task load failed");
+            return task;
+        }
+    }
+
+    /**
+     * save the file to avoid data lost
+     *
+     */
+
+    protected void saveInFile(Task task) {
+        Log.i("LifeCycle ---->", "save file is called");
+        try {
+            FileOutputStream fos = openFileOutput("Task", Context.MODE_PRIVATE);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
+            Gson gson = new Gson();
+            gson.toJson(task, out);
+            out.flush();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            Log.i("LifeCycle ---->", "save error1 is called");
+            throw new RuntimeException();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.i("LifeCycle ---->", "save error2 is called");
+            throw new RuntimeException();
+        }
+    }
 }
