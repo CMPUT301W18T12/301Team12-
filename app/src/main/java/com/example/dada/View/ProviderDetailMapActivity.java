@@ -1,5 +1,5 @@
 /*
- * RequesterDetailMapActivity
+ * ProviderDetailMapActivity
  *
  *
  * April 9, 2018
@@ -21,17 +21,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class RequesterDetailMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ProviderDetailMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requester_detail_map);
+        setContentView(R.layout.activity_provider_detail_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_requester_detail);
+                .findFragmentById(R.id.map_provider_detail);
         mapFragment.getMapAsync(this);
     }
 

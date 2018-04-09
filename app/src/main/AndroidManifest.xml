@@ -48,7 +48,8 @@
             android:name=".View.RequesterMainActivity"
             android:label="@string/title_activity_requester_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View.providerDetailActivity"
+        <activity
+            android:name=".View.providerDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -71,7 +72,10 @@
         <activity
             android:name=".View.ProviderShowTasks5kmOnMap"
             android:label="@string/title_activity_requester_show_tasks5km_on_map" />
-        <activity android:name=".View.RequesterEditTaskActivity"></activity>
+        <activity android:name=".View.RequesterEditTaskActivity" />
+        <activity
+            android:name=".View.ProviderDetailMapActivity"
+            android:label="@string/title_activity_provider_detail_map"></activity>
     </application>
 
 </manifest>
