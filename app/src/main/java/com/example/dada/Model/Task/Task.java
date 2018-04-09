@@ -12,9 +12,11 @@
 package com.example.dada.Model.Task;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.dada.Constant;
@@ -51,7 +53,7 @@ public abstract class Task {
     private String status;
     private String requesterUserName;
     private String providerUserName;
-    private Bitmap img;
+    private String img;
     private List<Double> coordinates;
 
     private ArrayList<ArrayList<String>> bidList = new ArrayList<>();
@@ -106,7 +108,7 @@ public abstract class Task {
      * @param status
      * @param img image
      */
-    public Task(String title, String description, String requesterUserName, String status, Bitmap img) {
+    public Task(String title, String description, String requesterUserName, String status, String img) {
         this.title = title;
         this.description = description;
         this.status = status;
@@ -124,7 +126,7 @@ public abstract class Task {
      * @param img           image
      * @param coordinates   coordinates
      */
-    public Task(String title, String description, String requesterUserName, String status, Bitmap img, List<Double> coordinates) {
+    public Task(String title, String description, String requesterUserName, String status, String img, List<Double> coordinates) {
         this.title = title;
         this.description = description;
         this.status = status;
@@ -156,7 +158,7 @@ public abstract class Task {
      * @param price              the price
      * @param img
      */
-    public Task(String requesterUserName, String providerUserName, double price, Bitmap img) {
+    public Task(String requesterUserName, String providerUserName, double price, String img) {
         this.requesterUserName = requesterUserName;
         this.providerUserName = providerUserName;
         this.price = price;
@@ -172,7 +174,7 @@ public abstract class Task {
      * @param coordinates        coordinates
      * @param img                image
      */
-    public Task(String requesterUserName, String providerUserName, double price, Bitmap img, List<Double> coordinates) {
+    public Task(String requesterUserName, String providerUserName, double price, String img, List<Double> coordinates) {
         this.requesterUserName = requesterUserName;
         this.providerUserName = providerUserName;
         this.price = price;
@@ -219,7 +221,7 @@ public abstract class Task {
      * @param price                 the price
      * @param img                     the image
      */
-    public Task(String requesterUserName, ArrayList<String> bid, Double price, Bitmap img){
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, String img){
         this.requesterUserName = requesterUserName;
         this.bidList.add(bid);
         this.price = price;
@@ -235,7 +237,7 @@ public abstract class Task {
      * @param img                   the image
      * @param coordinates           the coordinates
      */
-    public Task(String requesterUserName, ArrayList<String> bid, Double price, Bitmap img, List<Double> coordinates){
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, String img, List<Double> coordinates){
         this.requesterUserName = requesterUserName;
         this.bidList.add(bid);
         this.price = price;
@@ -746,8 +748,17 @@ public abstract class Task {
 
     public void setBidList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
 
-    public Bitmap getImg() {return img;}
+    public Bitmap getImg() {
+        try{
+            byte [] encodeByte=Base64.decode(img, Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 
-    public void setImg(Bitmap img) {this.img = img;}
+    public void setImg(String img) {this.img = img;}
 
 }

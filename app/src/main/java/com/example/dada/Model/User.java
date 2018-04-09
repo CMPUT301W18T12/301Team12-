@@ -12,9 +12,11 @@
 package com.example.dada.Model;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.dada.Constant;
@@ -39,11 +41,11 @@ public class User {
     private String email;
 
     private int type;
-    private Bitmap profile_photo;
+    private String profile_photo;
 
     private transient static JestDroidClient client;
 
-    public User(String userName, String phone, Bitmap profile_photo, String email){
+    public User(String userName, String phone, String profile_photo, String email){
         this.userName = userName;
         this.phone = phone;
         this.profile_photo = profile_photo;
@@ -328,8 +330,17 @@ public class User {
 
     public void setEmail(String email){ this.email = email; }
 
-    public void setProfile_photo(Bitmap profile_photo) {this.profile_photo = profile_photo;}
+    public void setProfile_photo(String profile_photo) {this.profile_photo = profile_photo;}
 
-    public Bitmap getProfile_photo() {return profile_photo;}
+    public Bitmap getProfile_photo() {
+        try {
+            byte[] encodeByte = Base64.decode(profile_photo, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
 
 }

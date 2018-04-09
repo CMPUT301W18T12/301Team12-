@@ -132,7 +132,7 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
                     if (photo == null) {
                         task = new RequestedTask(title, description, requester.getUserName(), coordinates);
                     } else {
-                        task = new RequestedTask(title, description, requester.getUserName(), photo, coordinates);
+                        task = new RequestedTask(title, description, requester.getUserName(), photo.toString(), coordinates);
                     }
 
                     task.setID(UUID.randomUUID().toString());
