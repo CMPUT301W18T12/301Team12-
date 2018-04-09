@@ -171,6 +171,7 @@ public class RequesterDetailActivity extends ListActivity {
      */
 
     private void setViews(){
+        Log.i("debug---->", ""+task.getBidList());
         // set Toolbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(task.getTitle());
