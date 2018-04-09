@@ -515,7 +515,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
 
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("edit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 

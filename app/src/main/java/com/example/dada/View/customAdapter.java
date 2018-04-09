@@ -171,6 +171,8 @@ public class customAdapter extends ArrayAdapter<Task>{
             inputBack.setVisibility(View.GONE);
             Log.i("ActivityStart----->", "1");
 
+            input.setHint("Please in put the bid price");
+
             // Get from https://stackoverflow.com/questions/19452269/android-set-text-to-textview
             // Consider about 2 sides gravity                                                    //^_^//
             TextView textViewDescription = (TextView)findViewById(R.id.textViewDescription);
@@ -195,7 +197,7 @@ public class customAdapter extends ArrayAdapter<Task>{
                 imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             }
             // set map button
-            ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
+            ImageButton imageButton = (ImageButton)findViewById(R.id.taskDetailMapBtn);
             imageButton.setImageResource(R.drawable.ic_launcher_foreground);
             imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
@@ -250,19 +252,24 @@ public class customAdapter extends ArrayAdapter<Task>{
                     if (bided.get(0).equals(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName())) {
                         bided.remove(1);
                         bided.add(value_str);
+                        taskController.updateTask(task);
+                        setViews();
+                        finish();
                     }
                 }
-            } else {
-                ArrayList<String> bid = new ArrayList<String>();
-                bid.add(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName());
-                bid.add(value_str);
-                task.setStatus(statusBidded.toLowerCase());
-                bidList.add(bid);
-                task.setBidList(bidList);
             }
+
+            Log.i("debug----->","Not find in history");
+            ArrayList<String> bid = new ArrayList<String>();
+            bid.add(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName());
+            bid.add(value_str);
+            task.setStatus(statusBidded.toLowerCase());
+            bidList.add(bid);
+            task.setBidList(bidList);
             taskController.updateTask(task);
 
             setViews();
+            finish();
         }
 
 

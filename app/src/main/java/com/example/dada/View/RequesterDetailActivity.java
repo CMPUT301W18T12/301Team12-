@@ -209,11 +209,10 @@ public class RequesterDetailActivity extends ListActivity {
         TextView textViewStatus = (TextView)findViewById(R.id.textViewStatus);
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        if (true) {
-            //imageView.setImageBitmap();
-            imageView.setImageResource(R.drawable.temp_taskimg);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
+        //imageView.setImageBitmap();
+        Log.i("debug----->", ""+task.getImg());
+        imageView.setImageBitmap(task.getImg());
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
         // set map button
         ImageButton locationBtn = (ImageButton)findViewById(R.id.taskDetailMapBtn);
