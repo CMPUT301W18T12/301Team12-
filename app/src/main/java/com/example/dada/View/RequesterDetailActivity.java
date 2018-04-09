@@ -108,7 +108,7 @@ public class RequesterDetailActivity extends ListActivity {
         setContentView(R.layout.activity_requester_detail);
         //more intent part need                                                              //^_^//
         Intent intent = getIntent();
-        Log.i("ActivityStart----->", "ResquesterDetailActivity");
+        Log.i("ActivityStart----->", "RequesterDetailActivity");
         task = TaskUtil.deserializer(intent.getStringExtra("Task"));
 
         setViews();
@@ -124,9 +124,9 @@ public class RequesterDetailActivity extends ListActivity {
                     ArrayList<String> bid = task.getBidList().get(position);
                     providerName = bid.get(0);
                     AlertDialog.Builder builder = new AlertDialog.Builder(RequesterDetailActivity.this);
-                    builder.setMessage("What do you want to due with " + providerName + "'s bidded").setTitle("Notofocation");
+                    builder.setMessage("What do you want to do with " + providerName + "'s bid?").setTitle("Notification");
 
-                    builder.setPositiveButton("Is Him", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             try {
@@ -148,7 +148,7 @@ public class RequesterDetailActivity extends ListActivity {
                         }
                     });
 
-                    builder.setNeutralButton("Delete Him", new DialogInterface.OnClickListener() {
+                    builder.setNeutralButton("Decline", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             ArrayList<ArrayList<String>> bidList = task.getBidList();
