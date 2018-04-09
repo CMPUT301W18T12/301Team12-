@@ -85,6 +85,10 @@ public class SignupActivity extends AppCompatActivity {
         boolean validEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
         boolean validMobile = Patterns.PHONE.matcher(mobile).matches();
 
+        if (head == null) {
+            Toast.makeText(this, "Please upload your photograph.", Toast.LENGTH_SHORT).show();
+        }
+
         if (!(validUsername && validEmail && validMobile)) {
             Toast.makeText(this, "Username/Email/Mobile is not valid.", Toast.LENGTH_SHORT).show();
         } else {
@@ -93,7 +97,12 @@ public class SignupActivity extends AppCompatActivity {
             }
             else {
                 try {
-                    User user = new User(username, mobile, email);
+                    User user = new User();
+                    if (head != null) {
+                        user = new User(username, mobile, head, email);
+                    } else {
+                        user = new User(username, mobile, email);
+                    }
                     userController.addUser(user);
                     finish();
                 } catch (UserException e) {

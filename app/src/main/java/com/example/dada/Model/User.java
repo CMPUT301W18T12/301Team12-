@@ -43,12 +43,11 @@ public class User {
 
     private transient static JestDroidClient client;
 
-    public User(String userName, String ID, int type, Bitmap profile_photo, String phone){
+    public User(String userName, String phone, Bitmap profile_photo, String email){
         this.userName = userName;
-        this.ID = ID;
-        this.type = type;
-        this.profile_photo = profile_photo;
         this.phone = phone;
+        this.profile_photo = profile_photo;
+        this.phone = email;
     }
 
     /**
