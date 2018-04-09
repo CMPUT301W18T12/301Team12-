@@ -32,6 +32,8 @@ public class ProviderMainTest extends ActivityInstrumentationTestCase2{
         } catch (Exception e){
             Log.i("Test ------>", "testView: view has no value");
         }
+
+        solo.enterText((EditText) solo.getView(R.id.));
     }
 
     @Override
