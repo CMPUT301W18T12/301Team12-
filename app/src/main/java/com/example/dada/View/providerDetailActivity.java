@@ -165,7 +165,7 @@ public class providerDetailActivity extends AppCompatActivity {
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         ArrayList<Bitmap> imgs = task.getImg();
-        if (imgs != null) {
+        if (imgs.size() > 0) {
             //imageView.setImageBitmap();
             int i = photoIndex % imgs.size();
             imageView.setImageBitmap(task.getImg().get(i));
