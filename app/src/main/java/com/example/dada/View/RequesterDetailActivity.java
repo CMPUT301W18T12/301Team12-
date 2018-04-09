@@ -480,6 +480,11 @@ public class RequesterDetailActivity extends ListActivity {
 
     }
 
+    /**
+     * Not complete button action
+     * @param view click action
+     */
+
     public void notComOnClick(View view) {
         if (task.getStatus().toUpperCase().equals(statusAssigned)) {
             try {
@@ -492,6 +497,11 @@ public class RequesterDetailActivity extends ListActivity {
         }
     }
 
+    /**
+     * Turn to next picture
+     * @param view click action
+     */
+
     public void nextPic(View view) {
         photoIndex += 1;
         if (photoIndex > 9) {
@@ -502,6 +512,11 @@ public class RequesterDetailActivity extends ListActivity {
         }
         setViews();
     }
+
+    /**
+     * Turn to pre picture
+     * @param view  click action
+     */
 
     public void prePic(View view) {
         photoIndex -= 1;

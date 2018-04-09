@@ -166,7 +166,7 @@ public class TaskController {
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
-    
+
     /**
      * Get a list of tasks that match the keyword
      *

@@ -252,6 +252,10 @@ public class providerDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Click the bid, check the value and add the bid
+     * @param view click action
+     */
     public void onClickBid(View view) {
         EditText input = (EditText)findViewById(R.id.editTextInput);
         String value_str = input.getText().toString();
@@ -297,6 +301,10 @@ public class providerDetailActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Turn to next picture
+     * @param view click action
+     */
     public void nextPic(View view) {
         photoIndex += 1;
         if (photoIndex > 9) {
@@ -307,6 +315,10 @@ public class providerDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Turn to pre picture
+     * @param view click action
+     */
     public void prePic(View view) {
         photoIndex -= 1;
         if (photoIndex > 9) {
