@@ -200,6 +200,7 @@ public class UserEditProfileActivity extends AppCompatActivity {
                     }
                 }
 
+                Toast.makeText(getApplicationContext(), "User profile changed, please login again.",Toast.LENGTH_SHORT).show();
                 finish();
             } catch (UserException e) {
                 // if the username has been taken

@@ -333,6 +333,7 @@ public class ProviderMainActivity extends AppCompatActivity
             // intent to UserEditProfileActivity
             Intent intentUserEditProfile = new Intent(getApplicationContext(), UserEditProfileActivity.class);
             startActivity(intentUserEditProfile);
+            finish();
         }
         else if (id == R.id.nav_allTask_Pmain) {
 
