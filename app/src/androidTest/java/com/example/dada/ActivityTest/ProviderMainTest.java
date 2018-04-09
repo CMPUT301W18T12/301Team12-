@@ -33,7 +33,7 @@ public class ProviderMainTest extends ActivityInstrumentationTestCase2{
             Log.i("Test ------>", "testView: view has no value");
         }
 
-        solo.enterText((EditText) solo.getView(R.id.));
+        solo.enterText((EditText) solo.getView(R.id.editTextInput), "100");
     }
 
     @Override
