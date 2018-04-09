@@ -445,6 +445,7 @@ public class ProviderMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
         Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -457,6 +458,7 @@ public class ProviderMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
         Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -469,6 +471,7 @@ public class ProviderMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
         Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -481,6 +484,7 @@ public class ProviderMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
         Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -489,6 +493,7 @@ public class ProviderMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ProviderMainActivity openRequestedSearchTaskDetail");
         Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -497,6 +502,7 @@ public class ProviderMainActivity extends AppCompatActivity
         Log.i("Method start----->", "ProviderMainActivity openBiddedSearchTaskDetail");
         Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }

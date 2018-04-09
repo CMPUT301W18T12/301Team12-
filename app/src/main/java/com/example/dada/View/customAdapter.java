@@ -145,7 +145,7 @@ public class customAdapter extends ArrayAdapter<Task>{
             //more intent part need                                                              //^_^//
             Intent intent = getIntent();
             task = TaskUtil.deserializer(intent.getStringExtra("Task"));
-
+            providerName = intent.getStringExtra("Name");
             setViews();
 
         }
@@ -211,16 +211,17 @@ public class customAdapter extends ArrayAdapter<Task>{
             ImageView imageViewHead = (ImageView)findViewById(R.id.circleImageView);
 
             requester = userController.getUser(task.getRequesterUserName());
+            if (requester == null) {
+                textViewName.setText(requester.getUserName());
+                textViewPhone.setText(requester.getPhone());
 
-            textViewName.setText(requester.getUserName());
-            textViewPhone.setText(requester.getPhone());
-            if (requester.getProfile_photo() != null) {//^_^//
-                // imageViewHead.setImageBitmap(requester.getProfile_photo());
-            } else {
-                Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT).show();
-                imageViewHead.setImageResource(R.drawable.temp_head);
-            }                         // temp
-
+                if (requester.getProfile_photo() != null) {//^_^//
+                    imageViewHead.setImageBitmap(requester.getProfile_photo());
+                } else {
+                    Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT).show();
+                    imageViewHead.setImageResource(R.drawable.temp_head);
+                }                         // temp
+            }
 
             textViewStatus.setText(task.getStatus().toUpperCase());
             if (task.getStatus().toUpperCase().equals(statusRequested)) {
@@ -281,8 +282,8 @@ public class customAdapter extends ArrayAdapter<Task>{
             taskController.updateTask(task);
             **/
             try {
-                Log.i("debug---->", FileIOUtil.loadUserFromFile(getApplicationContext()).);
-                task.providerBidTask(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName(), valueDouble);
+                Log.i("debug---->", providerName);
+                task.providerBidTask(providerName, valueDouble);
             } catch(Exception e) {
                 Toast.makeText(this, "Cannot bidded test.", Toast.LENGTH_SHORT);
             }
