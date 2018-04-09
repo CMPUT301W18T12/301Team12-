@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import com.example.dada.R;
 import com.example.dada.View.RequesterMainActivity;
+import com.example.dada.View.RequesterAddTaskActivity;
 import com.robotium.solo.Solo;
 
 public class RequesterAddTaskTest extends ActivityInstrumentationTestCase2{
@@ -42,9 +43,19 @@ public class RequesterAddTaskTest extends ActivityInstrumentationTestCase2{
      * Test for add task
      */
     public void Testadd(){
-        solo.assertCurrentActivity("Wrong Activity", RequesterAddTaskTest.class);
-        solo.getView(R.layout.activity_requester_add_task);
-        solo.clickOnButton(R.id.newTask_done_button);
+        // add a long title task.
+        solo.assertCurrentActivity("Wrong Activity", RequesterAddTaskActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.editText_requester_add_task_title), "0123456789012345678901234567890");
+        solo.enterText((EditText) solo.getView(R.id.editText_requester_add_task_description), "description");
+        solo.clickOnButton("DONE");
+        assertTrue(solo.waitForText("max task length is 30"));
+        solo.assertCurrentActivity("Wrong Activity", RequesterAddTaskActivity.class);
+
+        // add a valid task.
+        solo.assertCurrentActivity("Wrong Activity", RequesterAddTaskActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.editText_requester_add_task_title), "validtitle");
+        solo.enterText((EditText) solo.getView(R.id.editText_requester_add_task_description), "description");
+        solo.clickOnButton("DONE");
         solo.assertCurrentActivity("Wrong Activity", RequesterMainActivity.class);
     }
 

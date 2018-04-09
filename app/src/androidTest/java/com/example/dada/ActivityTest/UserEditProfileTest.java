@@ -16,6 +16,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.example.dada.R;
+import com.example.dada.View.RequesterMainActivity;
 import com.robotium.solo.Solo;
 import android.widget.EditText;
 import com.example.dada.View.UserEditProfileActivity;
@@ -67,6 +68,9 @@ public class UserEditProfileTest extends ActivityInstrumentationTestCase2{
                 "user@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.editText_mobile_EditUserProfileActivity), "911");
         solo.clickOnButton("SaveButton");
+
+        // maker sure it return to main afterwards
+        solo.assertCurrentActivity("Wrong Activity", RequesterMainActivity.class);
     }
 
 
