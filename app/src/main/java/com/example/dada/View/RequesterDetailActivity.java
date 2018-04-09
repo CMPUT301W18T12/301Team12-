@@ -289,7 +289,7 @@ public class RequesterDetailActivity extends ListActivity {
         assert locationBtn != null;
         locationBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if (task.getCoordinatesString() != null) {
+                if (task.getCoordinates().size() != 0 ) {
                 String coordinates = task.getCoordinatesString();
                 Intent intentDetailMap = new Intent(getApplicationContext(), RequesterDetailMapActivity.class);
                 intentDetailMap.putExtra("coordinates", coordinates);
