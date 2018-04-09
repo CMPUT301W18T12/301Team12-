@@ -67,7 +67,6 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
     private Button doneButton;
     private Bitmap photo;
     private Button locationButton;
-//    private Locations location;
     private List<Double> coordinates = new ArrayList<>();
 
     private ArrayList<Task> offlineRequesterList = new ArrayList<>();
