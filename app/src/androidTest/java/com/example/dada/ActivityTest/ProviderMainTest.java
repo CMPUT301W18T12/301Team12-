@@ -13,7 +13,7 @@ public class ProviderMainTest extends ActivityInstrumentationTestCase2{
     private Solo solo;
 
     public ProviderMainTest(){
-        super(com.example.dada.View.RequesterMainActivity.class);
+        super(com.example.dada.View.ProviderMainActivity.class);
     }
 
     public void testStart() throws Exception {
@@ -26,7 +26,14 @@ public class ProviderMainTest extends ActivityInstrumentationTestCase2{
      * test to view the detail of the first item in the listview
      */
     public void testView(){
+        solo.assertCurrentActivity("wrong activity", ProviderMainActivity.class);
+        try{
+            solo.clickInList(0);
+        } catch (Exception e){
+            Log.i("Test ------>", "testView: view has no value");
+        }
 
+        solo.enterText((EditText) solo.getView(R.id.));
     }
 
     @Override
