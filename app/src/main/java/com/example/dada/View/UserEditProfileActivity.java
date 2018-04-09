@@ -10,12 +10,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dada.Controller.TaskController;
 import com.example.dada.Controller.UserController;
 import com.example.dada.Exception.UserException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.NormalTask;
+import com.example.dada.Model.Task.RequestedTask;
+import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+
+import java.util.ArrayList;
 
 public class UserEditProfileActivity extends AppCompatActivity {
 
@@ -23,6 +29,10 @@ public class UserEditProfileActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText mobileText;
 
+    private ArrayList<Task> requestedTaskList = new ArrayList<>();
+    private ArrayList<Task> biddedTaskList = new ArrayList<>();
+    private ArrayList<Task> assignedTaskList = new ArrayList<>();
+    private ArrayList<Task> doneTaskList = new ArrayList<>();
 
     private Button saveButton;
     private User user;
@@ -34,6 +44,15 @@ public class UserEditProfileActivity extends AppCompatActivity {
             FileIOUtil.saveUserInFile(user, getApplicationContext());
         }
     });
+
+    private TaskController taskController = new TaskController(
+            new OnAsyncTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Object o) {
+                    Task t = (Task) o;
+                    FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +112,20 @@ public class UserEditProfileActivity extends AppCompatActivity {
         else {
             try {
                 Log.i("Debug", user.getID());
+
                 userController.updateUser(user, oldUserName);
+
+//                ArrayList<Task> tasks =  taskController.getRequesterRequestedTask(oldUserName);
+//                for (Task task : tasks){
+//                    if(task.getProviderUserName() == oldUserName){
+//                        task.setProviderUserName(username);
+//                        taskController.updateTask(task);
+//                    }
+//                    else if(task.getRequesterUserName() == oldUserName){
+//                        task.setRequesterUserName(username);
+//                        taskController.updateTask(task);
+//                    }
+//                }
                 finish();
             } catch (UserException e) {
                 // if the username has been taken

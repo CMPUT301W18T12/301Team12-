@@ -67,7 +67,7 @@ public class TaskUtil {
         String[] fileList = context.fileList();
         ArrayList<String> offlineAcceptedRequestFileList = new ArrayList<>();
         for (String f : fileList) {
-            if (f != null && f.startsWith("rider-")) {
+            if (f != null && f.startsWith("requester-")) {
                 Log.i("Debug", f);
                 offlineAcceptedRequestFileList.add(f);
             }
