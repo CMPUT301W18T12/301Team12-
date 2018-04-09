@@ -39,11 +39,11 @@ public class RequestedTask extends Task {
         super(title, description, requesterUserName, "requested", coordinates);
     }
 
-    public RequestedTask(String title, String description, String requesterUserName, String img, List<Double> coordinates) {
+    public RequestedTask(String title, String description, String requesterUserName, Bitmap img, List<Double> coordinates) {
         super(title, description, requesterUserName, "requested", img, coordinates);
     }
 
-    public RequestedTask(String title, String description, String requesterUserName, String img) {
+    public RequestedTask(String title, String description, String requesterUserName, Bitmap img) {
         super(title, description, requesterUserName, "requested", img);
     }
 

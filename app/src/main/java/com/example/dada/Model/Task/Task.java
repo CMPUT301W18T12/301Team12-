@@ -33,6 +33,7 @@ import com.searchly.jestdroid.JestDroidClient;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,11 +109,11 @@ public abstract class Task {
      * @param status
      * @param img image
      */
-    public Task(String title, String description, String requesterUserName, String status, String img) {
+    public Task(String title, String description, String requesterUserName, String status, Bitmap img) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.img = img;
+        this.img = BitMapToString(img);
         this.requesterUserName = requesterUserName;
     }
 
@@ -126,11 +127,11 @@ public abstract class Task {
      * @param img           image
      * @param coordinates   coordinates
      */
-    public Task(String title, String description, String requesterUserName, String status, String img, List<Double> coordinates) {
+    public Task(String title, String description, String requesterUserName, String status, Bitmap img, List<Double> coordinates) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.img = img;
+        this.img = BitMapToString(img);
         this.coordinates = coordinates;
         this.requesterUserName = requesterUserName;
     }
@@ -158,11 +159,11 @@ public abstract class Task {
      * @param price              the price
      * @param img
      */
-    public Task(String requesterUserName, String providerUserName, double price, String img) {
+    public Task(String requesterUserName, String providerUserName, double price, Bitmap img) {
         this.requesterUserName = requesterUserName;
         this.providerUserName = providerUserName;
         this.price = price;
-        this.img = img;
+        this.img = BitMapToString(img);
     }
 
     /**
@@ -174,11 +175,11 @@ public abstract class Task {
      * @param coordinates        coordinates
      * @param img                image
      */
-    public Task(String requesterUserName, String providerUserName, double price, String img, List<Double> coordinates) {
+    public Task(String requesterUserName, String providerUserName, double price, Bitmap img, List<Double> coordinates) {
         this.requesterUserName = requesterUserName;
         this.providerUserName = providerUserName;
         this.price = price;
-        this.img = img;
+        this.img = BitMapToString(img);
         this.coordinates = coordinates;
     }
 
@@ -221,11 +222,11 @@ public abstract class Task {
      * @param price                 the price
      * @param img                     the image
      */
-    public Task(String requesterUserName, ArrayList<String> bid, Double price, String img){
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, Bitmap img){
         this.requesterUserName = requesterUserName;
         this.bidList.add(bid);
         this.price = price;
-        this.img = img;
+        this.img = BitMapToString(img);
     }
 
     /**
@@ -237,11 +238,11 @@ public abstract class Task {
      * @param img                   the image
      * @param coordinates           the coordinates
      */
-    public Task(String requesterUserName, ArrayList<String> bid, Double price, String img, List<Double> coordinates){
+    public Task(String requesterUserName, ArrayList<String> bid, Double price, Bitmap img, List<Double> coordinates){
         this.requesterUserName = requesterUserName;
         this.bidList.add(bid);
         this.price = price;
-        this.img = img;
+        this.img = BitMapToString(img);
         this.coordinates = coordinates;
     }
 
@@ -749,16 +750,27 @@ public abstract class Task {
     public void setBidList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
 
     public Bitmap getImg() {
-        try{
-            byte [] encodeByte=Base64.decode(img, Base64.DEFAULT);
+        try {
+            byte [] encodeByte=Base64.decode(img ,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        }catch(Exception e){
+        } catch(Exception e) {
+            Log.i("Error----->", "String to Bitmap false");
             e.getMessage();
             return null;
         }
     }
 
     public void setImg(String img) {this.img = img;}
+
+    public String getImgStr() {return img;}
+
+    public String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp=Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 
 }

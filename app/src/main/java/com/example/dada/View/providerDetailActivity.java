@@ -132,7 +132,7 @@ public class providerDetailActivity extends AppCompatActivity {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         if (task.getImg() != null) {
             //imageView.setImageBitmap();
-            // imageView.setImageBitmap(task.getImg());
+            imageView.setImageBitmap(task.getImg());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
