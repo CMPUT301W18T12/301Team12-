@@ -56,6 +56,7 @@ public abstract class Task {
     private String providerUserName;
     private String img;
     private List<Double> coordinates;
+    private String newBid = "0";
 
     private ArrayList<ArrayList<String>> bidList = new ArrayList<>();
 
@@ -589,6 +590,7 @@ public abstract class Task {
             if ( bid.get(0).equals(providerUserName) ){
                 found = true;
                 bid.set(1, Double.toString(price));
+                bid.set(2, "1");
             }
             lowestPrice = (lowestPrice > Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
         }
@@ -596,9 +598,11 @@ public abstract class Task {
             ArrayList<String> bid = new ArrayList<>();
             bid.add(providerUserName);
             bid.add(Double.toString(price));
-            bidList.add(bid);
+            bid.add("1");
+            bidList.add(0, bid);
             lowestPrice = (lowestPrice > Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
         }
+        newBid = "1";
         setLowestPrice(lowestPrice);
     }
 
@@ -721,6 +725,14 @@ public abstract class Task {
 
     public List<Double> getCoordinates() { return this.coordinates; }
 
+    public void setNewBid(String newBid) {
+        this.newBid = newBid;
+    }
+
+    public String getNewBid() {
+        return newBid;
+    }
+
     public String getCoordinatesString() {
         List<Double> coordinates = this.coordinates;
         Double lan = coordinates.get(0);
@@ -761,7 +773,7 @@ public abstract class Task {
         }
     }
 
-    public void setImg(String img) {this.img = img;}
+    public void setImg(Bitmap img) {this.img = BitMapToString(img);}
 
     public String getImgStr() {return img;}
 

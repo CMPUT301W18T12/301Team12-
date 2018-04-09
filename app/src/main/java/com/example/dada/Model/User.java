@@ -21,11 +21,14 @@ import android.util.Log;
 
 import com.example.dada.Constant;
 import com.example.dada.Util.UserUtil;
+import com.google.android.gms.common.data.BitmapTeleporter;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
@@ -42,13 +45,14 @@ public class User {
 
     private int type;
     private String profile_photo;
+    private ArrayList<Double> ratings = new ArrayList<>();
 
     private transient static JestDroidClient client;
 
-    public User(String userName, String phone, String profile_photo, String email){
+    public User(String userName, String phone, Bitmap profile_photo, String email){
         this.userName = userName;
         this.phone = phone;
-        this.profile_photo = profile_photo;
+        this.profile_photo = BitMapToString(profile_photo);
         this.phone = email;
     }
 
@@ -330,7 +334,7 @@ public class User {
 
     public void setEmail(String email){ this.email = email; }
 
-    public void setProfile_photo(String profile_photo) {this.profile_photo = profile_photo;}
+    public void setProfile_photo(Bitmap profile_photo) {this.profile_photo = BitMapToString(profile_photo);}
 
     public Bitmap getProfile_photo() {
         try {
@@ -339,8 +343,25 @@ public class User {
             return bitmap;
         } catch (Exception e) {
             e.getMessage();
+            Log.i("Error----->", "String to Bitmap false");
             return null;
         }
+    }
+
+    public String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp=Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public void addRating(double rating){
+        ratings.add(rating);
+    }
+
+    public ArrayList<Double> getRatings(){
+        return ratings;
     }
 
 }

@@ -237,7 +237,7 @@ public class providerDetailActivity extends AppCompatActivity {
         }
 
         if (task.getStatus().toUpperCase().equals(statusDone)) {
-            textViewLowestPrice.setText("Your final price is $"+ task.getPrice());
+            textViewLowestPrice.setText("Your final price is $1"+ task.getPrice());
             imageViewStatus.setBackgroundColor(Color.parseColor("#3333FF"));
             imageViewStatus.setColorFilter(Color.GREEN);
         }

@@ -100,6 +100,17 @@ public class UserController {
     }
 
     /**
+     * Add user rating
+     * @param user        The user to be created
+     * @throws UserException Raise exception when username has been taken
+     */
+    public void addUserRating(User user) throws UserException{
+
+        User.UpdateUserTask task = new User.UpdateUserTask(listener);
+        task.execute(user);
+    }
+
+    /**
      * Retrive user profile from the server
      * @param username the username to search
      * @return The user object
