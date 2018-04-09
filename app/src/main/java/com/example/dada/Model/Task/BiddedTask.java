@@ -33,7 +33,7 @@ public class BiddedTask extends Task {
         super(requesterUserName, providerUserName, price, coordinates);
     }
 
-    public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img) {
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, ArrayList<Bitmap> img) {
         super(requesterUserName, providerUserName, price, img);
     }
 
@@ -49,15 +49,15 @@ public class BiddedTask extends Task {
         super(requesterUserName, providerList, price, coordinates);
     }
 
-    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img) {
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, ArrayList<Bitmap> img) {
         super(requesterUserName, providerList, price, img);
     }
 
-    public BiddedTask(String requesterUserName, String providerUserName, Double price, Bitmap img, List<Double> coordinates) {
+    public BiddedTask(String requesterUserName, String providerUserName, Double price, ArrayList<Bitmap> img, List<Double> coordinates) {
         super(requesterUserName, providerUserName, price, img, coordinates);
     }
 
-    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, Bitmap img, List<Double> coordinates) {
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price, ArrayList<Bitmap> img, List<Double> coordinates) {
         super(requesterUserName, providerList, price, img, coordinates);
     }
     @Override

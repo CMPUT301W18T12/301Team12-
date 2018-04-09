@@ -223,10 +223,10 @@ public class RequesterMainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
         // Initialize adapter for list view
-        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
-        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
-        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
-        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
+        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList, 1);
+        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList,1);
+        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList,1);
+        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList,1);
 
         // adapt to list view under current filter status
         setAdapter(sortType);

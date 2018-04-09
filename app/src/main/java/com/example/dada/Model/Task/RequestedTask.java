@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.Locations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,11 +40,11 @@ public class RequestedTask extends Task {
         super(title, description, requesterUserName, "requested", coordinates);
     }
 
-    public RequestedTask(String title, String description, String requesterUserName, Bitmap img, List<Double> coordinates) {
+    public RequestedTask(String title, String description, String requesterUserName, ArrayList<Bitmap> img, List<Double> coordinates) {
         super(title, description, requesterUserName, "requested", img, coordinates);
     }
 
-    public RequestedTask(String title, String description, String requesterUserName, Bitmap img) {
+    public RequestedTask(String title, String description, String requesterUserName, ArrayList<Bitmap> img) {
         super(title, description, requesterUserName, "requested", img);
     }
 

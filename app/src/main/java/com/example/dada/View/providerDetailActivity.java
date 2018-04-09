@@ -2,6 +2,7 @@ package com.example.dada.View;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,7 @@ public class providerDetailActivity extends AppCompatActivity {
     private String statusAssigned = "ASSIGNED";
     private String statusBidded = "BIDDED";
     private String statusDone = "DONE";
+    private int photoIndex = 0;
     private String providerName;
     private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
@@ -149,9 +151,11 @@ public class providerDetailActivity extends AppCompatActivity {
         TextView textViewStatus = (TextView)findViewById(R.id.textViewStatus);
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        if (task.getImg() != null) {
+        ArrayList<Bitmap> imgs = task.getImg();
+        if (imgs != null) {
             //imageView.setImageBitmap();
-            imageView.setImageBitmap(task.getImg());
+            int i = photoIndex % imgs.size();
+            imageView.setImageBitmap(task.getImg().get(i));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -276,6 +280,26 @@ public class providerDetailActivity extends AppCompatActivity {
         taskController.updateTask(task);
         setViews();
         finish();
+    }
+
+    public void nextPic(View view) {
+        photoIndex += 1;
+        if (photoIndex > 9) {
+            photoIndex -= 10;
+        }
+        if (photoIndex < 0) {
+            photoIndex += 10;
+        }
+    }
+
+    public void prePic(View view) {
+        photoIndex -= 1;
+        if (photoIndex > 9) {
+            photoIndex -= 10;
+        }
+        if (photoIndex < 0) {
+            photoIndex += 10;
+        }
     }
 }
 

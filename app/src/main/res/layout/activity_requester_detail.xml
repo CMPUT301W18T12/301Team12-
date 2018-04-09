@@ -183,4 +183,26 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="32dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="55dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="nextPic"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_media_next" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="32dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="55dp"
+        android:layout_marginStart="8dp"
+        android:onClick="prePic"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_media_previous" />
+
 </android.support.constraint.ConstraintLayout>

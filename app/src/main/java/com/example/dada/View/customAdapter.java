@@ -45,6 +45,7 @@ import java.util.ArrayList;
 public class customAdapter extends ArrayAdapter<Task> {
     private Context mContext;
     private int mResource;
+    private int userType = 0;
 
 
     /**
@@ -54,6 +55,13 @@ public class customAdapter extends ArrayAdapter<Task> {
      * @param resource
      * @param objects
      */
+    public customAdapter(Context context, int resource, ArrayList<Task> objects, int userType) {
+        super(context, resource, objects);
+        mContext = context;
+        mResource = resource;
+        this.userType = userType;
+    }
+
     public customAdapter(Context context, int resource, ArrayList<Task> objects) {
         super(context, resource, objects);
         mContext = context;
@@ -74,7 +82,7 @@ public class customAdapter extends ArrayAdapter<Task> {
         TextView taskTitle = (TextView) convertView.findViewById(R.id.taskTitle_requester_main);
         TextView taskStatus = (TextView) convertView.findViewById(R.id.taskStatus_requester_main);
 
-        if (getItem(position).getNewBid().equals("1")) {
+        if (getItem(position).getNewBid().equals("1") && userType==1 && getItem(position).getStatus().toLowerCase().equals("requested")) {
             taskTitle.setTextColor(Color.parseColor("#FF3333"));
         }
 

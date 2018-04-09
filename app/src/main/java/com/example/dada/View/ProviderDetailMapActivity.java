@@ -58,4 +58,6 @@ public class ProviderDetailMapActivity extends FragmentActivity implements OnMap
         mMap.addMarker(new MarkerOptions().position(position));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 12));
     }
+
+
 }

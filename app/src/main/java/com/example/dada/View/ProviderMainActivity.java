@@ -208,12 +208,12 @@ public class ProviderMainActivity extends AppCompatActivity
         super.onStart();
 
         // Initialize adapter for list view
-        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
-        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
-        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
-        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
-        requestedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedSearchTaskList);
-        biddedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedSearchTaskList);
+        requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList,0);
+        biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList,0);
+        assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList,0);
+        doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList,0);
+        requestedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedSearchTaskList,0);
+        biddedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedSearchTaskList,0);
 
         // adapt to list view under current filter status
         setAdapter(sortType);

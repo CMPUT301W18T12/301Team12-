@@ -70,6 +70,7 @@ public class RequesterDetailActivity extends ListActivity {
     private String statusBidded = "BIDDED";
     private String statusDone = "DONE";
     private String providerName;
+    private int photoIndex = 0;
     private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -118,6 +119,7 @@ public class RequesterDetailActivity extends ListActivity {
 
         setViews();
         task.setNewBid("0");
+        taskController.updateTask(task);
 
         /**
          * listener of listview click action
@@ -248,9 +250,12 @@ public class RequesterDetailActivity extends ListActivity {
         //imageView.setImageBitmap();
 
 
-        if (task.getImg() != null) {
+        ArrayList<Bitmap> imgs = task.getImg();
+        if (imgs != null) {
             //imageView.setImageBitmap();
-            imageView.setImageBitmap(task.getImg());
+            Log.i("photo"+photoIndex, "---------------------"+imgs.size());
+            int i = photoIndex % imgs.size();
+            imageView.setImageBitmap(task.getImg().get(i));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -363,6 +368,12 @@ public class RequesterDetailActivity extends ListActivity {
             // set picture                                                                   //^_^//
             map.put("img", img);
             String name = providerNames.get(i).get(0);
+            if (providerNames.get(i).get(2).equals("1")) {
+                name = providerNames.get(i).get(0)+ " new~";
+                providerNames.get(i).set(2, "0");
+                Log.i("_---------------->", providerNames.get(i).get(2));
+                taskController.updateTask(task);
+            }
             map.put("title", name);
             map.put("price", "$"+providerNames.get(i).get(1));
             itemList.add(map);
@@ -479,6 +490,28 @@ public class RequesterDetailActivity extends ListActivity {
             taskController.updateTask(task);
             setViews();
         }
+    }
+
+    public void nextPic(View view) {
+        photoIndex += 1;
+        if (photoIndex > 9) {
+            photoIndex -= 10;
+        }
+        if (photoIndex < 0) {
+            photoIndex += 10;
+        }
+        setViews();
+    }
+
+    public void prePic(View view) {
+        photoIndex -= 1;
+        if (photoIndex > 9) {
+            photoIndex -= 10;
+        }
+        if (photoIndex < 0) {
+            photoIndex += 10;
+        }
+        setViews();
     }
 
 }

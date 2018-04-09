@@ -12,12 +12,14 @@
 package com.example.dada.Controller;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.Task;
+import com.example.dada.Model.User;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
 
@@ -164,8 +166,7 @@ public class TaskController {
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
-
-
+    
     /**
      * Get a list of tasks that match the keyword
      *

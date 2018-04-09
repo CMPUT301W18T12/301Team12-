@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,7 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
     private Button doneButton;
     private Bitmap photo;
     private Button locationButton;
+    private ArrayList<Bitmap> photoList = new ArrayList<>();
     //    private Locations location;
     private List<Double> coordinates = new ArrayList<>();
 
@@ -124,8 +126,8 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
         boolean validTitle = !(title.isEmpty() || title.trim().isEmpty());
         boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
 
-        if (photo == null) {
-            Toast.makeText(this, "Please upload task photo.", Toast.LENGTH_SHORT).show();
+        if (photoList == null) {
+            Toast.makeText(this, "We will use default picture.", Toast.LENGTH_SHORT).show();
         }
 
         if (!(validTitle && validDescription)) {
@@ -139,10 +141,10 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
                 } else {
                     System.out.println(coordinates.toString());
                     Task task;
-                    if (photo == null) {
+                    if (photoList == null) {
                         task = new RequestedTask(title, description, requester.getUserName(), coordinates);
                     } else {
-                        task = new RequestedTask(title, description, requester.getUserName(), photo, coordinates);
+                        task = new RequestedTask(title, description, requester.getUserName(), photoList, coordinates);
                     }
 
                     task.setID(UUID.randomUUID().toString());
@@ -160,6 +162,10 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
     }
 
     public void addImage(View view) {
+        if (photoList.size() >= 10) {
+            Toast.makeText(this, "Picture cannot more than 10.", Toast.LENGTH_SHORT);
+            return;
+        }
         Intent i = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -169,6 +175,7 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
@@ -194,6 +201,12 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
                 photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton2);
                 imageButton.setImageBitmap(photo);
+                if (photoList.size() >= 10) {
+                    Toast.makeText(this, "Picture cannot more than 10.", Toast.LENGTH_SHORT);
+                    return;
+                }
+                photoList.add(photo);
+                Toast.makeText(this, "Photo had been added", Toast.LENGTH_SHORT);
 
             } catch (Exception e) {
 

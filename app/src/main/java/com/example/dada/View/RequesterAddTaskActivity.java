@@ -66,6 +66,7 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
     private static int RESULT_LOAD_LOC = 2;
     private Button doneButton;
     private Bitmap photo;
+    private ArrayList<Bitmap> photoList = new ArrayList<>();
     private Button locationButton;
     private List<Double> coordinates = new ArrayList<>();
 
@@ -130,8 +131,8 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         boolean validTitle = !(title.isEmpty() || title.trim().isEmpty());
         boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
 
-        if (photo == null) {
-            Toast.makeText(this, "Please upload task photo.", Toast.LENGTH_SHORT).show();
+        if (photoList == null) {
+            Toast.makeText(this, "We will use default picture.", Toast.LENGTH_SHORT).show();
         }
 
         if (!(validTitle && validDescription)) {
@@ -145,12 +146,12 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
                 } else {
 //                    System.out.println(coordinates.toString());
                     Task task;
-                    if (photo == null) {
+                    if (photoList == null) {
                         task = new RequestedTask(title, description, requester.getUserName(), coordinates);
                     } else {
                         Log.i("DEBUG----->", "Img had been added");
 
-                        task = new RequestedTask(title, description, requester.getUserName(), photo, coordinates);
+                        task = new RequestedTask(title, description, requester.getUserName(), photoList, coordinates);
                     }
 
                     task.setID(UUID.randomUUID().toString());
@@ -168,6 +169,11 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
     }
 
     public void addImage(View view) {
+        if (photoList.size() >= 10) {
+            Toast.makeText(this, "Picture cannot more than 10.", Toast.LENGTH_SHORT);
+            return;
+        }
+
         Intent i = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -202,6 +208,8 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
                 photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton2);
                 imageButton.setImageBitmap(photo);
+                photoList.add(photo);
+                Toast.makeText(this, "Photo had been added", Toast.LENGTH_SHORT);
 
             } catch (Exception e) {
 
