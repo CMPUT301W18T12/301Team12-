@@ -245,9 +245,11 @@ public class RequesterDetailActivity extends ListActivity {
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         //imageView.setImageBitmap();
+
+
         if (task.getImg() != null) {
             //imageView.setImageBitmap();
-            //imageView.setImageBitmap(task.getImg());
+            imageView.setImageBitmap(task.getImg());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -276,19 +278,25 @@ public class RequesterDetailActivity extends ListActivity {
 
         textViewStatus.setText(task.getStatus().toUpperCase());
 
+        if (task.getStatus().toUpperCase().equals(statusRequested)) {
+            imageViewStatus.setBackgroundColor(Color.parseColor("#FF3333"));
+        }
+
         if (task.getStatus().toUpperCase().equals(statusBidded)) {
-            Log.i("Tracing----->", task.getStatus());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#33FFFF"));
             imageViewStatus.setColorFilter(Color.MAGENTA);
             listView.setVisibility(View.VISIBLE);
             setListview();
         }
         if (task.getStatus().toUpperCase().equals(statusAssigned)) {
-            Log.i("Tracing----->", task.getStatus());
+
+            textViewLowestPrice.setText("Your assigned price is $"+ task.getPrice());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#33FF33"));
             imageViewStatus.setColorFilter(Color.RED);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());
             if (provider.getProfile_photo() != null) {//^_^//
-                // imageViewHead.setImageBitmap(provider.getProfile_photo());
+                imageViewHead.setImageBitmap(provider.getProfile_photo());
             } else {
                 Toast.makeText(this, "Did not find user image. Replace by default", Toast.LENGTH_SHORT).show();
                 imageViewHead.setImageResource(R.drawable.temp_head);
@@ -302,12 +310,13 @@ public class RequesterDetailActivity extends ListActivity {
         }
 
         if (task.getStatus().toUpperCase().equals(statusDone)) {
-            Log.i("Tracing----->", task.getStatus());
+            textViewLowestPrice.setText("Your final price is $"+ task.getPrice());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#3333FF"));
             imageViewStatus.setColorFilter(Color.GREEN);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
             if (provider.getProfile_photo() != null) {//^_^//
-                // imageViewHead.setImageBitmap(provider.getProfile_photo());
+                imageViewHead.setImageBitmap(provider.getProfile_photo());
             } else {
                 Toast.makeText(this, "Did not find user image. Replace by default", Toast.LENGTH_SHORT).show();
                 imageViewHead.setImageResource(R.drawable.temp_head);

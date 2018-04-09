@@ -148,7 +148,9 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
                     if (photo == null) {
                         task = new RequestedTask(title, description, requester.getUserName(), coordinates);
                     } else {
-                        task = new RequestedTask(title, description, requester.getUserName(), photo.toString(), coordinates);
+                        Log.i("DEBUG----->", "Img had been added");
+
+                        task = new RequestedTask(title, description, requester.getUserName(), photo, coordinates);
                     }
 
                     task.setID(UUID.randomUUID().toString());

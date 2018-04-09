@@ -1,6 +1,7 @@
 package com.example.dada.View;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
+
+import java.util.ArrayList;
 
 public class providerDetailActivity extends AppCompatActivity {
 
@@ -117,7 +120,8 @@ public class providerDetailActivity extends AppCompatActivity {
         TextView textViewDescription = (TextView)findViewById(R.id.textViewDescription);
         textViewDescription.setText(task.getDescription());
 
-        double lowestPrice = task.getLowestPrice();
+        double lowestPrice = 0.0;
+        lowestPrice = task.getLowestPrice();
         TextView textViewLowestPrice = (TextView)findViewById(R.id.textViewLowestPrice);
         textViewLowestPrice.setText("Lowest Price Right Now: $" + lowestPrice);
         //Should not allow it since bid cannot with price 0
@@ -125,14 +129,29 @@ public class providerDetailActivity extends AppCompatActivity {
             Log.i("MayBeError", "Lowest Price equal to 0 and status is not Request");
             textViewLowestPrice.setText("Lowest Price Right Now: $" + "0.00");
         }
-        Log.i("ActivityStart----->", "2");
+
+        // check the provider bidded before or not
+
+        ArrayList<ArrayList<String>> bids = task.getBidList();
+        for (ArrayList<String> bid : bids) {
+            if (bid.get(0).equals(providerName)) {
+                if (bid.get(1).equals(String.valueOf(lowestPrice))){
+                    input.setHint("Your bid is the lowest.");
+                    input.setHintTextColor(Color.parseColor("#ca7a2c"));
+                } else {
+                    input.setHint("Your bid is " + bid.get(1));
+                    input.setHintTextColor(Color.parseColor("#EEA9A9"));
+                }
+            }
+        }
+
 
         TextView textViewStatus = (TextView)findViewById(R.id.textViewStatus);
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         if (task.getImg() != null) {
             //imageView.setImageBitmap();
-            // imageView.setImageBitmap(task.getImg());
+            imageView.setImageBitmap(task.getImg());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -167,8 +186,10 @@ public class providerDetailActivity extends AppCompatActivity {
 
         textViewName.setText(task.getRequesterUserName());
 
+
+
         requester = userController.getUser(task.getRequesterUserName());
-        if (requester == null) {
+        if (requester != null) {
             textViewName.setText(requester.getUserName());
             textViewPhone.setText(requester.getPhone());
 
@@ -177,26 +198,34 @@ public class providerDetailActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT).show();
                 imageViewHead.setImageResource(R.drawable.temp_head);
-            }                         // temp
-        }
+            }
+        }// temp
+
+
 
         textViewStatus.setText(task.getStatus().toUpperCase());
         if (task.getStatus().toUpperCase().equals(statusRequested)) {
+            imageViewStatus.setBackgroundColor(Color.parseColor("#FF3333"));
             button.setVisibility(View.VISIBLE);
             input.setVisibility(View.VISIBLE);
             inputBack.setVisibility(View.VISIBLE);
         }
         if (task.getStatus().toUpperCase().equals(statusBidded)) {
+            imageViewStatus.setBackgroundColor(Color.parseColor("#33FFFF"));
             imageViewStatus.setColorFilter(Color.MAGENTA);
             button.setVisibility(View.VISIBLE);
             input.setVisibility(View.VISIBLE);
             inputBack.setVisibility(View.VISIBLE);
         }
         if (task.getStatus().toUpperCase().equals(statusAssigned)) {
+            textViewLowestPrice.setText("Your assigned price is $"+ task.getPrice());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#33FF33"));
             imageViewStatus.setColorFilter(Color.RED);
         }
 
         if (task.getStatus().toUpperCase().equals(statusDone)) {
+            textViewLowestPrice.setText("Your final price is $"+ task.getPrice());
+            imageViewStatus.setBackgroundColor(Color.parseColor("#3333FF"));
             imageViewStatus.setColorFilter(Color.GREEN);
         }
 
