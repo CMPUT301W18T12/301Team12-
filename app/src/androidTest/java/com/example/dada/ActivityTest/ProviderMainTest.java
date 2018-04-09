@@ -34,6 +34,8 @@ public class ProviderMainTest extends ActivityInstrumentationTestCase2{
         }
 
         solo.enterText((EditText) solo.getView(R.id.editTextInput), "100");
+        solo.clickOnButton("BIDDED");
+        solo.assertCurrentActivity("wrong activity", ProviderMainActivity.class);
     }
 
     @Override
