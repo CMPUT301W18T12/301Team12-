@@ -82,7 +82,7 @@ public class customAdapter extends ArrayAdapter<Task> {
         TextView taskTitle = (TextView) convertView.findViewById(R.id.taskTitle_requester_main);
         TextView taskStatus = (TextView) convertView.findViewById(R.id.taskStatus_requester_main);
 
-        if (getItem(position).getNewBid().equals("1") && userType==1 && getItem(position).getStatus().toLowerCase().equals("requested")) {
+        if (getItem(position).getNewBid().equals("1") && userType==1) {
             taskTitle.setTextColor(Color.parseColor("#FF3333"));
         }
 

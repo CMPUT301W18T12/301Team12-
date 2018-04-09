@@ -81,11 +81,17 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * build in method
+     */
     @Override
     public void onStart() {
         super.onStart();
     }
 
+    /**
+     * represent the sign up button click, add new user
+     */
     public void signup() {
         String username = usernameText.getText().toString();
         String email = emailText.getText().toString();
@@ -123,11 +129,18 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * onStop() function
+     */
     @Override
     public void onStop() {
         super.onStop();
     }
 
+    /**
+     * add new image
+     * @param view click action
+     */
     // stackoverflow
     public void addImage(View view) {
 
@@ -138,6 +151,12 @@ public class SignupActivity extends AppCompatActivity {
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

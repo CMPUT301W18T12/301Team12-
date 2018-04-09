@@ -387,11 +387,15 @@ public class RequesterDetailActivity extends ListActivity {
             // set picture                                                                   //^_^//
             map.put("img", img);
             String name = providerNames.get(i).get(0);
-            if (providerNames.get(i).get(2).equals("1")) {
-                name = providerNames.get(i).get(0)+ " new~";
-                providerNames.get(i).set(2, "0");
-                Log.i("_---------------->", providerNames.get(i).get(2));
-                taskController.updateTask(task);
+            if (providerNames.get(i).size() == 3) {
+                if (providerNames.get(i).get(2).equals("1")) {
+                    name = providerNames.get(i).get(0) + " new~";
+                    providerNames.get(i).set(2, "0");
+                    Log.i("_---------------->", providerNames.get(i).get(2));
+                    taskController.updateTask(task);
+                }
+            } else {
+                name = providerNames.get(i).get(0);
             }
             map.put("title", name);
             map.put("price", "$"+providerNames.get(i).get(1));

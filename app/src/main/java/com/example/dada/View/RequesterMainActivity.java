@@ -870,6 +870,10 @@ public class RequesterMainActivity extends AppCompatActivity
         setAdapter(sortType);
     }
 
+    /**
+     * save file temp to local since intent do not allow file larger than 200kb
+     * @param task
+     */
     protected void saveInFile(Task task) {
         Log.i("LifeCycle ---->", "save file is called");
         try {

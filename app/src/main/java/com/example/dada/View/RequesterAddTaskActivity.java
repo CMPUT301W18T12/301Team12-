@@ -123,6 +123,9 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * add new task, save to the serves
+     */
     public void addTask() {
         String title = titleText.getText().toString();
         String description = descriptionText.getText().toString();
@@ -162,12 +165,19 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * add location info
+     * @param view click action
+     */
     public void addLocation(View view) {
         Intent intentRequesterAddTaskLoc = new Intent(getApplicationContext(), RequesterAddTaskLocationActivity.class);
         startActivityForResult(intentRequesterAddTaskLoc, RESULT_LOAD_LOC);
     }
 
+    /**
+     * add new image
+     * @param view click action
+     */
     public void addImage(View view) {
         if (photoList.size() >= 10) {
             Toast.makeText(this, "Picture cannot more than 10.", Toast.LENGTH_SHORT);

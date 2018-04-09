@@ -25,6 +25,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Handle with user location info
+ */
 public class RequesterAddTaskLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

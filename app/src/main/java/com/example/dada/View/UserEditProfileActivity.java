@@ -124,6 +124,9 @@ public class UserEditProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * onStart() - android build in function
+     */
     @Override
     public void onStart() {
         super.onStart();

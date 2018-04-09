@@ -40,6 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Requester edit the task
+ */
 public class RequesterEditTaskActivity extends AppCompatActivity {
 
     Task task;
@@ -117,6 +120,9 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * renew the task
+     */
     public void addTask() {
         taskController.deleteTask(task);
         String title = titleText.getText().toString();
@@ -155,12 +161,19 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * add user location
+     * @param view click action
+     */
     public void addLocation(View view) {
         Intent intentRequesterAddTaskLoc = new Intent(getApplicationContext(), RequesterAddTaskLocationActivity.class);
         startActivityForResult(intentRequesterAddTaskLoc, RESULT_LOAD_LOC);
     }
 
+    /**
+     * add user image
+     * @param view click action
+     */
     public void addImage(View view) {
         if (photoList.size() >= 10) {
             Toast.makeText(this, "Picture cannot more than 10.", Toast.LENGTH_SHORT);

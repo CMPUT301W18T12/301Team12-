@@ -10,6 +10,7 @@
  */
 package com.example.dada.View;
 
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -33,6 +34,10 @@ import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
 import java.util.ArrayList;
+
+/**
+ * Browsw Task Under Main
+ */
 
 public class RequesterBrowseTaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -106,6 +111,9 @@ public class RequesterBrowseTaskActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * on back button clicked
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,6 +124,11 @@ public class RequesterBrowseTaskActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * right side menu
+     * @param menu info want to show in menu type
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -123,6 +136,11 @@ public class RequesterBrowseTaskActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * menu item select
+     * @param item menuitem
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -138,6 +156,11 @@ public class RequesterBrowseTaskActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * NavigationItem Selected
+     * @param item menuitem
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
