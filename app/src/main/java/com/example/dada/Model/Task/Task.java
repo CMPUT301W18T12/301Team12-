@@ -761,6 +761,10 @@ public abstract class Task {
 
     public void setBidList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
 
+    /**
+     * trans bit map string to bitmap
+     * @return Bitmap list
+     */
     public ArrayList<Bitmap> getImg() {
         ArrayList<Bitmap> imgs = new ArrayList<Bitmap>();
 
@@ -781,6 +785,10 @@ public abstract class Task {
 
     public void addImg(Bitmap img) {imgList.add(BitMapToString(img));}
 
+    /**
+     * set Bitmap to string
+     * @param imgs
+     */
     public void setImgList(ArrayList<Bitmap> imgs) {
         imgList = new ArrayList<>();
 

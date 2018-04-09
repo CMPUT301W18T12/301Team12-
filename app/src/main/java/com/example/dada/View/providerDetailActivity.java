@@ -38,6 +38,9 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * provider detail
+ */
 public class providerDetailActivity extends AppCompatActivity {
 
     /**

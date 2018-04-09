@@ -29,6 +29,9 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
+/**
+ * Login activity, first act
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameText;

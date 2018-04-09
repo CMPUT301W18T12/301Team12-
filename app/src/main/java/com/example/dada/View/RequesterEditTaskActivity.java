@@ -34,8 +34,13 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -84,7 +89,7 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_requester_add_task);
 
         Intent intent = getIntent();
-        task = TaskUtil.deserializer(intent.getStringExtra("Task"));
+        task = loadFromFile();
 
 
 
@@ -240,6 +245,26 @@ public class RequesterEditTaskActivity extends AppCompatActivity {
 
             }
 
+        }
+    }
+
+    protected Task loadFromFile() {
+        Log.i("LifeCycle ---->", "load file is called");
+        try {
+            FileInputStream fis = openFileInput("Task");
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+            Gson gson = new Gson();
+
+            //Taken https://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            // 2018-01-23
+            String file = gson.fromJson(in, String.class);
+            Task task = TaskUtil.deserializer(file);
+
+            return task;
+        } catch (FileNotFoundException e) {
+            Log.i("Error:", "Task load failed");
+            return task;
         }
     }
 }

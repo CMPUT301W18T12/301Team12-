@@ -24,6 +24,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+/**
+ * get GPS location
+ */
 public class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
@@ -56,6 +59,10 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
+    /**
+     * get current location
+     * @return location
+     */
     public Location getLocation() {
         try {
             locationManager = (LocationManager) mContext

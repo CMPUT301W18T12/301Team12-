@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
- *
+ * show location on the map
  */
 public class RequesterDetailMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
