@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.dada.Controller.TaskController;
 import com.example.dada.Controller.UserController;
+import com.example.dada.Exception.UserException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.Task;
@@ -39,10 +41,13 @@ import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * The view of all 4 status of task detail for Requester
@@ -356,15 +361,102 @@ public class RequesterDetailActivity extends ListActivity {
     }
 
     /**
+     * perpare the thing for listview
+     * @return list of map(listview item content)
+     */
+//
+//    private List<Map<String, Object>> setListItemRatingSorted() {
+//        List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
+//        ArrayList<ArrayList<String>> providerNames = task.getBidList();
+//        Map<ArrayList<String>, Double> ratingMap = new HashMap<>();
+//
+//        PriorityQueue<Map.Entry<ArrayList<String>, Double>> maxheap = new PriorityQueue<Double>(new Comparator<Map.Entry<ArrayList<String>, Double>>() {
+//            @Override
+//            public int compare(Map.Entry<ArrayList<String>, Double> o1, Map.Entry<ArrayList<String>, Double> o2) {
+//
+//                if ( o2.getValue()-o1.getValue() > 0.0 ) {
+//                    return 1;
+//                }
+//                if ( o2.getValue()-o1.getValue() == 0.0 ) {
+//                    return 0;
+//                }
+//
+//                return -1;
+//            }
+//        });
+//
+//        PriorityQueue<Map.Entry<ArrayList<String>, Integer>> maxHeap = new PriorityQueue<>((a,b)->(b.getValue()-a.getValue()));
+//
+//        for (int i=0; i < providerNames.size(); i++) {
+//            ArrayList<Double> ratings = userController.getUser(providerNames.get(i).get(0)).getRatings();
+//            Double ratings_avg = 0.0;
+//            for ( Double rating : ratings ){
+//                ratings_avg += rating;
+//            }
+//            ratings_avg = ratings_avg / (double) ratings.size();
+//            ratingMap.put(providerNames.get(i), ratings_avg);
+//        }
+//
+//            Map<String, Object> map = new HashMap<String, Object>();
+//
+//
+//
+//
+//            Bitmap img = userController.getUser(providerNames.get(i).get(0)).getProfile_photo();
+//            // set picture                                                                   //^_^//
+//            map.put("img", img);
+//            String name = providerNames.get(i).get(0);
+//            map.put("title", name);
+//            map.put("price", "$"+providerNames.get(i).get(1));
+//            itemList.add(map);
+//        }
+//        return itemList;
+//    }
+
+    /**
      * done button click
      * @param view click action
      */
     public void doneOnClick(View view) {
-        if (task.getStatus().toUpperCase().equals(statusAssigned)) {
-            task.setStatus(statusDone.toLowerCase());
-            taskController.updateTask(task);
-            setViews();
-        }
+
+        android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(this);
+
+        alert.setTitle("Rating");
+        alert.setMessage("Give Rating, 1 to 5");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                double rating = Double.parseDouble(input.getText().toString());
+
+                if (task.getStatus().toUpperCase().equals(statusAssigned)) {
+                    task.setStatus(statusDone.toLowerCase());
+                    provider.addRating(rating);
+                    taskController.updateTask(task);
+
+                    try {
+                        userController.addUserRating(provider);
+                    } catch (UserException e) {
+                        e.printStackTrace();
+                    }
+
+                    setViews();
+                }
+
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
+
     }
 
     public void notComOnClick(View view) {

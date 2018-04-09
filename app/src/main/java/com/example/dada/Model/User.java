@@ -26,6 +26,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
@@ -42,6 +43,7 @@ public class User {
 
     private int type;
     private String profile_photo;
+    private ArrayList<Double> ratings = new ArrayList<>();
 
     private transient static JestDroidClient client;
 
@@ -341,6 +343,14 @@ public class User {
             e.getMessage();
             return null;
         }
+    }
+
+    public void addRating(double rating){
+        ratings.add(rating);
+    }
+
+    public ArrayList<Double> getRatings(){
+        return ratings;
     }
 
 }
