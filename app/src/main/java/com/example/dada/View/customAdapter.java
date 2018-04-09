@@ -65,6 +65,7 @@ public class customAdapter extends ArrayAdapter<Task> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get row needed info
         String title = getItem(position).getTitle();
+
         String status = getItem(position).getStatus();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -72,6 +73,10 @@ public class customAdapter extends ArrayAdapter<Task> {
 
         TextView taskTitle = (TextView) convertView.findViewById(R.id.taskTitle_requester_main);
         TextView taskStatus = (TextView) convertView.findViewById(R.id.taskStatus_requester_main);
+
+        if (getItem(position).getNewBid().equals("1")) {
+            taskTitle.setTextColor(Color.parseColor("#FF3333"));
+        }
 
         taskStatus.setTextColor(Color.parseColor("white"));
         if (status.equals("requested")) {

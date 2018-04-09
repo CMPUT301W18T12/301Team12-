@@ -441,9 +441,13 @@ public class RequesterMainActivity extends AppCompatActivity
                 .setNegativeButton("Edit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getApplicationContext(), RequesterEditTaskActivity.class);
-                        intent.putExtra("Task", TaskUtil.serializer(task));
-                        startActivity(intent);
+                        if (task.getStatus().toUpperCase().equals("REQUESTED")) {
+                            Intent intent = new Intent(getApplicationContext(), RequesterEditTaskActivity.class);
+                            intent.putExtra("Task", TaskUtil.serializer(task));
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "You can long edit when status is Request", Toast.LENGTH_SHORT);
+                        }
                         dialog.dismiss();
 
                     }

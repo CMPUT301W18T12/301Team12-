@@ -109,7 +109,7 @@ public class SignupActivity extends AppCompatActivity {
                 try {
                     User user = new User();
                     if (head != null) {
-                        user = new User(username, mobile, head.toString(), email);
+                        user = new User(username, mobile, head, email);
                     } else {
                         user = new User(username, mobile, email);
                     }

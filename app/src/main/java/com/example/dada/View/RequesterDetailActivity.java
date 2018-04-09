@@ -112,6 +112,7 @@ public class RequesterDetailActivity extends ListActivity {
         task = TaskUtil.deserializer(intent.getStringExtra("Task"));
 
         setViews();
+        task.setNewBid("0");
 
         /**
          * listener of listview click action
