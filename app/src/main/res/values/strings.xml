@@ -31,5 +31,6 @@
     <string name="title_activity_requester_add_task_location">Map</string>
     <string name="title_activity_requester_detail_map">Map</string>
     <string name="title_activity_requester_show_tasks5km_on_map">Map</string>
+    <string name="title_activity_provider_detail_map">Map</string>
 
 </resources>

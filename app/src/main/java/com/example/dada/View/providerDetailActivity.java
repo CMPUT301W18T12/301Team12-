@@ -143,6 +143,22 @@ public class providerDetailActivity extends AppCompatActivity {
         ImageButton imageButton = (ImageButton)findViewById(R.id.taskDetailMapBtn);
         imageButton.setImageResource(R.drawable.ic_launcher_foreground);
         imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        assert imageButton != null;
+        imageButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if (task.getCoordinatesString() != null) {
+                    String coordinates = task.getCoordinatesString();
+                    Intent intentDetailMap = new Intent(getApplicationContext(), ProviderDetailMapActivity.class);
+                    intentDetailMap.putExtra("coordinates", coordinates);
+
+                    startActivity(intentDetailMap);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Requester did not set location.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
 
         // set requester info
         TextView textViewName = (TextView)findViewById(R.id.textViewName);
