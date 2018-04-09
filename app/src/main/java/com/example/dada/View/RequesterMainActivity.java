@@ -187,7 +187,7 @@ public class RequesterMainActivity extends AppCompatActivity
         assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
         doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
 
-        setAdapter(sortType);
+//        setAdapter(sortType);
 
         updateTaskList();
     }
@@ -895,6 +895,18 @@ public class RequesterMainActivity extends AppCompatActivity
     public void onRestart(){
         super.onRestart();
         onStart();
+        clearListView(sortType);
+        setListView(sortType);
+        setAdapter(sortType);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        onStart();
+        clearListView(sortType);
+        setListView(sortType);
+        setAdapter(sortType);
     }
 
 }

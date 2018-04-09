@@ -687,4 +687,22 @@ public class ProviderMainActivity extends AppCompatActivity
     public void onDisconnect() {
         offlineHandler();
     }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        onStart();
+        clearListView(sortType);
+        setListView(sortType);
+        setAdapter(sortType);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        onStart();
+        clearListView(sortType);
+        setListView(sortType);
+        setAdapter(sortType);
+    }
 }
