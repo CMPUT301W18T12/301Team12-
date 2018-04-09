@@ -14,6 +14,7 @@ import com.example.dada.Controller.TaskController;
 import com.example.dada.Controller.UserController;
 import com.example.dada.Exception.UserException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.RequestedTask;
 import com.example.dada.Model.Task.Task;
@@ -22,6 +23,7 @@ import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class UserEditProfileActivity extends AppCompatActivity {
 
@@ -45,6 +47,34 @@ public class UserEditProfileActivity extends AppCompatActivity {
         }
     });
 
+    private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            requestedTaskList = (ArrayList<Task>) o;
+        }
+    });
+
+    private TaskController biddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            biddedTaskList = (ArrayList<Task>) o;
+        }
+    });
+
+    private TaskController assignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            assignedTaskList = (ArrayList<Task>) o;
+        }
+    });
+
+    private TaskController doneTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            doneTaskList = (ArrayList<Task>) o;
+        }
+    });
+
     private TaskController taskController = new TaskController(
             new OnAsyncTaskCompleted() {
                 @Override
@@ -52,6 +82,14 @@ public class UserEditProfileActivity extends AppCompatActivity {
                     Task t = (Task) o;
                     FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
                 }
+//            },
+//            new OnAsyncTaskFailure() {
+//                @Override
+//                public void onTaskFailed (Object o){
+//                    Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
+//                    offlineRequesterList.add((Task) o);
+//                    FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
+//                }
             });
 
     @Override
@@ -83,6 +121,11 @@ public class UserEditProfileActivity extends AppCompatActivity {
         usernameText.setText(user.getUserName());   // setText(user.getName)
         emailText.setText(user.getEmail());      // setText(user.getEmail)
         mobileText.setText(user.getPhone());     // setText(user.getMobile)
+
+        requestedTaskController.getRequesterRequestedTask(user.getUserName());
+        biddedTaskController.getRequesterBiddedTask(user.getUserName());
+        assignedTaskController.getRequesterAssignedTask(user.getUserName());
+        doneTaskController.getRequesterDoneTask(user.getUserName());
     }
 
     /**
@@ -115,17 +158,48 @@ public class UserEditProfileActivity extends AppCompatActivity {
 
                 userController.updateUser(user, oldUserName);
 
-//                ArrayList<Task> tasks =  taskController.getRequesterRequestedTask(oldUserName);
-//                for (Task task : tasks){
-//                    if(task.getProviderUserName() == oldUserName){
-//                        task.setProviderUserName(username);
-//                        taskController.updateTask(task);
-//                    }
-//                    else if(task.getRequesterUserName() == oldUserName){
-//                        task.setRequesterUserName(username);
-//                        taskController.updateTask(task);
-//                    }
-//                }
+                for (Iterator iter = requestedTaskList.iterator(); iter.hasNext() ; ) {
+                    Task oldTask = (Task) iter.next();
+                    oldTask.setRequesterUserName(username);
+                    taskController.updateTask(oldTask);
+                }
+
+                for (Iterator iter = biddedTaskList.iterator(); iter.hasNext() ; ) {
+                    Task oldTask = (Task) iter.next();
+                    if(oldTask.getRequesterUserName().equals(oldUserName)){
+                        oldTask.setRequesterUserName(username);
+                        taskController.updateTask(oldTask);
+                    }
+                    if(oldTask.getProviderUserName().equals(oldUserName)){
+                        oldTask.setProviderUserName(username);
+                        taskController.updateTask(oldTask);
+                    }
+                }
+
+                for (Iterator iter = assignedTaskList.iterator(); iter.hasNext() ; ) {
+                    Task oldTask = (Task) iter.next();
+                    if(oldTask.getRequesterUserName().equals(oldUserName)){
+                        oldTask.setRequesterUserName(username);
+                        taskController.updateTask(oldTask);
+                    }
+                    if(oldTask.getProviderUserName().equals(oldUserName)){
+                        oldTask.setProviderUserName(username);
+                        taskController.updateTask(oldTask);
+                    }
+                }
+
+                for (Iterator iter = doneTaskList.iterator(); iter.hasNext() ; ) {
+                    Task oldTask = (Task) iter.next();
+                    if(oldTask.getRequesterUserName().equals(oldUserName)){
+                        oldTask.setRequesterUserName(username);
+                        taskController.updateTask(oldTask);
+                    }
+                    if(oldTask.getProviderUserName().equals(oldUserName)){
+                        oldTask.setProviderUserName(username);
+                        taskController.updateTask(oldTask);
+                    }
+                }
+
                 finish();
             } catch (UserException e) {
                 // if the username has been taken
