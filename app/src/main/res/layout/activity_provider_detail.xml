@@ -63,7 +63,7 @@
         android:layout_marginStart="16dp"
         android:text="Lowest Price Right Now: $00.00"
         android:textColor="#E8B647"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewBackground"
         app:layout_constraintStart_toStartOf="@+id/imageViewBackground" />
 
@@ -101,10 +101,10 @@
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewBackground"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBackground" />
 
     <TextView
         android:id="@+id/textViewPhone"
@@ -114,9 +114,21 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+    <TextView
+        android:id="@+id/textViewMyBid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="MyBid"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLowestPrice" />
 
     <TextView
         android:id="@+id/textViewName"
@@ -125,9 +137,9 @@
         android:layout_marginEnd="150dp"
         android:layout_marginStart="150dp"
         android:layout_marginTop="4dp"
-        android:text="TextView"
         android:gravity="center"
-        android:textSize="16sp"
+        android:text="TextView"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
