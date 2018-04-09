@@ -26,6 +26,7 @@ import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class providerDetailActivity extends AppCompatActivity {
 
@@ -45,6 +46,8 @@ public class providerDetailActivity extends AppCompatActivity {
     private String statusDone = "DONE";
     private int photoIndex = 0;
     private String providerName;
+    private String myBid;
+
     private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -169,13 +172,14 @@ public class providerDetailActivity extends AppCompatActivity {
         assert imageButton != null;
         imageButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if (task.getCoordinatesString() != null) {
+                if (task.getCoordinates().size() != 0 ) {
                     String coordinates = task.getCoordinatesString();
                     Intent intentDetailMap = new Intent(getApplicationContext(), ProviderDetailMapActivity.class);
                     intentDetailMap.putExtra("coordinates", coordinates);
 
                     startActivity(intentDetailMap);
                 } else {
+
                     Toast.makeText(getApplicationContext(), "Requester did not set location.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -186,6 +190,7 @@ public class providerDetailActivity extends AppCompatActivity {
         // set requester info
         TextView textViewName = (TextView)findViewById(R.id.textViewName);
         TextView textViewPhone = (TextView)findViewById(R.id.textViewPhone);
+        TextView textViewMyBid = (TextView)findViewById(R.id.textViewMyBid);
         ImageView imageViewHead = (ImageView)findViewById(R.id.circleImageView);
 
         textViewName.setText(task.getRequesterUserName());
@@ -193,9 +198,9 @@ public class providerDetailActivity extends AppCompatActivity {
 
 
         requester = userController.getUser(task.getRequesterUserName());
-        if (requester != null) {
-            textViewName.setText(requester.getUserName());
-            textViewPhone.setText(requester.getPhone());
+        if (!requester.equals("")) {
+            textViewName.setText("Requester Name: " + requester.getUserName());
+            textViewPhone.setText("Phone: " + requester.getPhone());
 
             if (requester.getProfile_photo() != null) {//^_^//
                 imageViewHead.setImageBitmap(requester.getProfile_photo());
@@ -204,6 +209,16 @@ public class providerDetailActivity extends AppCompatActivity {
                 imageViewHead.setImageResource(R.drawable.temp_head);
             }
         }// temp
+
+        ArrayList<ArrayList<String>> theBids = task.getBidList();
+        for (ArrayList<String> bid : theBids) {
+            if (bid.get(0).equals(providerName)) {
+                myBid = "My Bid Price: $" + bid.get(1);
+                break;
+            }
+        }
+
+        textViewMyBid.setText(myBid);
 
 
 
