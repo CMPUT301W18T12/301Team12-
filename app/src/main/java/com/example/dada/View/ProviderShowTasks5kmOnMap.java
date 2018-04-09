@@ -1,6 +1,7 @@
 package com.example.dada.View;
 
 import android.Manifest;
+import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -10,14 +11,17 @@ import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
 import com.example.dada.Util.GPSTracker;
+import com.example.dada.Util.TaskUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMapReadyCallback {
@@ -29,6 +33,7 @@ public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMap
     private Double longitude;
     private static final Double DEFAULT_LAT = 53.5273;
     private static final Double DEFAULT_LON = -113.5296;
+    private HashMap<Marker, Task> mHashMap = new HashMap<Marker, Task>();
 
     private TaskController mapTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
@@ -36,13 +41,17 @@ public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMap
             LatLng currLoc = new LatLng(latitude, longitude);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currLoc, 12));
 
+
             tasks = (ArrayList<Task>) o;
 
             for ( Task task : tasks){
                 String status = task.getStatus();
+                String title = task.getTitle();
                 if (status.equals("requested") || status.equals("bidded")) {
-                    LatLng marker = new LatLng(task.getCoordinates().get(1), task.getCoordinates().get(0));
-                    mMap.addMarker(new MarkerOptions().position(marker).title("Marker"));
+                    LatLng position = new LatLng(task.getCoordinates().get(1), task.getCoordinates().get(0));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(title));
+
+                    mHashMap.put(marker, task);
                 }
             }
         }
@@ -91,7 +100,17 @@ public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMap
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            Task clickedTask = mHashMap.get(marker);
+            Intent intent = new Intent(getApplicationContext(), customAdapter.ProviderDetailAvitivity.class);
+            intent.putExtra("Task", TaskUtil.serializer(clickedTask));
+            startActivity(intent);
+        }
+    });
+    }}
 
-    }
 
-}
+
+
