@@ -25,6 +25,7 @@ import com.example.dada.Util.FileIOUtil;
 import com.example.dada.Util.TaskUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class providerDetailActivity extends AppCompatActivity {
 
@@ -167,13 +168,14 @@ public class providerDetailActivity extends AppCompatActivity {
         assert imageButton != null;
         imageButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if (task.getCoordinatesString() != null) {
+                if (task.getCoordinates().size() != 0 ) {
                     String coordinates = task.getCoordinatesString();
                     Intent intentDetailMap = new Intent(getApplicationContext(), ProviderDetailMapActivity.class);
                     intentDetailMap.putExtra("coordinates", coordinates);
 
                     startActivity(intentDetailMap);
                 } else {
+
                     Toast.makeText(getApplicationContext(), "Requester did not set location.", Toast.LENGTH_SHORT).show();
                 }
             }
