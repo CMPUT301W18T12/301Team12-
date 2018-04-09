@@ -1,3 +1,14 @@
+/*
+ * RequesterMainActivity
+ *
+ *
+ * April 9, 2018
+ *
+ * Copyright (c) 2018 Team 12. CMPUT301, University of Alberta - All Rights Reserved.
+ * You may use, distribute, or modify this code under terms and condition of the Code of Student Behaviour at University of Alberta.
+ * You can find a copy of the license in this project. Otherwise please contact me.
+ */
+
 package com.example.dada.View;
 
 import android.content.DialogInterface;
@@ -39,33 +50,49 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import java.util.ArrayList;
 
+/**
+ *  Main activity for requester main interface, including showing and managing list of tasks
+ *
+ *  @see RequesterDetailActivity
+ *  @see RequesterAddTaskActivity
+ *  @see RequesterBrowseTaskActivity
+ *  @see RequesterEditTaskActivity
+ *  @see UserEditProfileActivity
+ *
+ */
 public class RequesterMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Connectable, Disconnectable, Bindable {
 
     private User requester;
 
+    // For internet connection checking
     protected Merlin merlin;
 
+    // List view for 4 different kinds of task status
     private ListView requestedTaskListView;
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
     private ListView doneTaskListView;
 
+    // Adapter for 4 different kinds of task status
     private customAdapter requestedTaskAdapter;
     private customAdapter biddedTaskAdapter;
     private customAdapter assignedTaskAdapter;
     private customAdapter doneTaskAdapter;
 
+    // List of objects(Task) for 4 different kinds of task status
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> doneTaskList = new ArrayList<>();
 
+    // Indicating filter status
     private String sortType;
 
+    // Handle double click of back button
     boolean doubleBackToExitPressedOnce = false;
 
-    // Get list of tasks
+    // Controller: get list of requested tasks
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -76,6 +103,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of bidded tasks
     private TaskController biddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -86,6 +114,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of assigned tasks
     private TaskController assignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -96,6 +125,7 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of done tasks
     private TaskController doneTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -107,10 +137,12 @@ public class RequesterMainActivity extends AppCompatActivity
     });
 
 
-    // normal task
+    // List for offline situation
     private ArrayList<Task> offlineRequesterList = new ArrayList<>();
 
+    // Controller: handle task creating and deleting
     private TaskController taskController = new TaskController(
+            // Online
             new OnAsyncTaskCompleted() {
                 @Override
                 public void onTaskCompleted(Object o) {
@@ -118,6 +150,7 @@ public class RequesterMainActivity extends AppCompatActivity
                     FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
                 }
             },
+            // Offline
             new OnAsyncTaskFailure() {
                 @Override
                 public void onTaskFailed (Object o){
@@ -132,6 +165,7 @@ public class RequesterMainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_main);
 
+        // Default: show all the tasks in list view
         sortType = "all";
 
         // Set activity background color
@@ -145,19 +179,22 @@ public class RequesterMainActivity extends AppCompatActivity
         merlin.registerBindable(this);
         merlin.bind();
 
+        // Initialize tool bar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Floating button for add new Task
         FloatingActionButton fab = findViewById(R.id.fab_requester_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Intent to another activity to handle new task
                 Intent intentRequesterAddTask = new Intent(getApplicationContext(), RequesterAddTaskActivity.class);
                 startActivity(intentRequesterAddTask);
             }
         });
 
-
+        // Initialize side bar
         DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -185,16 +222,20 @@ public class RequesterMainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+        // Initialize adapter for list view
         requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
         biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
         assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
         doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
 
+        // adapt to list view under current filter status
         setAdapter(sortType);
 
+        // Update task list from server
         updateTaskList();
     }
 
+    // Update task list for 4 task lists
     private void updateTaskList() {
         requestedTaskController.getRequesterRequestedTask(requester.getUserName());
         biddedTaskController.getRequesterBiddedTask(requester.getUserName());
@@ -202,6 +243,9 @@ public class RequesterMainActivity extends AppCompatActivity
         doneTaskController.getRequesterDoneTask(requester.getUserName());
     }
 
+    /**
+     * Give user option to double press back button to logout
+     */
     @Override
     public void onBackPressed() {
         Log.i("Debug----->", "on back pressed");
@@ -230,12 +274,20 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Initialize menu
+     */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.requester_main, menu);
         return true;
     }
+
+    /**
+     * Handle tool bar
+     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -244,13 +296,12 @@ public class RequesterMainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Handle selection for side bar
+     */
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -258,6 +309,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // Manage user profile
         if (id == R.id.nav_manage) {
 
             // intent to UserEditProfileActivity
@@ -265,6 +317,7 @@ public class RequesterMainActivity extends AppCompatActivity
             startActivity(intentUserEditProfile);
             finish();
         }
+        // Filter: all task
         else if (id == R.id.nav_allTask_Rmain) {
 
             onStart();
@@ -273,6 +326,7 @@ public class RequesterMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: requested task
         else if (id == R.id.nav_requestedTask_Rmain) {
 
             onStart();
@@ -281,6 +335,7 @@ public class RequesterMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: bidded task
         else if (id == R.id.nav_biddedTask_Rmain) {
 
             onStart();
@@ -289,6 +344,7 @@ public class RequesterMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: assigned task
         else if (id == R.id.nav_assignedTask_Rmain) {
 
             onStart();
@@ -297,6 +353,7 @@ public class RequesterMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: done task
         else if (id == R.id.nav_doneTask_Rmain) {
 
             onStart();
@@ -305,10 +362,8 @@ public class RequesterMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Logout
         else if (id == R.id.nav_logout) {
-
-            // intent to login activity
-//            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
 
@@ -319,7 +374,8 @@ public class RequesterMainActivity extends AppCompatActivity
     }
 
     /**
-     * Dialog for Requested Task
+     * Listener for requested task in list view to view detail
+     *
      * @param task
      */
     private void openRequestedTaskDetail(final Task task){
@@ -327,40 +383,11 @@ public class RequesterMainActivity extends AppCompatActivity
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
-        /**
-        // get task info, and show it on the dialog
-        String title = task.getTitle();
-        String description = task.getDescription();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
-
-        builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n")
-                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
-
-                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-                        // Serialize the task object and pass it over through the intent
-                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentRequesterBrowse);
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-
-        // Create & Show the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-         **/
     }
 
     /**
-     * Dialog for Bidded Task
+     * Listener for bidded task in list view to view detail
+     *
      * @param task
      */
     private void openBiddedTaskDetail(final Task task) {
@@ -369,158 +396,34 @@ public class RequesterMainActivity extends AppCompatActivity
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
-        /**
-        String title = task.getTitle();
-        ArrayList<ArrayList<String>> bidList = task.getBidList();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
-
-        final ArrayAdapter<String> bidAdapter = new ArrayAdapter<>(RequesterMainActivity.this, android.R.layout.select_dialog_singlechoice);
-
-        for ( ArrayList<String> bid : bidList ){
-            Log.d("Bid", bid.toString());
-            bidAdapter.add(bid.get(0) + " " + bid.get(1));
-        }
-
-        builder.setTitle("Title: " + title);
-        builder.setNeutralButton("view map", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
-
-                // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-                // Serialize the task object and pass it over through the intent
-                intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
-                startActivity(intentRequesterBrowse);
-            }
-        });
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-        builder.setAdapter(bidAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-
-                final String[] provider_price = bidAdapter.getItem(id).split(" ");
-
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(RequesterMainActivity.this);
-                builderInner.setMessage("Provider: " + provider_price[0] + "\n" + "Price: " + provider_price[1]);
-                builderInner.setTitle("Your Task Assigned To: ");
-                builderInner.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int id) {
-
-                        // Assign bidded task
-                        try {
-                            assignBiddedTaskController.requesterAssignTask(task, provider_price[0]);
-                        } catch (TaskException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builderInner.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-                builderInner.show();
-            }
-        });
-
-        // Create & Show the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-         **/
     }
 
     /**
-     * Dialog for Assigned Task
+     * Listener for assigned task in list view to view detail
      * @param task
      */
     private void openAssignedTaskDetail(final Task task) {
         Intent intent = new Intent(this, RequesterDetailActivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
         startActivity(intent);
-        /**
-        // get task info, and show it on the dialog
-        String title = task.getTitle();
-        String description = task.getDescription();
-        String price = task.getPrice().toString();
-        String providerUserName = task.getProviderUserName();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
-
-        builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: " + price + "\n" + "Provider: " + providerUserName + "\n")
-                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
-
-                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-                        // Serialize the task object and pass it over through the intent
-                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentRequesterBrowse);
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-
-        // Create & Show the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-         **/
     }
 
     /**
-     * Dialog for Done Task
+     * Listener for done task in list view to view detail
+     *
      * @param task
      */
     private void openDoneTaskDetail(final Task task) {
-        // get task info, and show it on the dialog
-        String title = task.getTitle();
-        String description = task.getDescription();
-        String price = task.getPrice().toString();
-        String providerUserName = task.getProviderUserName();
-        /**
-        AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
-
-        builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: " + price + "\n" + "Provider: " + providerUserName + "\n")
-                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
-
-                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-                        // Serialize the task object and pass it over through the intent
-                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentRequesterBrowse);
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-
-        // Create & Show the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-         **/
+        Intent intent = new Intent(this, RequesterDetailActivity.class);
+        intent.putExtra("Task", TaskUtil.serializer(task));
+        startActivity(intent);
     }
 
     /**
      * Dialog for confirm delete Requested Task
      * @param task
      */
-    private void AskDeleteRequestedTask(final Task task)
-    {
+    private void AskDeleteRequestedTask(final Task task){
         AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
                 //set message, title, and icon
         builder.setTitle("Delete")
@@ -535,9 +438,6 @@ public class RequesterMainActivity extends AppCompatActivity
                     }
 
                 })
-
-
-
                 .setNegativeButton("Edit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -551,15 +451,13 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
     /**
      * Dialog for confirm delete Bidded Task
      * @param task
      */
-    private void AskDeleteBiddedTask(final Task task)
-    {
+    private void AskDeleteBiddedTask(final Task task){
         AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
         //set message, title, and icon
         builder.setTitle("Delete")
@@ -583,15 +481,13 @@ public class RequesterMainActivity extends AppCompatActivity
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
     /**
      * Dialog for confirm delete Assigned Task
      * @param task
      */
-    private void AskDeleteAssignedTask(final Task task)
-    {
+    private void AskDeleteAssignedTask(final Task task){
         AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
         //set message, title, and icon
         builder.setTitle("Delete")
@@ -622,8 +518,7 @@ public class RequesterMainActivity extends AppCompatActivity
      * Dialog for confirm delete Done Task
      * @param task
      */
-    private void AskDeleteDoneTask(final Task task)
-    {
+    private void AskDeleteDoneTask(final Task task){
         AlertDialog.Builder builder  =new AlertDialog.Builder(RequesterMainActivity.this);
         //set message, title, and icon
         builder.setTitle("Delete")
@@ -661,12 +556,13 @@ public class RequesterMainActivity extends AppCompatActivity
     }
 
     /**
-     *  Set click for different sorting situation
+     *  Set list view for different sorting situation
      * @param sortType
      */
     public void setListView(final String sortType){
-        Log.i("Method start----->", "ResquesterMainActivity setListView");
+        Log.i("Method start----->", "RequesterMainActivity setListView");
         TextView textView = (TextView) findViewById(R.id.editText_allTask_RequesterMainActivity);
+        // Show all tasks
         if (sortType.equals("all")){
 
             textView.setText("All Tasks");
@@ -675,7 +571,7 @@ public class RequesterMainActivity extends AppCompatActivity
             requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open requested task info dialog
+                    // open requested task info
                     openRequestedTaskDetail(requestedTaskList.get(position));
 
                 }
@@ -685,7 +581,7 @@ public class RequesterMainActivity extends AppCompatActivity
             biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open bidded task info dialog
+                    // open bidded task info
                     openBiddedTaskDetail(biddedTaskList.get(position));
                 }
             });
@@ -694,7 +590,7 @@ public class RequesterMainActivity extends AppCompatActivity
             assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open assigned task info dialog
+                    // open assigned task info
                     openAssignedTaskDetail(assignedTaskList.get(position));
                 }
             });
@@ -703,7 +599,7 @@ public class RequesterMainActivity extends AppCompatActivity
             doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // open done task info dialog
+                    // open done task info
                     openDoneTaskDetail(doneTaskList.get(position));
                 }
             });
@@ -741,6 +637,7 @@ public class RequesterMainActivity extends AppCompatActivity
             });
 
         }
+        // show requested tasks
         else if(sortType.equals("requested")){
 
             textView.setText("Requested Tasks");
@@ -762,6 +659,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
         }
+        //show bidded tasks
         else if(sortType.equals("bidded")){
 
             textView.setText("Bidded Tasks");
@@ -782,6 +680,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
         }
+        // show assigned tasks
         else if(sortType.equals("assigned")){
 
             textView.setText("Assigned Tasks");
@@ -802,6 +701,7 @@ public class RequesterMainActivity extends AppCompatActivity
                 }
             });
         }
+        // show done tasks
         else if(sortType.equals("done")){
 
             textView.setText("Done Tasks");
@@ -824,6 +724,10 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Adapt list to list view
+     * @param sortType
+     */
     public void setAdapter(String sortType){
         if (sortType.equals("all")){
             requestedTaskListView.setAdapter(requestedTaskAdapter);
@@ -845,6 +749,10 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Clear list view when change filter status
+     * @param oldSortType
+     */
     public void clearListView(String oldSortType){
         if(oldSortType.equals("all")){
             requestedTaskListView.setAdapter(null);
@@ -864,12 +772,11 @@ public class RequesterMainActivity extends AppCompatActivity
         else if(oldSortType.equals("done")){
             doneTaskListView.setAdapter(null);
         }
-//        requestedTaskListView.setAdapter(null);
-//        biddedTaskListView.setAdapter(null);
-//        assignedTaskListView.setAdapter(null);
-//        doneTaskListView.setAdapter(null);
     }
 
+    /**
+     * Update offline tasks when back online
+     */
     protected void updateOfflineRequest() {
         ArrayList<String> offlineList = TaskUtil.getOfflineTaskList(getApplicationContext());
         if (offlineList == null) return;
@@ -882,7 +789,10 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
-
+    /**
+     * check internet connection
+     * @param networkStatus
+     */
     @Override
     public void onBind(NetworkStatus networkStatus) {
         onStart();
@@ -893,7 +803,9 @@ public class RequesterMainActivity extends AppCompatActivity
         }
     }
 
-
+    /**
+     * handle offline situation
+     */
     @Override
     public void onDisconnect() {
         Log.i("Debug ---------->", "Offline");
@@ -901,6 +813,9 @@ public class RequesterMainActivity extends AppCompatActivity
         requestedTaskController.getRequesterOfflineTask(requester.getUserName(), this);
     }
 
+    /**
+     * handle online situation
+     */
     @Override
     public void onConnect() {
         // try to update after regain internet access
@@ -916,6 +831,9 @@ public class RequesterMainActivity extends AppCompatActivity
         super.onPause();
     }
 
+    /**
+     * when restart, refresh everything
+     */
     @Override
     public void onRestart(){
         super.onRestart();
@@ -925,6 +843,9 @@ public class RequesterMainActivity extends AppCompatActivity
         setAdapter(sortType);
     }
 
+    /**
+     * when resume, refresh everything
+     */
     @Override
     public void onResume(){
         super.onResume();
