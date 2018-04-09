@@ -251,8 +251,12 @@ public class customAdapter extends ArrayAdapter<Task>{
             String value_str = input.getText().toString();
             if (value_str == null) {
                 Toast.makeText(this, "Please add price.", Toast.LENGTH_SHORT).show();
+                return;
             }
-            int value = Integer.parseInt(value_str);
+
+            double valueDouble = Double.parseDouble(value_str);
+
+            /**
             ArrayList<ArrayList<String>> bidList = task.getBidList();
 
             if (task.getStatus().toUpperCase().equals(statusBidded)) {
@@ -275,11 +279,16 @@ public class customAdapter extends ArrayAdapter<Task>{
             bidList.add(bid);
             task.setBidList(bidList);
             taskController.updateTask(task);
-
+            **/
+            try {
+                Log.i("debug---->", FileIOUtil.loadUserFromFile(getApplicationContext()).);
+                task.providerBidTask(FileIOUtil.loadUserFromFile(getApplicationContext()).getUserName(), valueDouble);
+            } catch(Exception e) {
+                Toast.makeText(this, "Cannot bidded test.", Toast.LENGTH_SHORT);
+            }
+            taskController.updateTask(task);
             setViews();
             finish();
         }
-
-
     }
 }
