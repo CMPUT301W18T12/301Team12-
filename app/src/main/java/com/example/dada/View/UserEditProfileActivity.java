@@ -1,3 +1,13 @@
+/*
+ * UserEditProfileActivity
+ *
+ *
+ * April 9, 2018
+ *
+ * Copyright (c) 2018 Team 12. CMPUT301, University of Alberta - All Rights Reserved.
+ * You may use, distribute, or modify this code under terms and condition of the Code of Student Behaviour at University of Alberta.
+ * You can find a copy of the license in this project. Otherwise please contact me.
+ */
 package com.example.dada.View;
 
 import android.support.v7.app.AppCompatActivity;
@@ -25,12 +35,16 @@ import com.example.dada.Util.FileIOUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ *  Activity to edit user profile
+ */
 public class UserEditProfileActivity extends AppCompatActivity {
-
+    // edit text for user
     private EditText usernameText;
     private EditText emailText;
     private EditText mobileText;
 
+    // list of task for change their name
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
@@ -39,6 +53,7 @@ public class UserEditProfileActivity extends AppCompatActivity {
     private Button saveButton;
     private User user;
 
+    //Controllers for get list of tasks
     private UserController userController = new UserController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -75,6 +90,7 @@ public class UserEditProfileActivity extends AppCompatActivity {
         }
     });
 
+    //Controller for update
     private TaskController taskController = new TaskController(
             new OnAsyncTaskCompleted() {
                 @Override
@@ -82,14 +98,6 @@ public class UserEditProfileActivity extends AppCompatActivity {
                     Task t = (Task) o;
                     FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
                 }
-//            },
-//            new OnAsyncTaskFailure() {
-//                @Override
-//                public void onTaskFailed (Object o){
-//                    Toast.makeText(getApplication(), "Device offline", Toast.LENGTH_SHORT).show();
-//                    offlineRequesterList.add((Task) o);
-//                    FileIOUtil.saveOfflineTaskInFile((Task) o, getApplicationContext());
-//                }
             });
 
     @Override
@@ -97,8 +105,10 @@ public class UserEditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit_profile);
 
+        // get user info
         user = FileIOUtil.loadUserFromFile(getApplicationContext());
 
+        // initialize text and button
         usernameText = findViewById(R.id.editText_userName_EditUserProfileActivity);
         emailText = findViewById(R.id.editText_email_EditUserProfileActivity);
         mobileText = findViewById(R.id.editText_mobile_EditUserProfileActivity);
@@ -122,6 +132,7 @@ public class UserEditProfileActivity extends AppCompatActivity {
         emailText.setText(user.getEmail());      // setText(user.getEmail)
         mobileText.setText(user.getPhone());     // setText(user.getMobile)
 
+        //get tasks
         requestedTaskController.getRequesterRequestedTask(user.getUserName());
         biddedTaskController.getRequesterBiddedTask(user.getUserName());
         assignedTaskController.getRequesterAssignedTask(user.getUserName());
@@ -132,20 +143,24 @@ public class UserEditProfileActivity extends AppCompatActivity {
      * save and upload the new profile to the ES server
      */
     public void editProfile(){
+        //get user input info
         String username = usernameText.getText().toString();
         String email = emailText.getText().toString();
         String mobile = mobileText.getText().toString();
 
         String oldUserName = user.getUserName();
 
+        // show them to user
         user.setUserName(username);
         user.setEmail(email);
         user.setPhone(mobile);
 
+        //initialize checking
         boolean validUsername = !(username.isEmpty() || username.trim().isEmpty());
         boolean validEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
         boolean validMobile = Patterns.PHONE.matcher(mobile).matches();
 
+        //check input
         if ( !(validUsername && validEmail && validMobile) ){
             Toast.makeText(this, "Username/Email/Mobile is not valid.", Toast.LENGTH_SHORT).show();
         }
@@ -158,6 +173,7 @@ public class UserEditProfileActivity extends AppCompatActivity {
 
                 userController.updateUser(user, oldUserName);
 
+                // change all the name inside the tasks where the user participated
                 for (Iterator iter = requestedTaskList.iterator(); iter.hasNext() ; ) {
                     Task oldTask = (Task) iter.next();
                     oldTask.setRequesterUserName(username);

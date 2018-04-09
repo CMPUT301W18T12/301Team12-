@@ -1,9 +1,21 @@
+/*
+ * ProviderMainActivity
+ *
+ *
+ * April 9, 2018
+ *
+ * Copyright (c) 2018 Team 12 CMPUT301, University of Alberta - All Rights Reserved.
+ * You may use, distribute, or modify this code under terms and condition of the Code of Student Behaviour at University of Alberta.
+ * You can find a copy of the license in this project. Otherwise please contact me.
+ */
 package com.example.dada.View;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -38,13 +50,20 @@ import java.util.ArrayList;
 
 import im.delight.android.location.SimpleLocation;
 
+/**
+ *  Main activity for requester main interface, including showing and managing list of tasks
+ *
+ *  @see ProviderBrowseTaskActivity
+ *  @see ProviderShowTasks5kmOnMap
+ *  @see UserEditProfileActivity
+ *
+ */
 public class ProviderMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Connectable, Disconnectable, Bindable {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private User provider;
 
-    protected Merlin merlin;
-
+    // List view for 4 different kinds of task status
     private ListView requestedTaskListView;
     private ListView biddedTaskListView;
     private ListView assignedTaskListView;
@@ -52,6 +71,7 @@ public class ProviderMainActivity extends AppCompatActivity
     private ListView requestedSearchTaskListView;
     private ListView biddedSearchTaskListView;
 
+    // Adapter for 4 different kinds of task status
     private customAdapter requestedTaskAdapter;
     private customAdapter biddedTaskAdapter;
     private customAdapter assignedTaskAdapter;
@@ -59,6 +79,7 @@ public class ProviderMainActivity extends AppCompatActivity
     private customAdapter requestedSearchTaskAdapter;
     private customAdapter biddedSearchTaskAdapter;
 
+    // List of objects(Task) for 4 different kinds of task status
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
     private ArrayList<Task> biddedTaskList = new ArrayList<>();
     private ArrayList<Task> assignedTaskList = new ArrayList<>();
@@ -68,11 +89,13 @@ public class ProviderMainActivity extends AppCompatActivity
 
     private SimpleLocation location;
 
+    // Indicating filter status
     private String sortType;
 
+    // Handle double click of back button
     boolean doubleBackToExitPressedOnce = false;
 
-
+    // Controller: get list of requested tasks
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -83,6 +106,7 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of bidded tasks
     private TaskController biddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -93,6 +117,7 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of assigned tasks
     private TaskController assignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -103,6 +128,7 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of done tasks
     private TaskController completedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -113,6 +139,7 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of requested tasks by keywords
     private TaskController requestedSearchTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -123,6 +150,7 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    // Controller: get list of bidded tasks by keywords
     private TaskController biddedSearchTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -133,49 +161,23 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
-    private TaskController bidRequestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            requestedTaskAdapter.remove((Task) o);
-            biddedTaskAdapter.add((Task) o);
-            requestedTaskAdapter.notifyDataSetChanged();
-            biddedTaskAdapter.notifyDataSetChanged();
-        }
-    });
-
-    private TaskController bidBiddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            biddedTaskAdapter.notifyDataSetChanged();
-        }
-    });
-
-    private TaskController completeAssignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
-        @Override
-        public void onTaskCompleted(Object o) {
-            assignedTaskAdapter.remove((Task) o);
-            doneTaskAdapter.add((Task) o);
-            assignedTaskAdapter.notifyDataSetChanged();
-            doneTaskAdapter.notifyDataSetChanged();
-        }
-    });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_main);
 
+        // Default: show all the tasks in list view
         sortType = "all";
 
-        // monitor network connectivity
-        merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
-        merlin.registerConnectable(this);
-        merlin.registerDisconnectable(this);
-        merlin.registerBindable(this);
+        // Set activity background color
+        ConstraintLayout rl = (ConstraintLayout)findViewById(R.id.content_Pmain_layout);
+        rl.setBackgroundColor(Color.parseColor("#F3F3F3"));
 
+        // Initialize tool bar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Initialize side bar
         DrawerLayout drawer = findViewById(R.id.drawer_provider_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -199,67 +201,13 @@ public class ProviderMainActivity extends AppCompatActivity
         // list view
         setListView(sortType);
 
-        // list view
-        requestedTaskListView = findViewById(R.id.listView_requestedTask_ProviderMainActivity);
-        requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open requested task dialog
-                openRequestedTaskDetail(requestedTaskList.get(position));
-            }
-        });
-
-        biddedTaskListView = findViewById(R.id.listView_biddedTask_ProviderMainActivity);
-        biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open bidded task dialog
-                openBiddedTaskDetail(biddedTaskList.get(position));
-            }
-        });
-
-        assignedTaskListView = findViewById(R.id.listView_assignedTask_ProviderMainActivity);
-        assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open assigned task dialog
-                openAssignedTaskDetail(assignedTaskList.get(position));
-            }
-        });
-
-        doneTaskListView = findViewById(R.id.listView_doneTask_ProviderMainActivity);
-        doneTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open completed task dialog
-                openDoneTaskDetail(doneTaskList.get(position));
-            }
-        });
-
-        requestedSearchTaskListView = findViewById(R.id.listView_requestedSearchTask_ProviderMainActivity);
-        requestedSearchTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open requested task dialog
-                openRequestedTaskDetail(requestedSearchTaskList.get(position));
-            }
-        });
-
-        biddedSearchTaskListView = findViewById(R.id.listView_biddedSearchTask_ProviderMainActivity);
-        biddedSearchTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open bidded task dialog
-                openBiddedTaskDetail(biddedSearchTaskList.get(position));
-            }
-        });
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+        // Initialize adapter for list view
         requestedTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedTaskList);
         biddedTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedTaskList);
         assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
@@ -267,11 +215,16 @@ public class ProviderMainActivity extends AppCompatActivity
         requestedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, requestedSearchTaskList);
         biddedSearchTaskAdapter = new customAdapter(this, R.layout.task_list_item, biddedSearchTaskList);
 
+        // adapt to list view under current filter status
         setAdapter(sortType);
 
+        // Update task list from server
         updateTaskList();
     }
 
+    /**
+     * Give user option to double press back button to logout
+     */
     @Override
     public void onBackPressed() {
         Log.i("Debug----->", "on back pressed");
@@ -300,6 +253,9 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Initialize menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -307,6 +263,9 @@ public class ProviderMainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Handle tool bar
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -314,20 +273,19 @@ public class ProviderMainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handle selection for side bar
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // Manage user profile
         if (id == R.id.nav_manage) {
 
             // intent to UserEditProfileActivity
@@ -335,6 +293,7 @@ public class ProviderMainActivity extends AppCompatActivity
             startActivity(intentUserEditProfile);
             finish();
         }
+        // Filter: all task
         else if (id == R.id.nav_allTask_Pmain) {
 
             onStart();
@@ -343,6 +302,7 @@ public class ProviderMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: requested task
         else if (id == R.id.nav_requestedTask_Pmain) {
 
             onStart();
@@ -351,6 +311,7 @@ public class ProviderMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: bidded task
         else if (id == R.id.nav_biddedTask_Pmain) {
 
             onStart();
@@ -359,6 +320,7 @@ public class ProviderMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: assigned task
         else if (id == R.id.nav_assignedTask_Pmain) {
 
             onStart();
@@ -367,6 +329,7 @@ public class ProviderMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Filter: done task
         else if (id == R.id.nav_doneTask_Pmain) {
 
             onStart();
@@ -375,6 +338,7 @@ public class ProviderMainActivity extends AppCompatActivity
             setListView(sortType);
             setAdapter(sortType);
         }
+        // Search by keyword
         else if (id == R.id.nav_search_Pmain) {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -413,12 +377,14 @@ public class ProviderMainActivity extends AppCompatActivity
             alert.show();
 
         }
+        // Show task in area
         else if (id == R.id.nav_location) {
             // display all requested/bidded tasks on mao
             Intent intentLocationMap = new Intent(getApplicationContext(), ProviderShowTasks5kmOnMap.class);
 //            intentDetailMap.putExtra("coordinates", coordinates);
             startActivity(intentLocationMap);
         }
+        // Logout
         else if (id == R.id.nav_logout) {
 
             // intent to login activity
@@ -439,7 +405,7 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     * Dialog for Requested Task
+     * Listener for requested task in list view to view detail
      * @param task
      */
     private void openRequestedTaskDetail(final Task task) {
@@ -451,7 +417,7 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     * Dialog for Bidded Task
+     * Listener for bidded task in list view to view detail
      * @param task
      */
     private void openBiddedTaskDetail(final Task task) {
@@ -464,7 +430,7 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     * Dialog for Assigned Task
+     * Listener for assigned task in list view to view detail
      * @param task
      */
     private void openAssignedTaskDetail(final Task task) {
@@ -477,7 +443,7 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     * Dialog for done Task
+     * Listener for done task in list view to view detail
      * @param task
      */
     private void openDoneTaskDetail(final Task task) {
@@ -508,15 +474,9 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     * Once the device went offline, try to get task list from internal storage
+     * Adapt list to list view
+     * @param sortType
      */
-    protected void offlineHandler() {
-        requestedTaskController.getProviderOfflineRequestedTask(this);
-        biddedTaskController.getProviderOfflineBiddedTask(this);
-        assignedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
-        completedTaskController.getProviderOfflineDoneTask(provider.getUserName(), this);
-    }
-
     public void setAdapter(String sortType){
         if (sortType.equals("all")){
             requestedTaskListView.setAdapter(requestedTaskAdapter);
@@ -543,7 +503,7 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
     /**
-     *  Set click for different sorting situation
+     *  Set list view for different sorting situation
      * @param sortType
      */
     public void setListView(final String sortType){
@@ -650,7 +610,7 @@ public class ProviderMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open requested task info dialog
-                    openRequestedTaskDetail(requestedSearchTaskList.get(position));
+                    openRequestedSearchTaskDetail(requestedSearchTaskList.get(position));
 
                 }
             });
@@ -660,12 +620,16 @@ public class ProviderMainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // open bidded task info dialog
-                    openBiddedTaskDetail(biddedSearchTaskList.get(position));
+                    openBiddedSearchTaskDetail(biddedSearchTaskList.get(position));
                 }
             });
         }
     }
 
+    /**
+     * Clear list view when change filter status
+     * @param oldSortType
+     */
     public void clearListView(String oldSortType){
         if(oldSortType.equals("all")){
             requestedTaskListView.setAdapter(null);
@@ -689,33 +653,11 @@ public class ProviderMainActivity extends AppCompatActivity
             requestedSearchTaskListView.setAdapter(null);
             biddedSearchTaskListView.setAdapter(null);
         }
-//        requestedTaskListView.setAdapter(null);
-//        biddedTaskListView.setAdapter(null);
-//        assignedTaskListView.setAdapter(null);
-//        doneTaskListView.setAdapter(null);
     }
 
-    @Override
-    public void onBind(NetworkStatus networkStatus) {
-        if (networkStatus.isAvailable()) {
-            onConnect();
-        } else if (!networkStatus.isAvailable()) {
-            onDisconnect();
-        }
-    }
-
-    @Override
-    public void onConnect() {
-        // try to update offline assigned request
-//        requestedTaskController.updateDriverOfflineRequest(driver.getUserName(), this);
-//        updateRequestList();
-    }
-
-    @Override
-    public void onDisconnect() {
-        offlineHandler();
-    }
-
+    /**
+     * when restart, refresh everything
+     */
     @Override
     public void onRestart(){
         super.onRestart();
@@ -725,6 +667,9 @@ public class ProviderMainActivity extends AppCompatActivity
         setAdapter(sortType);
     }
 
+    /**
+     * when resume, refresh everything
+     */
     @Override
     public void onResume(){
         super.onResume();
