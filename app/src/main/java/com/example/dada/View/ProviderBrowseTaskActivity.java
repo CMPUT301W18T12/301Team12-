@@ -33,6 +33,9 @@ import com.example.dada.R;
 
 import java.util.ArrayList;
 
+/**
+ * Old version detail under main
+ */
 public class ProviderBrowseTaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

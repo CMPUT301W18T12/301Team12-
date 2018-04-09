@@ -98,6 +98,12 @@ public class FileIOUtil {
         }
     }
 
+    /**
+     * save Task in the file
+     * @param task task
+     * @param fileName the filename of saving file
+     * @param context
+     */
     public static void saveTaskInFile(Task task, String fileName, Context context) {
         try {
             Gson gson = new Gson();
@@ -118,6 +124,11 @@ public class FileIOUtil {
         }
     }
 
+    /**
+     * save requester task
+     * @param task task
+     * @param context
+     */
     public static void saveRequesterTaskInFile(Task task, Context context) {
         try {
             Gson gson = new Gson();
@@ -162,6 +173,12 @@ public class FileIOUtil {
         return taskList;
     }
 
+    /**
+     * load one task
+     * @param fileName file load from
+     * @param context
+     * @return task
+     */
     public static Task loadSingleTaskFromFile(String fileName, Context context) {
         Task request = new NormalTask();
         FileInputStream fis = null;

@@ -34,6 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * show request with 5 km
+ */
 public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

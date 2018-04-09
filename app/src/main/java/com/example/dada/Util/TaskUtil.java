@@ -26,32 +26,67 @@ import java.util.ArrayList;
  */
 public class TaskUtil {
 
+    /**
+     * change task to string
+     * @param task Task
+     * @return String
+     */
     public static String serializer(Task task) {
         Gson gson = new Gson();
         return gson.toJson(task);
     }
 
+    /**
+     * change string to task
+     * @param string task string
+     * @return Task
+     */
     public static Task deserializer(String string) {
         Gson gson = new Gson();
         return gson.fromJson(string, NormalTask.class);
     }
 
+    /**
+     * offline create task
+     * @param task task
+     * @return offline json
+     */
     public static String generateOfflineTaskFileName(Task task) {
         return "offline-" + task.getID() + ".json";
     }
 
+    /**
+     * Task been accpted
+     * @param task Task
+     * @return task string
+     */
     public static String generateAcceptedTaskFileName(Task task) {
         return "accepted-" + task.getID() + ".json";
     }
 
+    /**
+     * task request change
+     * @param task Task
+     * @return String
+     */
     public static String generateRequesterTaskFileName(Task task) {
         return "requester-" + task.getID() + ".json";
     }
 
+    /**
+     * provider task list
+     * @param task Task
+     * @return String
+     */
     public static String generateProviderTaskFileName(Task task) {
         return "provider-" + task.getID() + ".json";
     }
 
+    /**
+     * due with offline task list
+     * @param context
+     * @return offline list
+     */
     public static ArrayList<String> getOfflineTaskList(Context context) {
         String[] fileList = context.fileList();
         ArrayList<String> offlineRequestFileList = new ArrayList<>();
@@ -63,6 +98,11 @@ public class TaskUtil {
         return offlineRequestFileList;
     }
 
+    /**
+     * get requester list
+     * @param context
+     * @return list
+     */
     public static ArrayList<String> getRequesterTaskList(Context context) {
         String[] fileList = context.fileList();
         ArrayList<String> offlineAcceptedRequestFileList = new ArrayList<>();
@@ -75,6 +115,11 @@ public class TaskUtil {
         return offlineAcceptedRequestFileList;
     }
 
+    /**
+     * get provider list
+     * @param context
+     * @return list
+     */
     public static ArrayList<String> getProviderTaskList(Context context) {
         String[] fileList = context.fileList();
         ArrayList<String> offlineAcceptedRequestFileList = new ArrayList<>();
@@ -87,6 +132,11 @@ public class TaskUtil {
         return offlineAcceptedRequestFileList;
     }
 
+    /**
+     * get accepted list
+     * @param context
+     * @return
+     */
     public static ArrayList<String> getAcceptedTaskList(Context context) {
         String[] fileList = context.fileList();
         ArrayList<String> offlineAcceptedRequestFileList = new ArrayList<>();

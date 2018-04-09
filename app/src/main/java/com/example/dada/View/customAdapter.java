@@ -41,7 +41,9 @@ import com.example.dada.Util.TaskUtil;
 
 import java.util.ArrayList;
 
-
+/**
+ * adapter for main
+ */
 public class customAdapter extends ArrayAdapter<Task> {
     private Context mContext;
     private int mResource;

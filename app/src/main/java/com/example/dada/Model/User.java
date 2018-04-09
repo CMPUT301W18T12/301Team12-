@@ -36,6 +36,9 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
+/**
+ * user model
+ */
 public class User {
 
     private String ID;

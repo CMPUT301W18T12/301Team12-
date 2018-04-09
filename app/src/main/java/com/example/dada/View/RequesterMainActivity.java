@@ -454,7 +454,7 @@ public class RequesterMainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         if (task.getStatus().toUpperCase().equals("REQUESTED")) {
                             Intent intent = new Intent(getApplicationContext(), RequesterEditTaskActivity.class);
-                            intent.putExtra("Task", TaskUtil.serializer(task));
+                            saveInFile(task);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "You can long edit when status is Request", Toast.LENGTH_SHORT);

@@ -11,6 +11,9 @@
 
 package com.example.dada.Model;
 
+/**
+ * async failure
+ */
 public interface OnAsyncTaskFailure {
     void onTaskFailed(Object o);
 }
