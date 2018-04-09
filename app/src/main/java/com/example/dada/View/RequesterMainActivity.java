@@ -190,7 +190,7 @@ public class RequesterMainActivity extends AppCompatActivity
         assignedTaskAdapter = new customAdapter(this, R.layout.task_list_item, assignedTaskList);
         doneTaskAdapter = new customAdapter(this, R.layout.task_list_item, doneTaskList);
 
-//        setAdapter(sortType);
+        setAdapter(sortType);
 
         updateTaskList();
     }
