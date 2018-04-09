@@ -410,8 +410,9 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openRequestedTaskDetail(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
-        Intent intent = new Intent(this, customAdapter.ProviderDetailActivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -422,8 +423,9 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openBiddedTaskDetail(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
-        Intent intent = new Intent(this, customAdapter.ProviderDetailActivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -434,8 +436,9 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openAssignedTaskDetail(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
-        Intent intent = new Intent(this, customAdapter.ProviderDetailActivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
@@ -446,24 +449,27 @@ public class ProviderMainActivity extends AppCompatActivity
      */
     private void openDoneTaskDetail(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedTaskDetail");
-        Intent intent = new Intent(this, customAdapter.ProviderDetailActivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
 
     private void openRequestedSearchTaskDetail(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openRequestedSearchTaskDetail");
-        Intent intent = new Intent(this, customAdapter.ProviderDetailActivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }
 
     private void openBiddedSearchTaskDetail(final Task task) {
         Log.i("Method start----->", "ProviderMainActivity openBiddedSearchTaskDetail");
-        Intent intent = new Intent(this, customAdapter.ProviderDetailActivity.class);
+        Intent intent = new Intent(this, customAdapter.ProviderDetailAvitivity.class);
         intent.putExtra("Task", TaskUtil.serializer(task));
+        intent.putExtra("Name", provider.getUserName());
         startActivity(intent);
 
     }

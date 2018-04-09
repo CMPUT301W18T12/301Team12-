@@ -32,11 +32,11 @@ public class AssignedTask extends Task{
         super(requesterUserName, providerUserName, price);
     }
 
-    public AssignedTask(String requesterUserName, String providerUserName, double price, Bitmap img) {
+    public AssignedTask(String requesterUserName, String providerUserName, double price, String img) {
         super(requesterUserName, providerUserName, price, img);
     }
 
-    public AssignedTask(String requesterUserName, String providerUserName, double price, Bitmap img, List<Double> coordinates) {
+    public AssignedTask(String requesterUserName, String providerUserName, double price, String img, List<Double> coordinates) {
         super(requesterUserName, providerUserName, price, img, coordinates);
     }
 

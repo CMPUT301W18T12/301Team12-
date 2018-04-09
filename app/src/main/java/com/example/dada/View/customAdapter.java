@@ -156,7 +156,7 @@ public class customAdapter extends ArrayAdapter<Task>{
             //more intent part need                                                              //^_^//
             Intent intent = getIntent();
             task = TaskUtil.deserializer(intent.getStringExtra("Task"));
-
+            providerName = intent.getStringExtra("Name");
             setViews();
 
         }
@@ -204,7 +204,7 @@ public class customAdapter extends ArrayAdapter<Task>{
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
             if (task.getImg() != null) {
                 //imageView.setImageBitmap();
-                //imageView.setImageBitmap(task.getImg());
+                // imageView.setImageBitmap(task.getImg());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             } else {
                 Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
@@ -221,17 +221,20 @@ public class customAdapter extends ArrayAdapter<Task>{
             TextView textViewPhone = (TextView)findViewById(R.id.textViewPhone);
             ImageView imageViewHead = (ImageView)findViewById(R.id.circleImageView);
 
+            textViewName.setText(task.getRequesterUserName());
+
             requester = userController.getUser(task.getRequesterUserName());
+            if (requester == null) {
+                textViewName.setText(requester.getUserName());
+                textViewPhone.setText(requester.getPhone());
 
-            textViewName.setText(requester.getUserName());
-            textViewPhone.setText(requester.getPhone());
-            if (requester.getProfile_photo() != null) {//^_^//
-                // imageViewHead.setImageBitmap(requester.getProfile_photo());
-            } else {
-                Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT).show();
-                imageViewHead.setImageResource(R.drawable.temp_head);
-            }                         // temp
-
+                if (requester.getProfile_photo() != null) {//^_^//
+                    imageViewHead.setImageBitmap(requester.getProfile_photo());
+                } else {
+                    Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT).show();
+                    imageViewHead.setImageResource(R.drawable.temp_head);
+                }                         // temp
+            }
 
             textViewStatus.setText(task.getStatus().toUpperCase());
             if (task.getStatus().toUpperCase().equals(statusRequested)) {
@@ -262,8 +265,12 @@ public class customAdapter extends ArrayAdapter<Task>{
             String value_str = input.getText().toString();
             if (value_str == null) {
                 Toast.makeText(this, "Please add price.", Toast.LENGTH_SHORT).show();
+                return;
             }
-            int value = Integer.parseInt(value_str);
+
+            double valueDouble = Double.parseDouble(value_str);
+
+            /**
             ArrayList<ArrayList<String>> bidList = task.getBidList();
 
             if (task.getStatus().toUpperCase().equals(statusBidded)) {
@@ -286,11 +293,16 @@ public class customAdapter extends ArrayAdapter<Task>{
             bidList.add(bid);
             task.setBidList(bidList);
             taskController.updateTask(task);
-
+            **/
+            try {
+                Log.i("debug---->", providerName);
+                task.providerBidTask(providerName, valueDouble);
+            } catch(Exception e) {
+                Toast.makeText(this, "Cannot bidded test.", Toast.LENGTH_SHORT);
+            }
+            taskController.updateTask(task);
             setViews();
             finish();
         }
-
-
     }
 }

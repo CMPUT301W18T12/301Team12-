@@ -114,7 +114,7 @@ public class ProviderShowTasks5kmOnMap extends FragmentActivity implements OnMap
         @Override
         public void onInfoWindowClick(Marker marker) {
             Task clickedTask = mHashMap.get(marker);
-            Intent intent = new Intent(getApplicationContext(), customAdapter.ProviderDetailActivity.class);
+            Intent intent = new Intent(getApplicationContext(), customAdapter.ProviderDetailAvitivity.class);
             intent.putExtra("Task", TaskUtil.serializer(clickedTask));
             startActivity(intent);
         }

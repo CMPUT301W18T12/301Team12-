@@ -120,11 +120,11 @@ public class RequesterDetailActivity extends ListActivity {
         if (task.getStatus().toUpperCase().equals(statusBidded)) {
             final ListView listView = (ListView)findViewById(android.R.id.list);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                     ArrayList<String> bid = task.getBidList().get(position);
                     providerName = bid.get(0);
                     AlertDialog.Builder builder = new AlertDialog.Builder(RequesterDetailActivity.this);
-                    builder.setMessage("What do you due with " + providerName + "'s bidded").setTitle("Notofocation");
+                    builder.setMessage("What do you want to due with " + providerName + "'s bidded").setTitle("Notofocation");
 
                     builder.setPositiveButton("Is Him", new DialogInterface.OnClickListener() {
                         @Override
@@ -153,7 +153,7 @@ public class RequesterDetailActivity extends ListActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             ArrayList<ArrayList<String>> bidList = task.getBidList();
                             if (bidList.size() > 1){
-                                bidList.remove(i);
+                                bidList.remove(position);
                                 task.setBidList(bidList);
                             }
                             else{
@@ -162,6 +162,8 @@ public class RequesterDetailActivity extends ListActivity {
                                 task.setStatus(statusRequested.toLowerCase());
                             }
                             taskController.updateTask(task);
+                            // check lowest price
+                            checkLowestPrice();
                             setViews();
                         }
                     });
@@ -174,6 +176,22 @@ public class RequesterDetailActivity extends ListActivity {
         }
 
 
+    }
+
+    private void checkLowestPrice() {
+        ArrayList<ArrayList<String>> bids = task.getBidList();
+        Double lowestPrice = Double.parseDouble(bids.get(0).get(1));
+        task.setLowestPrice(lowestPrice);
+        for (ArrayList<String> bid : bids) {
+            String price = bid.get(1);
+            Double priceD = Double.parseDouble(price);
+            if (priceD < lowestPrice) {
+                lowestPrice = priceD;
+                task.setLowestPrice(priceD);
+            }
+        }
+        Log.i("Debug----->", ""+lowestPrice);
+        taskController.updateTask(task);
     }
 
     /**
@@ -224,7 +242,7 @@ public class RequesterDetailActivity extends ListActivity {
         //imageView.setImageBitmap();
         if (task.getImg() != null) {
             //imageView.setImageBitmap();
-            imageView.setImageBitmap(task.getImg());
+            //imageView.setImageBitmap(task.getImg());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         } else {
             Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT).show();
