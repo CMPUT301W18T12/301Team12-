@@ -301,6 +301,16 @@ public class RequesterDetailActivity extends ListActivity {
             }
         });
 
+        // set map button
+        Button rateBtn = findViewById(R.id.ratingButton);
+        assert rateBtn != null;
+        rateBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+                setListviewRatingSorted();
+            }
+        });
+
         textViewStatus.setText(task.getStatus().toUpperCase());
 
         if (task.getStatus().toUpperCase().equals(statusRequested)) {
@@ -374,6 +384,19 @@ public class RequesterDetailActivity extends ListActivity {
     }
 
     /**
+     * set the listview (adapter) for rating
+     */
+    private void setListviewRatingSorted() {
+        Log.i("Tracing----->", "setListview");
+
+        SimpleAdapter listViewAdapter = new SimpleAdapter(this, setListItemRatingSorted(),
+                R.layout.activity_requester_detail_listitem, new String[]{"img", "title", "price"},
+                new int[]{R.id.img, R.id.title, R.id.price});
+        setListAdapter(listViewAdapter);
+        listViewAdapter.notifyDataSetChanged();
+    }
+
+    /**
      * perpare the thing for listview
      * @return list of map(listview item content)
      */
@@ -408,54 +431,35 @@ public class RequesterDetailActivity extends ListActivity {
      * perpare the thing for listview
      * @return list of map(listview item content)
      */
-//
-//    private List<Map<String, Object>> setListItemRatingSorted() {
-//        List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
-//        ArrayList<ArrayList<String>> providerNames = task.getBidList();
-//        Map<ArrayList<String>, Double> ratingMap = new HashMap<>();
-//
-//        PriorityQueue<Map.Entry<ArrayList<String>, Double>> maxheap = new PriorityQueue<Double>(new Comparator<Map.Entry<ArrayList<String>, Double>>() {
-//            @Override
-//            public int compare(Map.Entry<ArrayList<String>, Double> o1, Map.Entry<ArrayList<String>, Double> o2) {
-//
-//                if ( o2.getValue()-o1.getValue() > 0.0 ) {
-//                    return 1;
-//                }
-//                if ( o2.getValue()-o1.getValue() == 0.0 ) {
-//                    return 0;
-//                }
-//
-//                return -1;
-//            }
-//        });
-//
-//        PriorityQueue<Map.Entry<ArrayList<String>, Integer>> maxHeap = new PriorityQueue<>((a,b)->(b.getValue()-a.getValue()));
-//
-//        for (int i=0; i < providerNames.size(); i++) {
-//            ArrayList<Double> ratings = userController.getUser(providerNames.get(i).get(0)).getRatings();
-//            Double ratings_avg = 0.0;
-//            for ( Double rating : ratings ){
-//                ratings_avg += rating;
-//            }
-//            ratings_avg = ratings_avg / (double) ratings.size();
-//            ratingMap.put(providerNames.get(i), ratings_avg);
-//        }
-//
-//            Map<String, Object> map = new HashMap<String, Object>();
-//
-//
-//
-//
-//            Bitmap img = userController.getUser(providerNames.get(i).get(0)).getProfile_photo();
-//            // set picture                                                                   //^_^//
-//            map.put("img", img);
-//            String name = providerNames.get(i).get(0);
-//            map.put("title", name);
-//            map.put("price", "$"+providerNames.get(i).get(1));
-//            itemList.add(map);
-//        }
-//        return itemList;
-//    }
+    private List<Map<String, Object>> setListItemRatingSorted() {
+        List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
+        ArrayList<ArrayList<String>> providerNames = task.getBidList();
+
+        qSort(providerNames, 0, providerNames.size()-1);
+
+        for (int i=0; i < providerNames.size(); i++) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            Bitmap img = userController.getUser(providerNames.get(i).get(0)).getProfile_photo();
+            // set picture                                                                   //^_^//
+            map.put("img", img);
+            String name = providerNames.get(i).get(0);
+            if (providerNames.get(i).size() == 3) {
+                if (providerNames.get(i).get(2).equals("1")) {
+                    name = providerNames.get(i).get(0) + " new~";
+                    providerNames.get(i).set(2, "0");
+                    Log.i("_---------------->", providerNames.get(i).get(2));
+                    taskController.updateTask(task);
+                }
+            } else {
+                name = providerNames.get(i).get(0);
+            }
+            map.put("title", name);
+            map.put("price", "$"+providerNames.get(i).get(1));
+            itemList.add(map);
+        }
+        return itemList;
+    }
 
     /**
      * done button click
@@ -502,6 +506,8 @@ public class RequesterDetailActivity extends ListActivity {
         alert.show();
 
     }
+
+
 
     /**
      * Not complete button action
@@ -599,5 +605,34 @@ public class RequesterDetailActivity extends ListActivity {
             Log.i("LifeCycle ---->", "save error2 is called");
             throw new RuntimeException();
         }
+    }
+
+    private void qSort(ArrayList<ArrayList<String>> bids, int head, int tail) {
+        if (head >= tail || bids == null || bids.size() <= 1) {
+            return;
+        }
+
+        int i = head, j = tail;
+        ArrayList<String> pivot = bids.get((head + tail) / 2);
+
+        while (i <= j) {
+            while (userController.getUser(bids.get(i).get(0)).getRating() > userController.getUser(pivot.get(0)).getRating()) {
+                ++i;
+            }
+            while (userController.getUser(bids.get(j).get(0)).getRating() < userController.getUser(pivot.get(0)).getRating()) {
+                --j;
+            }
+            if (i < j) {
+                ArrayList<String> t = bids.get(i);
+                bids.set(i, bids.get(j));
+                bids.set(j, t);
+                ++i;
+                --j;
+            } else if (i == j) {
+                ++i;
+            }
+        }
+        qSort(bids, head, j);
+        qSort(bids, i, tail);
     }
 }

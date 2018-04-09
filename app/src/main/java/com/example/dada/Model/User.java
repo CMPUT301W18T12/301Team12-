@@ -364,4 +364,15 @@ public class User {
         return ratings;
     }
 
+    public Double getRating(){
+        if (ratings == null || ratings.size() == 0){
+            return 0.0;
+        }
+        double avg = 0.0;
+        for ( double rating : ratings ){
+            avg += rating;
+        }
+        return avg / (double) ratings.size();
+    }
+
 }
