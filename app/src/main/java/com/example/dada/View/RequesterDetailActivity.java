@@ -210,9 +210,15 @@ public class RequesterDetailActivity extends ListActivity {
         ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         //imageView.setImageBitmap();
-        Log.i("debug----->", ""+task.getImg());
-        imageView.setImageBitmap(task.getImg());
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        if (task.getImg() != null) {
+            //imageView.setImageBitmap();
+            imageView.setImageBitmap(task.getImg());
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        } else {
+            Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT);
+            imageView.setImageResource(R.drawable.temp_taskimg);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        }
 
         // set map button
         ImageButton locationBtn = (ImageButton)findViewById(R.id.taskDetailMapBtn);
@@ -240,8 +246,13 @@ public class RequesterDetailActivity extends ListActivity {
             Log.i("Tracing----->", task.getStatus());
             imageViewStatus.setColorFilter(Color.RED);
             imageViewHead.setVisibility(View.VISIBLE);
-            provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
-            imageViewHead.setImageBitmap(provider.getProfile_photo());
+            provider = userController.getUser(task.getProviderUserName());
+            if (imageViewHead != null) {//^_^//
+                imageViewHead.setImageBitmap(provider.getProfile_photo());
+            } else {
+                Toast.makeText(this, "Did not find user image. Replace by default", Toast.LENGTH_SHORT);
+                imageViewHead.setImageResource(R.drawable.temp_head);
+            }
             textViewName.setVisibility(View.VISIBLE);
             textViewName.setText(provider.getUserName());
             textViewPhone.setVisibility(View.VISIBLE);
@@ -255,7 +266,12 @@ public class RequesterDetailActivity extends ListActivity {
             imageViewStatus.setColorFilter(Color.GREEN);
             imageViewHead.setVisibility(View.VISIBLE);
             provider = userController.getUser(task.getProviderUserName());                                                        //^_^//
-            imageViewHead.setImageBitmap(provider.getProfile_photo());
+            if (imageViewHead != null) {//^_^//
+                imageViewHead.setImageBitmap(provider.getProfile_photo());
+            } else {
+                Toast.makeText(this, "Did not find user image. Replace by default", Toast.LENGTH_SHORT);
+                imageViewHead.setImageResource(R.drawable.temp_head);
+            }
             textViewName.setVisibility(View.VISIBLE);
             textViewName.setText(provider.getUserName());
             textViewPhone.setVisibility(View.VISIBLE);

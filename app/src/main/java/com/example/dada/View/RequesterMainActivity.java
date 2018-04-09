@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -61,6 +62,8 @@ public class RequesterMainActivity extends AppCompatActivity
     private ArrayList<Task> doneTaskList = new ArrayList<>();
 
     private String sortType;
+
+    boolean doubleBackToExitPressedOnce = false;
 
     // Get list of tasks
     private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
@@ -201,11 +204,29 @@ public class RequesterMainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        Log.i("Debug----->", "on back pressed");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
         } else {
-            super.onBackPressed();
+            // https://stackoverflow.com/questions/8430805/clicking-the-back-button-twice-to-exit-an-activity
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to logout", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 

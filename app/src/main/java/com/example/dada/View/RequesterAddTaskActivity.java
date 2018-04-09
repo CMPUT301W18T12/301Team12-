@@ -131,6 +131,10 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         boolean validTitle = !(title.isEmpty() || title.trim().isEmpty());
         boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
 
+        if (photo == null) {
+            Toast.makeText(this, "Please upload task photo.", Toast.LENGTH_SHORT).show();
+        }
+
         if (!(validTitle && validDescription)) {
             Toast.makeText(this, "Task Title/Description is not valid.", Toast.LENGTH_SHORT).show();
         } else {
@@ -141,7 +145,13 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
                     Toast.makeText(this, "Max length of task description is 300.", Toast.LENGTH_SHORT).show();
                 } else {
                     System.out.println(coordinates.toString());
-                    Task task = new RequestedTask(title, description, requester.getUserName(), coordinates);
+                    Task task;
+                    if (photo == null) {
+                        task = new RequestedTask(title, description, requester.getUserName(), coordinates);
+                    } else {
+                        task = new RequestedTask(title, description, requester.getUserName(), photo, coordinates);
+                    }
+
                     task.setID(UUID.randomUUID().toString());
                     taskController.createTask(task);
                     finish();

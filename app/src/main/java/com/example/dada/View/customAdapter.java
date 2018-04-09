@@ -191,9 +191,13 @@ public class customAdapter extends ArrayAdapter<Task>{
             TextView textViewStatus = (TextView)findViewById(R.id.textViewStatus);
             ImageView imageViewStatus = (ImageView)findViewById(R.id.imageViewStatus);
             ImageView imageView = (ImageView)findViewById(R.id.imageView);
-            if (true) {
+            if (task.getImg() != null) {
                 //imageView.setImageBitmap();
                 imageView.setImageBitmap(task.getImg());
+                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            } else {
+                Toast.makeText(this, "Did not find task img. Replace by default", Toast.LENGTH_SHORT);
+                imageView.setImageResource(R.drawable.temp_taskimg);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             }
             // set map button
@@ -211,7 +215,12 @@ public class customAdapter extends ArrayAdapter<Task>{
 
             textViewName.setText(requester.getUserName());
             textViewPhone.setText(requester.getPhone());
-            imageViewHead.setImageBitmap(requester.getProfile_photo());                           // temp
+            if (imageViewHead != null) {//^_^//
+                imageViewHead.setImageBitmap(provider.getProfile_photo());
+            } else {
+                Toast.makeText(this, "Did not find user image. Replace by default.", Toast.LENGTH_SHORT);
+                imageViewHead.setImageResource(R.drawable.temp_head);
+            }                         // temp
 
 
             textViewStatus.setText(task.getStatus().toUpperCase());
