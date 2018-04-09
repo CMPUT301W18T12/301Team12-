@@ -84,7 +84,7 @@ public class customAdapter extends ArrayAdapter<Task>{
         return convertView;
     }
 
-    public static class ProviderDetailAvitivity extends AppCompatActivity {
+    public static class ProviderDetailActivity extends AppCompatActivity {
 
         /**
          * @param task is stand for the task
